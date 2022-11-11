@@ -85,15 +85,6 @@ public class GamePanel extends JPanel {
         }
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        updateAnimationTick();
-        setAnimation();
-        updatePosition();
-        g.drawImage(animations[playerAction][animationIndex], (int) xDelta, (int) yDelta, 256, 160, null);
-    }
-
     private void updatePosition() {
         if(moving) {
             switch (playerDirection) {
@@ -121,4 +112,15 @@ public class GamePanel extends JPanel {
     }
 
 
+    public void updateGame() {
+        updateAnimationTick();
+        setAnimation();
+        updatePosition();
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(animations[playerAction][animationIndex], (int) xDelta, (int) yDelta, 256, 160, null);
+    }
 }
