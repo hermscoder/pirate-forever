@@ -6,6 +6,9 @@ import com.hermscoder.inputs.MouseInputs;
 import javax.swing.*;
 import java.awt.*;
 
+import static com.hermscoder.main.Game.GAME_HEIGHT;
+import static com.hermscoder.main.Game.GAME_WIDTH;
+
 public class GamePanel extends JPanel {
 
     private Game game;
@@ -22,10 +25,9 @@ public class GamePanel extends JPanel {
     }
 
     private void setPanelSize() {
-        Dimension size = new Dimension(1280, 800);
-        setMinimumSize(size);
+        Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
         setPreferredSize(size);
-        setMaximumSize(size);
+        System.out.println("size : " + GAME_WIDTH + "x" + GAME_HEIGHT);
     }
 
 

@@ -1,14 +1,15 @@
 package com.hermscoder.entities;
 
-import javax.imageio.ImageIO;
+import com.hermscoder.utils.LoadSave;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
+
+import static com.hermscoder.utils.Sprite.PlayerSpriteAtlas;
 
 import static com.hermscoder.utils.Constants.PlayerConstants.*;
 
-public class Player extends Entity{
+public class Player extends Entity {
 
     private BufferedImage[][] animations;
 
@@ -18,8 +19,8 @@ public class Player extends Entity{
     private float playerSpeed = 2.0f;
     private boolean moving = false, attacking = false;
 
-    public Player(float x, float y) {
-        super(x, y);
+    public Player(float x, float y, int width, int height) {
+        super(x, y, width, height);
         loadAnimations();
     }
 
@@ -28,57 +29,53 @@ public class Player extends Entity{
         updateAnimationTick();
         setAnimation();
     }
+
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][animationIndex], (int) x, (int) y, 256, 160, null);
+        g.drawImage(animations[playerAction][animationIndex], (int) x, (int) y, width, height, null);
     }
 
     private void loadAnimations() {
-        InputStream is = getClass().getResourceAsStream("/player_sprites.png");
-        try {
-            BufferedImage img = ImageIO.read(is);
-            animations = new BufferedImage[9][6];
-            for (int j = 0; j < animations.length; j++) {
-                for (int i = 0; i < animations[j].length; i++) {
-                    animations[j][i] = img.getSubimage(i*64, j*40, 64, 40);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+
+        BufferedImage img = LoadSave.getSpriteAtlas(PlayerSpriteAtlas.getFilename());
+        animations = new BufferedImage[PlayerSpriteAtlas.getHeightInSprites()][PlayerSpriteAtlas.getWidthInSprites()];
+        for (int j = 0; j < animations.length; j++) {
+            for (int i = 0; i < animations[j].length; i++) {
+                animations[j][i] = img.getSubimage(
+                        i * PlayerSpriteAtlas.getTileWidth(),
+                        j * PlayerSpriteAtlas.getTileHeight(),
+                        PlayerSpriteAtlas.getTileWidth(),
+                        PlayerSpriteAtlas.getTileHeight());
             }
         }
+
     }
 
     private void updatePosition() {
         moving = false;
 
-        if(left && !right) {
-            x-= playerSpeed;
+        if (left && !right) {
+            x -= playerSpeed;
             moving = true;
-        } else if(right && !left) {
-            x+= playerSpeed;
+        } else if (right && !left) {
+            x += playerSpeed;
             moving = true;
         }
 
-        if(up && !down) {
-            y-=playerSpeed;
+        if (up && !down) {
+            y -= playerSpeed;
             moving = true;
-        } else if(down && !up) {
-            y+=playerSpeed;
+        } else if (down && !up) {
+            y += playerSpeed;
             moving = true;
         }
     }
 
     public void updateAnimationTick() {
         animationTick++;
-        if(animationTick >= animationSpeed) {
+        if (animationTick >= animationSpeed) {
             animationTick = 0;
             animationIndex++;
-            if(animationIndex >= getSpriteAmount(playerAction)) {
+            if (animationIndex >= getSpriteAmount(playerAction)) {
                 animationIndex = 0;
                 attacking = false;
             }
@@ -88,16 +85,16 @@ public class Player extends Entity{
     private void setAnimation() {
         int startAction = playerAction;
 
-        if(moving)
+        if (moving)
             playerAction = RUNNING;
         else
             playerAction = IDLE;
 
-        if(attacking)
+        if (attacking)
             playerAction = ATTACK_1;
 
         //if there was a change of action. we need to reset the animation tick so we can display the full animation
-        if(startAction != playerAction) {
+        if (startAction != playerAction) {
             resetAnimationTick();
         }
     }
