@@ -1,10 +1,13 @@
 package com.hermscoder.utils;
 
+import static com.hermscoder.main.Game.SCALE;
 import static com.hermscoder.main.Game.TILES_SIZE;
 
 public enum Sprite {
     PlayerSpriteAtlas("player_sprites.png", 9, 6, 64, 40),
-    LevelSpriteAtlas("outside_sprites.png", 4, 12, 32, 32);
+    LevelSpriteAtlas("outside_sprites.png", 4, 12, 32, 32),
+    MenuButtonsSpriteAtlas("button_atlas.png", 3, 3, 140, 56),
+    MenuBackgroundSprite("menu_background.png", 3, 3, 282, 336);
 
     private String filename;
     private int heightInSprites;
@@ -33,10 +36,17 @@ public enum Sprite {
     }
 
     public int getTileWidth() {
-        return tileWidth;
+        return getTileWidth(1);
+    }
+    public int getTileWidth(float scale) {
+        return (int) (tileWidth * scale);
     }
 
     public int getTileHeight() {
-        return tileHeight;
+        return getTileHeight(1);
+    }
+
+    public int getTileHeight(float scale) {
+        return (int) (tileHeight * scale);
     }
 }

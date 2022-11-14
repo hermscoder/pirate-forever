@@ -1,25 +1,70 @@
 package com.hermscoder.gamestates;
 
 import com.hermscoder.main.Game;
+import com.hermscoder.ui.MenuButton;
+import com.hermscoder.utils.LoadSave;
+import com.hermscoder.utils.Sprite;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+
+import static com.hermscoder.main.Game.SCALE;
+import static com.hermscoder.utils.Sprite.MenuBackgroundSprite;
+import static com.hermscoder.utils.Sprite.MenuButtonsSpriteAtlas;
 
 public class Menu extends State implements StateMethods{
+
+    private final static int NUMBER_OF_MENU_BUTTONS = 3;
+    private final static GameState[] BUTTON_STATES = new GameState[] { GameState.PLAYING, GameState.OPTIONS, GameState.QUIT };
+    private final static int VERTICAL_SPACE_BETWEEN_BUTTONS = (int) (14 * SCALE);
+    private final static int FIRST_MENU_ITEM_MARGIN_TOP = (int) (150 * SCALE);
+    private final static int MENU_MARGIN_TOP = 45;
+
+    private BufferedImage backgroundImage;
+    private int menuX, menuY;
+
+    private MenuButton[] buttons = new MenuButton[NUMBER_OF_MENU_BUTTONS];
+
     public Menu(Game game) {
         super(game);
+        loadButtons();
+        loadBackground();
+    }
+
+    private void loadBackground() {
+        backgroundImage = LoadSave.getSpriteAtlas(MenuBackgroundSprite.getFilename());
+        menuX = (Game.GAME_WIDTH / 2) - (MenuBackgroundSprite.getTileWidth(SCALE) / 2);
+        menuY = (int) (MENU_MARGIN_TOP * SCALE);
+    }
+
+    private void loadButtons() {
+        for (int i =0; i < buttons.length; i++) {
+            buttons[i] = new MenuButton(
+                    Game.GAME_WIDTH / 2,
+                    (int) (FIRST_MENU_ITEM_MARGIN_TOP + ((MenuButtonsSpriteAtlas.getTileHeight(SCALE) + VERTICAL_SPACE_BETWEEN_BUTTONS) * i)),
+                    i,
+                    BUTTON_STATES[i]);
+        }
     }
 
     @Override
     public void update() {
-
+        for (MenuButton button : buttons) {
+            button.update();
+        }
     }
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.drawString("MENU", Game.GAME_WIDTH/2, 200);
+        g.drawImage(backgroundImage, menuX, menuY,
+                MenuBackgroundSprite.getTileWidth(SCALE),
+                MenuBackgroundSprite.getTileHeight(SCALE), null);
+
+        for (MenuButton button : buttons) {
+            button.draw(g);
+        }
     }
 
     @Override
@@ -29,17 +74,42 @@ public class Menu extends State implements StateMethods{
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        for (MenuButton menuButton : buttons) {
+            if(isIn(e, menuButton)) {
+                menuButton.setMousePressed(true);
+                break;
+            }
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        for (MenuButton menuButton : buttons) {
+            if(isIn(e, menuButton)) {
+                if(menuButton.isMousePressed()) {
+                    menuButton.applyGameState();
+                    break;
+                }
+            }
+        }
+        resetButtons();
+    }
 
+    private void resetButtons() {
+        for (MenuButton menuButton : buttons) {
+            menuButton.resetBooleans();
+        }
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        for (MenuButton menuButton : buttons) {
+            menuButton.setMouseOver(false);
+            if(isIn(e, menuButton)) {
+                menuButton.setMouseOver(true);
+                break;
+            }
+        }
     }
 
     @Override
