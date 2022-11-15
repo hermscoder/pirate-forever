@@ -7,7 +7,9 @@ public enum Sprite {
     PlayerSpriteAtlas("player_sprites.png", 9, 6, 64, 40),
     LevelSpriteAtlas("outside_sprites.png", 4, 12, 32, 32),
     MenuButtonsSpriteAtlas("button_atlas.png", 3, 3, 140, 56),
-    MenuBackgroundSprite("menu_background.png", 3, 3, 282, 336);
+    MenuBackgroundSprite("menu_background.png", 3, 3, 282, 336),
+    PauseMenuBackgroundSprite("pause_menu.png", 1, 1, 258, 389),
+    SoundButtonsSpriteAtlas("sound_button.png", 2, 3, 42, 42);
 
     private String filename;
     private int heightInSprites;

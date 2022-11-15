@@ -3,6 +3,7 @@ package com.hermscoder.gamestates;
 import com.hermscoder.entities.Player;
 import com.hermscoder.levels.LevelManager;
 import com.hermscoder.main.Game;
+import com.hermscoder.ui.PauseOverlay;
 import com.hermscoder.utils.Sprite;
 
 import java.awt.*;
@@ -11,9 +12,11 @@ import java.awt.event.MouseEvent;
 
 import static com.hermscoder.main.Game.SCALE;
 
-public class Playing extends State implements StateMethods{
+public class Playing extends State implements StateMethods {
     private Player player;
     private LevelManager levelManager;
+    private PauseOverlay pauseOverlay;
+    private boolean paused = true;
 
     public Playing(Game game) {
         super(game);
@@ -26,6 +29,7 @@ public class Playing extends State implements StateMethods{
                 (Sprite.PlayerSpriteAtlas.getTileWidth(SCALE)),
                 (Sprite.PlayerSpriteAtlas.getTileHeight(SCALE)));
         player.loadLvlData(levelManager.getCurrentLevel().getLvlData());
+        pauseOverlay = new PauseOverlay();
     }
 
     public Player getPlayer() {
@@ -40,34 +44,39 @@ public class Playing extends State implements StateMethods{
     public void update() {
         levelManager.update();
         player.update();
+        pauseOverlay.update();
     }
 
     @Override
     public void draw(Graphics g) {
         levelManager.draw(g);
         player.render(g);
+        pauseOverlay.draw(g);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(e.getButton() == MouseEvent.BUTTON1) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
             player.setAttacking(true);
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        if(paused)
+            pauseOverlay.mousePressed(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        if(paused)
+            pauseOverlay.mouseReleased(e);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        if(paused)
+            pauseOverlay.mouseMoved(e);
     }
 
     @Override
@@ -83,7 +92,7 @@ public class Playing extends State implements StateMethods{
                 player.setJump(true);
                 break;
             case KeyEvent.VK_BACK_SPACE:
-                GameState.state  = GameState.MENU;
+                GameState.state = GameState.MENU;
                 break;
         }
     }
