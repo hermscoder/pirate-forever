@@ -1,8 +1,7 @@
 package com.hermscoder.utils;
 
-import com.hermscoder.main.Game;
-
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -29,9 +28,13 @@ public class LoadSave {
         return img;
     }
 
+    public static Image getGifImage(String fileName) {
+        return new ImageIcon(LoadSave.class.getResource("/" + fileName)).getImage();
+    }
+
     public static int[][] getLevelData(int levelNumber) {
-        int[][] lvlData = new int[Game.TILES_IN_HEIGHT][Game.TILES_IN_WIDTH];
-        BufferedImage img = LoadSave.getSpriteAtlas("level_" + levelNumber + "_data.png");
+        BufferedImage img = LoadSave.getSpriteAtlas("level_" + levelNumber + "_data_long.png");
+        int[][] lvlData = new int[img.getHeight()][img.getWidth()];
 
         for(int j = 0; j < img.getHeight(); j ++) {
             for(int i = 0; i < img.getWidth(); i++) {

@@ -1,11 +1,11 @@
 package com.hermscoder.utils;
 
-import static com.hermscoder.main.Game.SCALE;
-import static com.hermscoder.main.Game.TILES_SIZE;
+import static com.hermscoder.main.Game.*;
 
 public enum Sprite {
     PlayerSpriteAtlas("player_sprites.png", 9, 6, 64, 40),
     LevelSpriteAtlas("outside_sprites.png", 4, 12, 32, 32),
+    StartMenuBackground("start_menu_bg.gif", 1, 1, GAME_WIDTH, GAME_HEIGHT),
     MenuButtonsSpriteAtlas("button_atlas.png", 3, 3, 140, 56),
     MenuBackgroundSprite("menu_background.png", 3, 3, 282, 336),
     PauseMenuBackgroundSprite("pause_menu.png", 1, 1, 258, 389),

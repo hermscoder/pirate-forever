@@ -1,5 +1,6 @@
 package com.hermscoder.gamestates;
 
+import com.hermscoder.entities.LevelRender;
 import com.hermscoder.entities.Player;
 import com.hermscoder.levels.LevelManager;
 import com.hermscoder.main.Game;
@@ -16,6 +17,7 @@ public class Playing extends State implements StateMethods {
     private Player player;
     private LevelManager levelManager;
     private PauseOverlay pauseOverlay;
+    private LevelRender levelRender;
     private boolean paused = false;
 
     public Playing(Game game) {
@@ -30,6 +32,8 @@ public class Playing extends State implements StateMethods {
                 (Sprite.PlayerSpriteAtlas.getTileHeight(SCALE)));
         player.loadLvlData(levelManager.getCurrentLevel().getLvlData());
         pauseOverlay = new PauseOverlay(this);
+
+        levelRender = new LevelRender(this, levelManager);
     }
 
     public Player getPlayer() {
@@ -39,20 +43,24 @@ public class Playing extends State implements StateMethods {
     @Override
     public void update() {
         if(!paused) {
-            levelManager.update();
+            levelRender.update();
             player.update();
         } else {
             pauseOverlay.update();
         }
     }
 
+
     @Override
     public void draw(Graphics g) {
-        levelManager.draw(g);
-        player.render(g);
+        levelRender.draw(g);
+        player.render(g, levelRender.getxLevelOffset());
 
-        if(paused)
+        if(paused) {
+            g.setColor(new Color(0, 0, 0, 150));
+            g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
             pauseOverlay.draw(g);
+        }
     }
 
     @Override
@@ -120,5 +128,9 @@ public class Playing extends State implements StateMethods {
     public void mouseDragged(MouseEvent e) {
         if(paused)
             pauseOverlay.mouseDragged(e);
+    }
+
+    public boolean isPaused() {
+        return paused;
     }
 }

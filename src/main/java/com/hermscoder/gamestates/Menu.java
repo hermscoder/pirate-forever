@@ -3,16 +3,15 @@ package com.hermscoder.gamestates;
 import com.hermscoder.main.Game;
 import com.hermscoder.ui.MenuButton;
 import com.hermscoder.utils.LoadSave;
-import com.hermscoder.utils.Sprite;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
-import static com.hermscoder.main.Game.SCALE;
-import static com.hermscoder.utils.Sprite.MenuBackgroundSprite;
-import static com.hermscoder.utils.Sprite.MenuButtonsSpriteAtlas;
+import static com.hermscoder.main.Game.*;
+import static com.hermscoder.utils.Sprite.*;
 
 public class Menu extends State implements StateMethods{
 
@@ -22,7 +21,8 @@ public class Menu extends State implements StateMethods{
     private final static int FIRST_MENU_ITEM_MARGIN_TOP = (int) (150 * SCALE);
     private final static int MENU_MARGIN_TOP = 45;
 
-    private BufferedImage backgroundImage;
+    private Image backgroundImage;
+    private BufferedImage menuBackgroundImage;
     private int menuX, menuY;
 
     private MenuButton[] buttons = new MenuButton[NUMBER_OF_MENU_BUTTONS];
@@ -34,7 +34,9 @@ public class Menu extends State implements StateMethods{
     }
 
     private void loadBackground() {
-        backgroundImage = LoadSave.getSpriteAtlas(MenuBackgroundSprite.getFilename());
+        backgroundImage = LoadSave.getGifImage(StartMenuBackground.getFilename());
+
+        menuBackgroundImage = LoadSave.getSpriteAtlas(MenuBackgroundSprite.getFilename());
         menuX = (Game.GAME_WIDTH / 2) - (MenuBackgroundSprite.getTileWidth(SCALE) / 2);
         menuY = (int) (MENU_MARGIN_TOP * SCALE);
     }
@@ -58,7 +60,9 @@ public class Menu extends State implements StateMethods{
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(backgroundImage, menuX, menuY,
+        g.drawImage(backgroundImage, 0, 0, StartMenuBackground.getTileWidth(), StartMenuBackground.getTileHeight(), null);
+
+        g.drawImage(menuBackgroundImage, menuX, menuY,
                 MenuBackgroundSprite.getTileWidth(SCALE),
                 MenuBackgroundSprite.getTileHeight(SCALE), null);
 
