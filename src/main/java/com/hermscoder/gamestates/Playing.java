@@ -1,6 +1,6 @@
 package com.hermscoder.gamestates;
 
-import com.hermscoder.entities.LevelRender;
+import com.hermscoder.levels.LevelRender;
 import com.hermscoder.entities.Player;
 import com.hermscoder.levels.LevelManager;
 import com.hermscoder.main.Game;

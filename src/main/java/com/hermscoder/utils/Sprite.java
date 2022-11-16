@@ -5,14 +5,17 @@ import static com.hermscoder.main.Game.*;
 public enum Sprite {
     PlayerSpriteAtlas("player_sprites.png", 9, 6, 64, 40),
     LevelSpriteAtlas("outside_sprites.png", 4, 12, 32, 32),
-    StartMenuBackground("start_menu_bg.gif", 1, 1, GAME_WIDTH, GAME_HEIGHT),
+    StartMenuBackground("start_menu_bg.gif", 1, 1, TILES_DEFAULT_SIZE * TILES_IN_WIDTH, TILES_DEFAULT_SIZE * TILES_IN_HEIGHT),
     MenuButtonsSpriteAtlas("button_atlas.png", 3, 3, 140, 56),
     MenuBackgroundSprite("menu_background.png", 3, 3, 282, 336),
     PauseMenuBackgroundSprite("pause_menu.png", 1, 1, 258, 389),
     SoundButtonsSpriteAtlas("sound_button.png", 2, 3, 42, 42),
     UrmButtonsSpriteAtlas("urm_buttons.png", 3, 3, 56, 56),
     VolumeButtonsSpriteAtlas("volume_buttons.png", 1, 3, 28, 44),
-    VolumeSliderSprite("volume_buttons.png", 1, 1, 215, 44);
+    VolumeSliderSprite("volume_buttons.png", 1, 1, 215, 44),
+    PlayingBackgroundImage("playing_bg_img.png", 1, 1, TILES_DEFAULT_SIZE * TILES_IN_WIDTH, TILES_DEFAULT_SIZE * TILES_IN_HEIGHT),
+    BigCloudImage("big_clouds.png", 1, 1, 448, 101),
+    SmallCloudImage("small_clouds.png", 1, 1, 74, 24);
 
     private String filename;
     private int heightInSprites;

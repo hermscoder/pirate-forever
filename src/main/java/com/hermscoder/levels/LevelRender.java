@@ -1,16 +1,21 @@
-package com.hermscoder.entities;
+package com.hermscoder.levels;
 
 import com.hermscoder.gamestates.Playing;
 import com.hermscoder.levels.LevelManager;
 import com.hermscoder.main.Game;
 import com.hermscoder.utils.LoadSave;
+import com.hermscoder.utils.Sprite;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+
+import static com.hermscoder.main.Game.SCALE;
 
 public class LevelRender {
 
     private final Playing playing;
     private final LevelManager levelManager;
+    private final LevelBackground levelBackground;
 
     private int xLevelOffset;
     private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
@@ -19,11 +24,10 @@ public class LevelRender {
     private int maxTilesOffset = levelTilesWide - Game.TILES_IN_WIDTH;
     private int maxLevelOffsetX = maxTilesOffset * Game.TILES_SIZE;
 
-
-
     public LevelRender(Playing playing, LevelManager levelManager) {
         this.playing = playing;
         this.levelManager = levelManager;
+        this.levelBackground = new LevelBackground();
     }
 
     private void checkCloseToBorder() {
@@ -43,22 +47,22 @@ public class LevelRender {
 
     public void update() {
         checkCloseToBorder();
-
     }
 
     public void draw(Graphics g) {
+        levelBackground.draw(g, xLevelOffset);
         levelManager.draw(g, xLevelOffset);
         drawCloseToBorder(g);
     }
     protected void drawCloseToBorder(Graphics g){
         //For debugging the border
         g.setColor(Color.BLUE);
-        g.drawRect((int) xLevelOffset, (int) 10, (int) 10, (int) Game.GAME_HEIGHT);
+        g.drawRect(xLevelOffset, 10, 10, Game.GAME_HEIGHT);
 
         g.setColor(Color.RED);
-        g.drawRect(leftBorder, 10, leftBorder, (int) Game.GAME_HEIGHT - 10);
+        g.drawRect(leftBorder, 10, leftBorder, Game.GAME_HEIGHT - 10);
         g.setColor(Color.GREEN);
-        g.drawRect(rightBorder, 0, rightBorder, (int) Game.GAME_HEIGHT-10);
+        g.drawRect(rightBorder, 0, rightBorder, Game.GAME_HEIGHT-10);
     }
 
     public int getxLevelOffset() {

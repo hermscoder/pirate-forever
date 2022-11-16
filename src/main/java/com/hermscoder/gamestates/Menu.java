@@ -60,7 +60,7 @@ public class Menu extends State implements StateMethods{
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(backgroundImage, 0, 0, StartMenuBackground.getTileWidth(), StartMenuBackground.getTileHeight(), null);
+        g.drawImage(backgroundImage, 0, 0, StartMenuBackground.getTileWidth(SCALE), StartMenuBackground.getTileHeight(SCALE), null);
 
         g.drawImage(menuBackgroundImage, menuX, menuY,
                 MenuBackgroundSprite.getTileWidth(SCALE),
