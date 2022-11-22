@@ -1,5 +1,6 @@
 package com.hermscoder.gamestates;
 
+import com.hermscoder.entities.EnemyManager;
 import com.hermscoder.levels.LevelRender;
 import com.hermscoder.entities.Player;
 import com.hermscoder.levels.LevelManager;
@@ -16,9 +17,11 @@ import static com.hermscoder.main.Game.SCALE;
 public class Playing extends State implements StateMethods {
     private Player player;
     private LevelManager levelManager;
+    private EnemyManager enemyManager;
     private PauseOverlay pauseOverlay;
     private LevelRender levelRender;
     private boolean paused = false;
+    private int currentLevel = 1;
 
     public Playing(Game game) {
         super(game);
@@ -27,6 +30,7 @@ public class Playing extends State implements StateMethods {
 
     private void initClasses() {
         levelManager = new LevelManager(game);
+        enemyManager = new EnemyManager(this);
         player = new Player(200, 200,
                 (Sprite.PlayerSpriteAtlas.getTileWidth(SCALE)),
                 (Sprite.PlayerSpriteAtlas.getTileHeight(SCALE)));
@@ -45,6 +49,7 @@ public class Playing extends State implements StateMethods {
         if(!paused) {
             levelRender.update();
             player.update();
+            enemyManager.update();
         } else {
             pauseOverlay.update();
         }
@@ -55,7 +60,7 @@ public class Playing extends State implements StateMethods {
     public void draw(Graphics g) {
         levelRender.draw(g);
         player.render(g, levelRender.getxLevelOffset());
-
+        enemyManager.draw(g, levelRender.getxLevelOffset());
         if(paused) {
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
@@ -132,5 +137,9 @@ public class Playing extends State implements StateMethods {
 
     public boolean isPaused() {
         return paused;
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
     }
 }

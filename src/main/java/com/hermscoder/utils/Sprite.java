@@ -15,7 +15,8 @@ public enum Sprite {
     VolumeSliderSprite("volume_buttons.png", 1, 1, 215, 44),
     PlayingBackgroundImage("playing_bg_img.png", 1, 1, TILES_DEFAULT_SIZE * TILES_IN_WIDTH, TILES_DEFAULT_SIZE * TILES_IN_HEIGHT),
     BigCloudImage("big_clouds.png", 1, 1, 448, 101),
-    SmallCloudImage("small_clouds.png", 1, 1, 74, 24);
+    SmallCloudImage("small_clouds.png", 1, 1, 74, 24),
+    CrabbySpriteAtlas("crabby_sprite.png", 5, 9, 72, 32);
 
     private String filename;
     private int heightInSprites;

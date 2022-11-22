@@ -15,7 +15,7 @@ public class Player extends Entity {
 
     private BufferedImage[][] animations;
 
-    private int animationTick, animationIndex, animationSpeed = 15;
+    private int animationTick, animationIndex, animationSpeed = 25;
     private int playerAction = IDLE;
     private boolean left, up, right, down, jump;
     private float playerSpeed = 1.0f * Game.SCALE;
@@ -72,8 +72,6 @@ public class Player extends Entity {
         moving = false;
         if(jump)
             jump();
-//        if(!left && !right && !inAir)
-//            return;
         if(!inAir)
             if((!left && !right) || (right && left))
                 return;
