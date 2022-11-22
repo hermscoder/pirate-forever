@@ -18,7 +18,7 @@ public class LevelManager {
     public LevelManager(Game game) {
         this.game = game;
         importOutsideSprites();
-        levelOne = new Level(LoadSave.getLevelData(1));
+        levelOne = new Level(1, LoadSave.getLevelData(1));
     }
 
     private void importOutsideSprites() {

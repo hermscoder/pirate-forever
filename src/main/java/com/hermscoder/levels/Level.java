@@ -2,9 +2,11 @@ package com.hermscoder.levels;
 
 public class Level {
 
+    private int id;
     private int[][] lvlData;
 
-    public Level(int[][] lvlData) {
+    public Level(int id, int[][] lvlData) {
+        this.id = id;
         this.lvlData = lvlData;
     }
 
@@ -14,5 +16,9 @@ public class Level {
 
     public int[][] getLvlData() {
         return lvlData;
+    }
+
+    public int getId() {
+        return id;
     }
 }

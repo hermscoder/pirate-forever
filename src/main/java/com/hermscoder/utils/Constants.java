@@ -1,10 +1,20 @@
 package com.hermscoder.utils;
 
+import com.hermscoder.main.Game;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Constants {
+
+    public static class Directions {
+        public static final int LEFT = 0;
+        public static final int UP = 1;
+        public static final int RIGHT = 2;
+        public static final int DOWN = 3;
+    }
+
     public static class EnemyConstants {
         public static final int CRABBY = 0;
 
@@ -25,12 +35,17 @@ public class Constants {
         public static final int ATTACK = 2;
         public static final int HIT = 3;
         public static final int DEAD = 4;
+
+        public static final int CRABBY_DRAWOFFSET_X = (int) (26 * Game.SCALE);
+        public static final int CRABBY_DRAWOFFSET_Y = (int) (9 * Game.SCALE);
+
         public static int getSpriteAmount(int enemyType, int playerAction) {
             return enemiesSpritesAmount
                     .getOrDefault(enemyType, Collections.emptyMap())
                     .getOrDefault(playerAction, 0);
         }
     }
+
     public static class PlayerConstants {
         public static final int IDLE = 0;
         public static final int RUNNING = 1;
