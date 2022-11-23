@@ -1,15 +1,10 @@
 package com.hermscoder.levels;
 
 import com.hermscoder.gamestates.Playing;
-import com.hermscoder.levels.LevelManager;
 import com.hermscoder.main.Game;
 import com.hermscoder.utils.LoadSave;
-import com.hermscoder.utils.Sprite;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-
-import static com.hermscoder.main.Game.SCALE;
 
 public class LevelRender {
 
@@ -34,14 +29,14 @@ public class LevelRender {
         int playerX = (int) playing.getPlayer().getHitBox().x;
         int diff = playerX - xLevelOffset;
 
-        if(diff > rightBorder)
+        if (diff > rightBorder)
             xLevelOffset += diff - rightBorder;
-        else if(diff < leftBorder)
+        else if (diff < leftBorder)
             xLevelOffset += diff - leftBorder;
 
-        if(xLevelOffset > maxLevelOffsetX)
+        if (xLevelOffset > maxLevelOffsetX)
             xLevelOffset = maxLevelOffsetX;
-        else if(xLevelOffset < 0)
+        else if (xLevelOffset < 0)
             xLevelOffset = 0;
     }
 
@@ -52,9 +47,10 @@ public class LevelRender {
     public void draw(Graphics g) {
         levelBackground.draw(g, xLevelOffset);
         levelManager.draw(g, xLevelOffset);
-        drawCloseToBorder(g);
+//        drawCloseToBorder(g);
     }
-    protected void drawCloseToBorder(Graphics g){
+
+    protected void drawCloseToBorder(Graphics g) {
         //For debugging the border
         g.setColor(Color.BLUE);
         g.drawRect(xLevelOffset, 10, 10, Game.GAME_HEIGHT);
@@ -62,7 +58,7 @@ public class LevelRender {
         g.setColor(Color.RED);
         g.drawRect(leftBorder, 10, leftBorder, Game.GAME_HEIGHT - 10);
         g.setColor(Color.GREEN);
-        g.drawRect(rightBorder, 0, rightBorder, Game.GAME_HEIGHT-10);
+        g.drawRect(rightBorder, 0, rightBorder, Game.GAME_HEIGHT - 10);
     }
 
     public int getxLevelOffset() {

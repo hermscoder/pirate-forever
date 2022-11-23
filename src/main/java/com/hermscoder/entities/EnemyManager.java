@@ -2,7 +2,6 @@ package com.hermscoder.entities;
 
 import com.hermscoder.gamestates.Playing;
 import com.hermscoder.levels.LevelManager;
-import com.hermscoder.utils.Constants;
 import com.hermscoder.utils.LoadSave;
 
 import java.awt.*;
@@ -18,6 +17,7 @@ public class EnemyManager {
     private LevelManager levelManager;
     private BufferedImage[][] crabbyArray;
     private ArrayList<Crabby> crabbies = new ArrayList<>();
+
     public EnemyManager(Playing playing, LevelManager levelManager) {
         this.playing = playing;
         this.levelManager = levelManager;
@@ -30,9 +30,9 @@ public class EnemyManager {
         System.out.println("size of crabs: " + crabbies.size());
     }
 
-    public void update(int[][] levelData) {
-        for(Crabby c : crabbies) {
-            c.update(levelData);
+    public void update(int[][] levelData, Player player) {
+        for (Crabby c : crabbies) {
+            c.update(levelData, player);
         }
     }
 
@@ -41,14 +41,14 @@ public class EnemyManager {
     }
 
     private void drawCrabs(Graphics g, int xLevelOffset) {
-        for(Crabby c : crabbies) {
+        for (Crabby c : crabbies) {
             g.drawImage(
                     crabbyArray[c.getEnemyState()][c.getAnimationIndex()],
-                    (int)c.getHitBox().x - xLevelOffset - CRABBY_DRAWOFFSET_X,
-                    (int)c.getHitBox().y - CRABBY_DRAWOFFSET_Y,
+                    (int) c.getHitBox().x - xLevelOffset - CRABBY_DRAWOFFSET_X,
+                    (int) c.getHitBox().y - CRABBY_DRAWOFFSET_Y,
                     CrabbySpriteAtlas.getTileWidth(),
                     CrabbySpriteAtlas.getTileHeight(), null);
-            c.drawHitBox(g, xLevelOffset);
+//            c.drawHitBox(g, xLevelOffset);
         }
     }
 
@@ -58,8 +58,8 @@ public class EnemyManager {
         for (int j = 0; j < crabbyArray.length; j++) {
             for (int i = 0; i < crabbyArray[j].length; i++) {
                 crabbyArray[j][i] = temp.getSubimage(
-                        i*CrabbySpriteAtlas.getTileWidth(),
-                        j*CrabbySpriteAtlas.getTileHeight(),
+                        i * CrabbySpriteAtlas.getTileWidth(),
+                        j * CrabbySpriteAtlas.getTileHeight(),
                         CrabbySpriteAtlas.getTileWidth(),
                         CrabbySpriteAtlas.getTileHeight());
             }

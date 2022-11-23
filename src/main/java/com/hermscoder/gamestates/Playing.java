@@ -1,9 +1,9 @@
 package com.hermscoder.gamestates;
 
 import com.hermscoder.entities.EnemyManager;
-import com.hermscoder.levels.LevelRender;
 import com.hermscoder.entities.Player;
 import com.hermscoder.levels.LevelManager;
+import com.hermscoder.levels.LevelRender;
 import com.hermscoder.main.Game;
 import com.hermscoder.ui.PauseOverlay;
 import com.hermscoder.utils.Sprite;
@@ -45,10 +45,10 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void update() {
-        if(!paused) {
+        if (!paused) {
             levelRender.update();
             player.update();
-            enemyManager.update(levelManager.getCurrentLevel().getLvlData());
+            enemyManager.update(levelManager.getCurrentLevel().getLvlData(), player);
         } else {
             pauseOverlay.update();
         }
@@ -60,7 +60,7 @@ public class Playing extends State implements StateMethods {
         levelRender.draw(g);
         player.render(g, levelRender.getxLevelOffset());
         enemyManager.draw(g, levelRender.getxLevelOffset());
-        if(paused) {
+        if (paused) {
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
             pauseOverlay.draw(g);
@@ -76,19 +76,19 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(paused)
+        if (paused)
             pauseOverlay.mousePressed(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(paused)
+        if (paused)
             pauseOverlay.mouseReleased(e);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if(paused)
+        if (paused)
             pauseOverlay.mouseMoved(e);
     }
 
@@ -130,7 +130,7 @@ public class Playing extends State implements StateMethods {
     }
 
     public void mouseDragged(MouseEvent e) {
-        if(paused)
+        if (paused)
             pauseOverlay.mouseDragged(e);
     }
 
