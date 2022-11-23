@@ -1,8 +1,12 @@
 package com.hermscoder.utils;
 
+import com.hermscoder.entities.Crabby;
 import com.hermscoder.main.Game;
 
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class HelpMethods {
     public static boolean canMoveHere(float x, float y, float width, float height, int[][] lvlData) {
@@ -106,6 +110,50 @@ public class HelpMethods {
     }
 
     public static boolean isFloor(Rectangle2D.Float hitbox, float xSpeed, int[][] lvlData) {
-        return isSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, lvlData);
+        if(xSpeed > 0)
+            return isSolid(hitbox.x + hitbox.width, hitbox.y + hitbox.height + 1, lvlData);
+        else
+            return isSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, lvlData);
+    }
+
+    public static int[][] getLevelData(BufferedImage levelImg) {
+        int[][] lvlData = new int[levelImg.getHeight()][levelImg.getWidth()];
+
+        for (int j = 0; j < levelImg.getHeight(); j++) {
+            for (int i = 0; i < levelImg.getWidth(); i++) {
+                Color color = new Color(levelImg.getRGB(i, j));
+                int value = color.getRed();
+                if (value >= 48)
+                    value = 0;
+                lvlData[j][i] = value;
+            }
+        }
+        return lvlData;
+    }
+
+    public static ArrayList<Crabby> getCrabs(BufferedImage levelImage) {
+        ArrayList<Crabby> list = new ArrayList<>();
+        for (int j = 0; j < levelImage.getHeight(); j++) {
+            for (int i = 0; i < levelImage.getWidth(); i++) {
+                Color color = new Color(levelImage.getRGB(i, j));
+                int value = color.getGreen();
+                if (value == Constants.EnemyConstants.CRABBY)
+                    list.add(new Crabby(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
+            }
+        }
+
+        return list;
+    }
+
+    public static Point getPlayerSpawn(BufferedImage levelImage) {
+        for (int j = 0; j < levelImage.getHeight(); j++) {
+            for (int i = 0; i < levelImage.getWidth(); i++) {
+                Color color = new Color(levelImage.getRGB(i, j));
+                int value = color.getGreen();
+                if (value == 100)
+                    return new Point(i * Game.TILES_SIZE, j * Game.TILES_SIZE);
+            }
+        }
+        return new Point(1, 1);
     }
 }

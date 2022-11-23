@@ -7,8 +7,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class LoadSave {
@@ -36,34 +39,28 @@ public class LoadSave {
         return new ImageIcon(LoadSave.class.getResource("/" + fileName)).getImage();
     }
 
-    public static ArrayList<Crabby> getCrabs(int levelNumber) {
-        BufferedImage img = LoadSave.getSpriteAtlas("level_" + levelNumber + "_data_long.png");
-        ArrayList<Crabby> list = new ArrayList<>();
-        for(int j = 0; j < img.getHeight(); j ++) {
-            for(int i = 0; i < img.getWidth(); i++) {
-                Color color = new Color(img.getRGB(i, j));
-                int value = color.getGreen();
-                if(value == Constants.EnemyConstants.CRABBY)
-                    list.add(new Crabby(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
+    public static BufferedImage[] getAllLevels() {
+        URL url = LoadSave.class.getResource("/levels");
+        File file = null;
+        try {
+            file = new File(url.toURI());
+            File[] files = file.listFiles();
+//            File[] filesSorted = new File[files.length];
+            BufferedImage[] imgs = new BufferedImage[files.length];
+
+            for (int i = 0; i < imgs.length; i++) {
+                for (int j = 0; j < files.length; j++) {
+                    if (files[j].getName().equals((i + 1) + ".png")) {
+//                        filesSorted[i] = files[i];
+                        imgs[j] = ImageIO.read(files[i]);
+                    }
+                }
             }
+            return imgs;
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Failed to find level directory");
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to find level image");
         }
-
-        return list;
-    }
-
-    public static int[][] getLevelData(int levelNumber) {
-        BufferedImage img = LoadSave.getSpriteAtlas("level_" + levelNumber + "_data_long.png");
-        int[][] lvlData = new int[img.getHeight()][img.getWidth()];
-
-        for(int j = 0; j < img.getHeight(); j ++) {
-            for(int i = 0; i < img.getWidth(); i++) {
-                Color color = new Color(img.getRGB(i, j));
-                int value = color.getRed();
-                if(value >= 48)
-                    value = 0;
-                lvlData[j][i] = value;
-            }
-        }
-        return lvlData;
     }
 }

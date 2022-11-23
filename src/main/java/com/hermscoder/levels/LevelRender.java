@@ -15,14 +15,19 @@ public class LevelRender {
     private int xLevelOffset;
     private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
     private int rightBorder = (int) (0.8 * Game.GAME_WIDTH);
-    private int levelTilesWide = LoadSave.getLevelData(1)[0].length;
-    private int maxTilesOffset = levelTilesWide - Game.TILES_IN_WIDTH;
-    private int maxLevelOffsetX = maxTilesOffset * Game.TILES_SIZE;
+
+    private int maxLevelOffsetX;
 
     public LevelRender(Playing playing, LevelManager levelManager) {
         this.playing = playing;
         this.levelManager = levelManager;
         this.levelBackground = new LevelBackground();
+
+        calculatingLevelOffset();
+    }
+
+    private void calculatingLevelOffset() {
+        maxLevelOffsetX = levelManager.getCurrentLevel().getMaxLevelOffsetX();
     }
 
     private void checkCloseToBorder() {
@@ -63,5 +68,9 @@ public class LevelRender {
 
     public int getxLevelOffset() {
         return xLevelOffset;
+    }
+
+    public void setMaxLevelOffsetX(int maxLevelOffsetX) {
+        this.maxLevelOffsetX = maxLevelOffsetX;
     }
 }

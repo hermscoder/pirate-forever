@@ -1,6 +1,7 @@
 package com.hermscoder.entities;
 
 import com.hermscoder.gamestates.Playing;
+import com.hermscoder.levels.Level;
 import com.hermscoder.levels.LevelManager;
 import com.hermscoder.utils.LoadSave;
 
@@ -23,19 +24,22 @@ public class EnemyManager {
         this.playing = playing;
         this.levelManager = levelManager;
         loadEnemyImages();
-        addEnemies();
     }
 
-    private void addEnemies() {
-        crabbies = LoadSave.getCrabs(levelManager.getCurrentLevel().getId());
-        System.out.println("size of crabs: " + crabbies.size());
+    public void loadEnemies(Level level) {
+        crabbies = level.getCrabs();
     }
 
     public void update(int[][] levelData, Player player) {
+        boolean isAnyActive = false;
         for (Crabby c : crabbies) {
-            if (c.isActive())
+            if (c.isActive()) {
                 c.update(levelData, player);
+                isAnyActive = true;
+            }
         }
+        if(!isAnyActive)
+            playing.setLevelCompleted(true);
     }
 
     public void draw(Graphics g, int xLevelOffset) {
