@@ -3,7 +3,7 @@ package com.hermscoder.utils;
 import static com.hermscoder.main.Game.*;
 
 public enum Sprite {
-    PlayerSpriteAtlas("player_sprites.png", 9, 6, 64, 40),
+    PlayerSpriteAtlas("player_sprites.png", 10, 8, 64, 40),
     LevelSpriteAtlas("outside_sprites.png", 4, 12, 32, 32),
     StartMenuBackground("start_menu_bg.gif", 1, 1, TILES_DEFAULT_SIZE * TILES_IN_WIDTH, TILES_DEFAULT_SIZE * TILES_IN_HEIGHT),
     MenuButtonsSpriteAtlas("button_atlas.png", 3, 3, 140, 56),
@@ -16,7 +16,8 @@ public enum Sprite {
     PlayingBackgroundImage("playing_bg_img.png", 1, 1, TILES_DEFAULT_SIZE * TILES_IN_WIDTH, TILES_DEFAULT_SIZE * TILES_IN_HEIGHT),
     BigCloudImage("big_clouds.png", 1, 1, 448, 101),
     SmallCloudImage("small_clouds.png", 1, 1, 74, 24),
-    CrabbySpriteAtlas("crabby_sprite.png", 5, 9, 72, 32);
+    CrabbySpriteAtlas("crabby_sprite.png", 5, 9, 72, 32),
+    StatusBar("health_power_bar.png", 1, 1, 192, 58);
 
     private String filename;
     private int heightInSprites;

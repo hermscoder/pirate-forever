@@ -5,6 +5,7 @@ import com.hermscoder.levels.LevelManager;
 import com.hermscoder.utils.LoadSave;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -32,7 +33,8 @@ public class EnemyManager {
 
     public void update(int[][] levelData, Player player) {
         for (Crabby c : crabbies) {
-            c.update(levelData, player);
+            if (c.isActive())
+                c.update(levelData, player);
         }
     }
 
@@ -41,14 +43,27 @@ public class EnemyManager {
     }
 
     private void drawCrabs(Graphics g, int xLevelOffset) {
-        for (Crabby c : crabbies) {
-            g.drawImage(
-                    crabbyArray[c.getEnemyState()][c.getAnimationIndex()],
-                    (int) c.getHitBox().x - xLevelOffset - CRABBY_DRAWOFFSET_X,
-                    (int) c.getHitBox().y - CRABBY_DRAWOFFSET_Y,
-                    CrabbySpriteAtlas.getTileWidth(),
-                    CrabbySpriteAtlas.getTileHeight(), null);
+        for (Crabby c : crabbies)
+            if (c.isActive()) {
+                g.drawImage(
+                        crabbyArray[c.getEnemyState()][c.getAnimationIndex()],
+                        (int) c.getHitBox().x - xLevelOffset - CRABBY_DRAWOFFSET_X + c.flipX(),
+                        (int) c.getHitBox().y - CRABBY_DRAWOFFSET_Y,
+                        CrabbySpriteAtlas.getTileWidth() * c.flipW(),
+                        CrabbySpriteAtlas.getTileHeight(), null);
 //            c.drawHitBox(g, xLevelOffset);
+//            c.drawAttackBox(g, xLevelOffset);
+            }
+    }
+
+    public void checkEnemyHit(Rectangle2D.Float attackBox) {
+        for (Crabby c : crabbies) {
+            if(c.isActive()) {
+                if (attackBox.intersects(c.getHitBox())) {
+                    c.hurt(10);
+                    return;
+                }
+            }
         }
     }
 
@@ -63,6 +78,12 @@ public class EnemyManager {
                         CrabbySpriteAtlas.getTileWidth(),
                         CrabbySpriteAtlas.getTileHeight());
             }
+        }
+    }
+
+    public void resetAllEnemies() {
+        for (Crabby c : crabbies) {
+            c.resetEnemy();
         }
     }
 }
