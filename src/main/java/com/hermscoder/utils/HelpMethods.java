@@ -137,7 +137,7 @@ public class HelpMethods {
             for (int i = 0; i < levelImage.getWidth(); i++) {
                 Color color = new Color(levelImage.getRGB(i, j));
                 int value = color.getGreen();
-                if (value == Constants.EnemyConstants.CRABBY)
+                if (value == Constants.CrabbyConstants.CRABBY)
                     list.add(new Crabby(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
             }
         }

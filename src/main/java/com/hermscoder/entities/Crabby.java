@@ -7,11 +7,10 @@ import java.awt.geom.Rectangle2D;
 
 import static com.hermscoder.main.Game.SCALE;
 import static com.hermscoder.utils.Constants.Directions.RIGHT;
-import static com.hermscoder.utils.Constants.EnemyConstants.*;
+import static com.hermscoder.utils.Constants.CrabbyConstants.*;
 import static com.hermscoder.utils.Sprite.CrabbySpriteAtlas;
 
 public class Crabby extends Enemy {
-    private Rectangle2D.Float attackBox;
     private int attackBoxOffsetX;
 
 
@@ -19,8 +18,8 @@ public class Crabby extends Enemy {
         super(x, y,
                 CrabbySpriteAtlas.getTileWidth(SCALE),
                 CrabbySpriteAtlas.getTileHeight(SCALE),
-                Constants.EnemyConstants.CRABBY);
-        initHitBox(x, y, (int) (22 * SCALE), (int) (19 * SCALE));
+                Constants.CrabbyConstants.CRABBY);
+        initHitBox(22, 19);
         initAttackBox();
     }
 
@@ -39,11 +38,6 @@ public class Crabby extends Enemy {
     private void updateAttackBox() {
         attackBox.x = hitBox.x - attackBoxOffsetX;
         attackBox.y = hitBox.y;
-    }
-
-    public void drawAttackBox(Graphics g, int xLevelOffset) {
-        g.setColor(Color.RED);
-        g.drawRect((int)attackBox.x - xLevelOffset, (int)attackBox.y, (int)attackBox.width, (int)attackBox.height);
     }
 
     public int flipX() {
@@ -68,7 +62,7 @@ public class Crabby extends Enemy {
         if (inAir) {
             updateInAir(levelData);
         } else {
-            switch (enemyState) {
+            switch (state) {
                 case IDLE:
                     newState(RUNNING);
                     break;

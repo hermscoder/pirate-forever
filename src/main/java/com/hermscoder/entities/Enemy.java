@@ -1,42 +1,39 @@
 package com.hermscoder.entities;
 
 import com.hermscoder.main.Game;
+import com.hermscoder.utils.Constants;
+import com.hermscoder.utils.EntityConstants;
 
 import java.awt.geom.Rectangle2D;
 
+import static com.hermscoder.main.Game.SCALE;
+import static com.hermscoder.utils.Constants.CrabbyConstants.*;
 import static com.hermscoder.utils.Constants.Directions.LEFT;
 import static com.hermscoder.utils.Constants.Directions.RIGHT;
-import static com.hermscoder.utils.Constants.EnemyConstants.*;
 import static com.hermscoder.utils.HelpMethods.*;
 
 
 public abstract class Enemy extends Entity {
 
-    protected int animationTick, animationIndex, animationSpeed = 25;
-    protected int enemyState;
+    private final EntityConstants entityConstants;
+
     protected int enemyType;
     protected boolean firstUpdate = true;
-    protected boolean inAir;
-    protected float fallSpeed;
-    protected float gravity = 0.04f * Game.SCALE;
-    protected float walkSpeed = 0.35f * Game.SCALE;
     protected float walkingDirection = LEFT;
     protected int tileY;
     protected float attackDistance = Game.TILES_SIZE;
     protected int viewRangeInTiles = 5;
 
-    protected int maxHealth;
-    protected int currentHealth;
     private boolean active = true;
     protected boolean attackChecked;
 
     public Enemy(float x, float y, int width, int height, int enemyType) {
         super(x, y, width, height);
         this.enemyType = enemyType;
-        initHitBox(x, y, (int) (20 * Game.SCALE), (int) (27 * Game.SCALE));
-
-        maxHealth = getMaxHealth(enemyType);
-        currentHealth = maxHealth;
+        this.entityConstants = Constants.getEntityConstants(enemyType);
+        this.maxHealth = entityConstants.getMaxHealth();
+        this.currentHealth = maxHealth;
+        this.walkSpeed = 0.35f * Game.SCALE;
     }
 
     protected void firstUpdateCheck(int[][] levelData) {
@@ -47,11 +44,11 @@ public abstract class Enemy extends Entity {
 
     protected void updateInAir(int[][] levelData) {
         if (canMoveHere(hitBox.x, hitBox.y, hitBox.width, hitBox.height, levelData)) {
-            hitBox.y += fallSpeed;
-            fallSpeed += gravity;
+            hitBox.y += airSpeed;
+            airSpeed += entityConstants.getGravity();
         } else {
             inAir = false;
-            hitBox.y = getEntityYPosUnderRoofOrAboveFloor(hitBox, fallSpeed);
+            hitBox.y = getEntityYPosUnderRoofOrAboveFloor(hitBox, airSpeed);
             tileY = (int) hitBox.y / Game.TILES_SIZE;
         }
     }
@@ -104,10 +101,6 @@ public abstract class Enemy extends Entity {
         return absValue <= attackDistance;
     }
 
-    protected void initHitBox(float x, float y, int width, int height) {
-        hitBox = new Rectangle2D.Float(x, y, width, height);
-    }
-
     protected void changeWalkDir() {
         if (walkingDirection == LEFT)
             walkingDirection = RIGHT;
@@ -116,7 +109,7 @@ public abstract class Enemy extends Entity {
     }
 
     protected void newState(int enemyState) {
-        this.enemyState = enemyState;
+        this.state = enemyState;
         animationTick = 0;
         animationIndex = 0;
     }
@@ -131,24 +124,24 @@ public abstract class Enemy extends Entity {
 
 
     protected void checkEnemyHit(Rectangle2D.Float attackBox, Player player) {
-        if(attackBox.intersects(player.hitBox))
-            player.changeHealth(-getEnemyDamage(enemyType));
+        if (attackBox.intersects(player.hitBox))
+            player.changeHealth(-entityConstants.getDamage());
 
         attackChecked = true;
     }
 
     protected void updateAnimationTick() {
         animationTick++;
-        if (animationTick >= animationSpeed) {
+        if (animationTick >= entityConstants.getAnimationSpeed()) {
             animationTick = 0;
             animationIndex++;
 
-            if (animationIndex >= getSpriteAmount(enemyType, enemyState)) {
+            if (animationIndex >= entityConstants.getSpriteAmount(state)) {
                 animationIndex = 0;
-                switch (enemyState) {
+                switch (state) {
                     case ATTACK:
                     case HIT:
-                        enemyState = IDLE;
+                        state = IDLE;
                         break;
                     case DEAD:
                         active = false;
@@ -156,14 +149,6 @@ public abstract class Enemy extends Entity {
                 }
             }
         }
-    }
-
-    public int getAnimationIndex() {
-        return animationIndex;
-    }
-
-    public int getEnemyState() {
-        return enemyState;
     }
 
     public boolean isActive() {
@@ -177,6 +162,6 @@ public abstract class Enemy extends Entity {
         currentHealth = maxHealth;
         newState(IDLE);
         active = true;
-        fallSpeed = 0;
+        airSpeed = 0;
     }
 }
