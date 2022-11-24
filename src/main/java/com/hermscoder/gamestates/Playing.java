@@ -57,6 +57,7 @@ public class Playing extends State implements StateMethods {
 
     private void loadStartLevel() {
         enemyManager.loadEnemies(levelManager.getCurrentLevel());
+        objectManager.loadObjects(levelManager.getCurrentLevel());
     }
 
     public void loadNextLevel() {
@@ -108,6 +109,7 @@ public class Playing extends State implements StateMethods {
         levelCompleted = false;
         player.resetAll();
         enemyManager.resetAllEnemies();
+        objectManager.resetAllObjects();
     }
 
     public void setGameOver(boolean gameOver) {
@@ -116,6 +118,15 @@ public class Playing extends State implements StateMethods {
 
     public void checkEnemyHit(Rectangle2D.Float attackBox) {
         enemyManager.checkEnemyHit(attackBox);
+    }
+
+    public void checkPotionTouched(Rectangle2D.Float hitBox) {
+        objectManager.checkObjectTouched(hitBox);
+    }
+
+
+    public void checkObjectHit(Rectangle2D.Float attackBox) {
+        objectManager.checkObjectHit(attackBox);
     }
 
     @Override
@@ -222,4 +233,5 @@ public class Playing extends State implements StateMethods {
     public ObjectManager getObjectManager() {
         return objectManager;
     }
+
 }

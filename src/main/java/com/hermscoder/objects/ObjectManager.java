@@ -1,12 +1,15 @@
 package com.hermscoder.objects;
 
 import com.hermscoder.gamestates.Playing;
+import com.hermscoder.levels.Level;
 import com.hermscoder.levels.LevelManager;
 import com.hermscoder.main.Game;
+import com.hermscoder.utils.Constants;
 import com.hermscoder.utils.LoadSave;
 import com.hermscoder.utils.ObjectConstants;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -25,14 +28,44 @@ public class ObjectManager {
     public ObjectManager(Playing playing) {
         this.playing = playing;
         loadImages();
+    }
 
-        potions = new ArrayList<>();
-        potions.add(new Potion(300, 300, RED_POTION));
-        potions.add(new Potion(400, 300, BLUE_POTION));
+    public void checkObjectTouched(Rectangle2D.Float hitbox) {
+        for (Potion p : potions) {
+            if(p.isActive())
+                if(hitbox.intersects(p.getHitBox())) {
+                    p.setActive(false);
+                    applyEffectToPlayer(p);
+                }
+        }
+    }
 
-        containers = new ArrayList<>();
-        containers.add(new Container(500, 300, BOX));
-        containers.add(new Container(600, 300, BARREL));
+    public void checkObjectHit(Rectangle2D.Float hitbox) {
+        for (Container c : containers) {
+            if(c.isActive())
+                if(hitbox.intersects(c.getHitBox())) {
+                    c.setDoAnimation(true);
+
+                    int type = 0;
+                    if(c.objectType == BARREL)
+                        type = 1;
+
+                    potions.add(new Potion(
+                                (int) (c.getHitBox().x + c.getHitBox().width / 2),
+                                (int) (c.getHitBox().y - c.getHitBox().height / 2), type));
+
+                    return;
+                }
+        }
+    }
+    private void applyEffectToPlayer(Potion p) {
+        playing.getPlayer().changeHealth(p.getObjectConstants().getValue());
+        playing.getPlayer().changePower(p.getObjectConstants().getPower());
+    }
+
+    public void loadObjects(Level newLevel) {
+        potions = newLevel.getPotions();
+        containers = newLevel.getContainers();
     }
 
     private void loadImages() {
@@ -89,6 +122,7 @@ public class ObjectManager {
                         (int)(container.getHitBox().y - container.getyDrawOffset()),
                         ContainersSpriteAtlas.getTileWidth(Game.SCALE),
                         ContainersSpriteAtlas.getTileHeight(Game.SCALE), null);
+                container.drawHitBox(g, xLvlOffset);
             }
         }
     }
@@ -103,9 +137,20 @@ public class ObjectManager {
                         (int)(potion.getHitBox().y - potion.getyDrawOffset()),
                         PotionSpriteAtlas.getTileWidth(Game.SCALE),
                         PotionSpriteAtlas.getTileHeight(Game.SCALE), null);
+
+                potion.drawHitBox(g, xLvlOffset);
             }
         }
     }
 
 
+    public void resetAllObjects() {
+        for (Potion p : potions) {
+            p.reset();
+        }
+
+        for (Container c : containers) {
+            c.reset();
+        }
+    }
 }

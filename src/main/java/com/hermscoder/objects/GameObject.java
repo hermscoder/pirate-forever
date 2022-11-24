@@ -1,14 +1,12 @@
 package com.hermscoder.objects;
 
-import com.hermscoder.main.Game;
 import com.hermscoder.utils.Constants;
 import com.hermscoder.utils.ObjectConstants;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-import static com.hermscoder.main.Game.SCALE;
-import static com.hermscoder.utils.Constants.*;
+import static com.hermscoder.main.Game.*;
 import static com.hermscoder.utils.ObjectConstants.BARREL;
 import static com.hermscoder.utils.ObjectConstants.BOX;
 
@@ -36,7 +34,7 @@ public class GameObject {
             animationTick = 0;
             animationIndex++;
 
-            if (animationIndex >= objectConstants.getSpriteAmount(objectType)) {
+            if (animationIndex >= objectConstants.getAnimationSpriteAmount(objectType)) {
                 animationIndex = 0;
                 if (objectType == BARREL || objectType == BOX) {
                     doAnimation = false;
@@ -57,6 +55,12 @@ public class GameObject {
 
     protected void initHitBox(int width, int height) {
         hitBox = new Rectangle2D.Float(x, y, (int) (width * SCALE), (int) (height * SCALE));
+        hitBox.y += yDrawOffset + differenceBetweenSpriteAndTileSize();
+        hitBox.x += xDrawOffset / 2;
+    }
+
+    private int differenceBetweenSpriteAndTileSize() {
+        return (int) (SCALE * (TILES_DEFAULT_SIZE - objectConstants.getSpriteAtlas().getTileHeight()));
     }
 
     public void drawHitBox(Graphics g, int xLevelOffset) {
@@ -95,5 +99,9 @@ public class GameObject {
 
     public ObjectConstants getObjectConstants() {
         return objectConstants;
+    }
+
+    public void setDoAnimation(boolean doAnimation) {
+        this.doAnimation = doAnimation;
     }
 }
