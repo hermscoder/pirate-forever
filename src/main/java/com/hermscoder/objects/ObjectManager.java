@@ -1,0 +1,111 @@
+package com.hermscoder.objects;
+
+import com.hermscoder.gamestates.Playing;
+import com.hermscoder.levels.LevelManager;
+import com.hermscoder.main.Game;
+import com.hermscoder.utils.LoadSave;
+import com.hermscoder.utils.ObjectConstants;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import static com.hermscoder.utils.ObjectConstants.*;
+import static com.hermscoder.utils.Sprite.ContainersSpriteAtlas;
+import static com.hermscoder.utils.Sprite.PotionSpriteAtlas;
+
+public class ObjectManager {
+    private final Playing playing;
+    private LevelManager levelManager;
+    private BufferedImage[][] potionImgs, containerImgs;
+
+    private ArrayList<Potion> potions;
+    private ArrayList<Container> containers;
+
+    public ObjectManager(Playing playing) {
+        this.playing = playing;
+        loadImages();
+
+        potions = new ArrayList<>();
+        potions.add(new Potion(300, 300, RED_POTION));
+        potions.add(new Potion(400, 300, BLUE_POTION));
+
+        containers = new ArrayList<>();
+        containers.add(new Container(500, 300, BOX));
+        containers.add(new Container(600, 300, BARREL));
+    }
+
+    private void loadImages() {
+        BufferedImage potionSpriteAtlas = LoadSave.getSpriteAtlas(PotionSpriteAtlas.getFilename());
+        potionImgs = new BufferedImage[PotionSpriteAtlas.getHeightInSprites()][PotionSpriteAtlas.getWidthInSprites()];
+
+        for (int j = 0; j < potionImgs.length; j++) {
+            for (int i = 0; i < potionImgs[j].length; i++) {
+                potionImgs[j][i] = potionSpriteAtlas.getSubimage(
+                        i * PotionSpriteAtlas.getTileWidth(),
+                        j * PotionSpriteAtlas.getTileHeight(),
+                        PotionSpriteAtlas.getTileWidth(),
+                        PotionSpriteAtlas.getTileHeight());
+            }
+        }
+
+        BufferedImage containerSpriteAtlas = LoadSave.getSpriteAtlas(ContainersSpriteAtlas.getFilename());
+        containerImgs = new BufferedImage[ContainersSpriteAtlas.getHeightInSprites()][ContainersSpriteAtlas.getWidthInSprites()];
+        for (int j = 0; j < containerImgs.length; j++) {
+            for (int i = 0; i < containerImgs[j].length; i++) {
+                containerImgs[j][i] = containerSpriteAtlas.getSubimage(
+                        i * ContainersSpriteAtlas.getTileWidth(),
+                        j * ContainersSpriteAtlas.getTileHeight(),
+                        ContainersSpriteAtlas.getTileWidth(),
+                        ContainersSpriteAtlas.getTileHeight());
+            }
+        }
+    }
+
+    public void update() {
+        for (Potion potion : potions) {
+            if(potion.isActive())
+                potion.update();
+        }
+
+        for (Container container : containers) {
+            if(container.isActive())
+                container.update();
+        }
+    }
+
+    public void draw(Graphics g, int xLvlOffset) {
+        drawPotions(g, xLvlOffset);
+        drawContainers(g, xLvlOffset);
+    }
+
+    private void drawContainers(Graphics g, int xLvlOffset) {
+        for (Container container : containers) {
+            if(container.isActive()) {
+                int type = container.getObjectType() == BOX ? 0 : 1;
+
+                g.drawImage(containerImgs[type][container.getAnimationIndex()],
+                        (int)(container.getHitBox().x - container.getxDrawOffset() - xLvlOffset),
+                        (int)(container.getHitBox().y - container.getyDrawOffset()),
+                        ContainersSpriteAtlas.getTileWidth(Game.SCALE),
+                        ContainersSpriteAtlas.getTileHeight(Game.SCALE), null);
+            }
+        }
+    }
+
+    private void drawPotions(Graphics g, int xLvlOffset) {
+        for (Potion potion : potions) {
+            if(potion.isActive()) {
+                int type = potion.getObjectType() == RED_POTION ? 0 : 1;
+
+                g.drawImage(potionImgs[type][potion.getAnimationIndex()],
+                        (int)(potion.getHitBox().x - potion.getxDrawOffset() - xLvlOffset),
+                        (int)(potion.getHitBox().y - potion.getyDrawOffset()),
+                        PotionSpriteAtlas.getTileWidth(Game.SCALE),
+                        PotionSpriteAtlas.getTileHeight(Game.SCALE), null);
+            }
+        }
+    }
+
+
+}

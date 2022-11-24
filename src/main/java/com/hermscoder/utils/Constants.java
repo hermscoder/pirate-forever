@@ -77,25 +77,76 @@ public class Constants {
         );
     }};
 
+    private static final Map<Integer, ObjectConstants> objectConstants = new HashMap<>() {{
+        put(ObjectConstants.RED_POTION, ObjectConstants.newBuilder()
+                .sprite(ObjectConstants.RED_POTION, 7)
+                .maxHealth(10)
+                .damage(0)
+                .gravity(GRAVITY)
+                .animationSpeed(25)
+                .startAnimated(true)
+                .hitboxWidth(7)
+                .hitboxHeight(14)
+                .xDrawOffset(3)
+                .yDrawOffset(2)
+                .build()
+        );
+        put(ObjectConstants.BLUE_POTION, ObjectConstants.newBuilder()
+                .sprite(ObjectConstants.BLUE_POTION, 7)
+                .maxHealth(10)
+                .damage(0)
+                .gravity(GRAVITY)
+                .animationSpeed(25)
+                .startAnimated(true)
+                .hitboxWidth(7)
+                .hitboxHeight(14)
+                .xDrawOffset(3)
+                .yDrawOffset(2)
+                .build()
+        );
+        put(ObjectConstants.BOX, ObjectConstants.newBuilder()
+                .sprite(ObjectConstants.BOX, 7)
+                .maxHealth(10)
+                .damage(0)
+                .gravity(GRAVITY)
+                .animationSpeed(25)
+                .startAnimated(false)
+                .hitboxWidth(25)
+                .hitboxHeight(18)
+                .xDrawOffset(7)
+                .yDrawOffset(12)
+                .build()
+        );
+        put(ObjectConstants.BARREL, ObjectConstants.newBuilder()
+                .sprite(ObjectConstants.BARREL, 7)
+                .maxHealth(10)
+                .damage(0)
+                .gravity(GRAVITY)
+                .animationSpeed(25)
+                .startAnimated(false)
+                .hitboxWidth(23)
+                .hitboxHeight(25)
+                .xDrawOffset(8)
+                .yDrawOffset(5)
+                .build()
+        );
+    }};
+
     public static EntityConstants getEntityConstants(int enemyType) {
         EntityConstants entityConstants = entitiesConstants
                 .get(enemyType);
         if(entityConstants == null)
-            throw new RuntimeException("No properties found for enemyType " + enemyType);
+            throw new RuntimeException("No properties found for entity type " + enemyType);
 
         return entityConstants;
     }
 
-    public static int getSpriteAmount(int enemyType, int playerAction) {
-        return getEntityConstants(enemyType).getSpriteAmount(playerAction);
-    }
+    public static ObjectConstants getObjectConstants(int objectType) {
+        ObjectConstants objConstants = objectConstants
+                .get(objectType);
+        if(objConstants == null)
+            throw new RuntimeException("No properties found for object type " + objectType);
 
-    public static int getMaxHealth(int enemyType) {
-        return getEntityConstants(enemyType).getMaxHealth();
+        return objConstants;
     }
-
-    public static int getEnemyDamage(int enemyType) {
-        return getEntityConstants(enemyType).getDamage();
-    }
-
 }

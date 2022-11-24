@@ -18,7 +18,9 @@ public enum Sprite {
     SmallCloudImage("small_clouds.png", 1, 1, 74, 24),
     CrabbySpriteAtlas("crabby_sprite.png", 5, 9, 72, 32),
     StatusBar("health_power_bar.png", 1, 1, 192, 58),
-    CompletedLevel("completed_sprite.png", 1, 1, 224, 204);
+    CompletedLevel("completed_sprite.png", 1, 1, 224, 204),
+    PotionSpriteAtlas("potions_sprites.png", 2, 7, 12, 16),
+    ContainersSpriteAtlas("objects_sprites.png", 2, 8, 40, 30);
 
     private String filename;
     private int heightInSprites;

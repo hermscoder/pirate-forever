@@ -2,6 +2,9 @@ package com.hermscoder.utils;
 
 import com.hermscoder.entities.Crabby;
 import com.hermscoder.main.Game;
+import com.hermscoder.objects.Container;
+import com.hermscoder.objects.GameObject;
+import com.hermscoder.objects.Potion;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -139,6 +142,26 @@ public class HelpMethods {
                 int value = color.getGreen();
                 if (value == Constants.CrabbyConstants.CRABBY)
                     list.add(new Crabby(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
+            }
+        }
+
+        return list;
+    }
+
+    public static ArrayList<GameObject> getObjects(BufferedImage levelImage) {
+        ArrayList<GameObject> list = new ArrayList<>();
+        for (int j = 0; j < levelImage.getHeight(); j++) {
+            for (int i = 0; i < levelImage.getWidth(); i++) {
+                Color color = new Color(levelImage.getRGB(i, j));
+                int value = color.getBlue();
+                if (value == ObjectConstants.RED_POTION)
+                    list.add(new Potion(i * Game.TILES_SIZE, j * Game.TILES_SIZE, ObjectConstants.RED_POTION));
+                else if (value == ObjectConstants.BLUE_POTION)
+                    list.add(new Potion(i * Game.TILES_SIZE, j * Game.TILES_SIZE, ObjectConstants.BLUE_POTION));
+                else if (value == ObjectConstants.BARREL)
+                    list.add(new Container(i * Game.TILES_SIZE, j * Game.TILES_SIZE, ObjectConstants.BARREL));
+                else if (value == ObjectConstants.BOX)
+                    list.add(new Container(i * Game.TILES_SIZE, j * Game.TILES_SIZE, ObjectConstants.BOX));
             }
         }
 

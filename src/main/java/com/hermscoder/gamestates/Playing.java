@@ -5,6 +5,7 @@ import com.hermscoder.entities.Player;
 import com.hermscoder.levels.LevelManager;
 import com.hermscoder.levels.LevelRender;
 import com.hermscoder.main.Game;
+import com.hermscoder.objects.ObjectManager;
 import com.hermscoder.ui.GameOverOverlay;
 import com.hermscoder.ui.LevelCompletedOverlay;
 import com.hermscoder.ui.PauseOverlay;
@@ -21,6 +22,7 @@ public class Playing extends State implements StateMethods {
     private Player player;
     private LevelManager levelManager;
     private EnemyManager enemyManager;
+    private ObjectManager objectManager;
     private PauseOverlay pauseOverlay;
     private GameOverOverlay gameOverOverlay;
     private LevelCompletedOverlay levelCompletedOverlay;
@@ -39,6 +41,7 @@ public class Playing extends State implements StateMethods {
     private void initClasses() {
         levelManager = new LevelManager(game);
         enemyManager = new EnemyManager(this, levelManager);
+        objectManager = new ObjectManager(this);
         player = new Player(230, 200,
                 (Sprite.PlayerSpriteAtlas.getTileWidth(SCALE)),
                 (Sprite.PlayerSpriteAtlas.getTileHeight(SCALE)),
@@ -74,6 +77,7 @@ public class Playing extends State implements StateMethods {
             levelCompletedOverlay.update();
         } else if (!gameOver) {
             levelRender.update();
+            objectManager.update();
             player.update();
             enemyManager.update(levelManager.getCurrentLevel().getLvlData(), player);
         }
@@ -85,6 +89,8 @@ public class Playing extends State implements StateMethods {
         levelRender.draw(g);
         player.render(g, levelRender.getxLevelOffset());
         enemyManager.draw(g, levelRender.getxLevelOffset());
+        objectManager.draw(g, levelRender.getxLevelOffset());
+
         if (paused) {
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
@@ -211,5 +217,9 @@ public class Playing extends State implements StateMethods {
 
     public void setLevelCompleted(boolean levelCompleted) {
         this.levelCompleted = levelCompleted;
+    }
+
+    public ObjectManager getObjectManager() {
+        return objectManager;
     }
 }

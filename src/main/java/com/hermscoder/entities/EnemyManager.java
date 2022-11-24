@@ -3,6 +3,7 @@ package com.hermscoder.entities;
 import com.hermscoder.gamestates.Playing;
 import com.hermscoder.levels.Level;
 import com.hermscoder.levels.LevelManager;
+import com.hermscoder.main.Game;
 import com.hermscoder.utils.LoadSave;
 
 import java.awt.*;
@@ -53,8 +54,8 @@ public class EnemyManager {
                         crabbyArray[c.getState()][c.getAnimationIndex()],
                         (int) c.getHitBox().x - xLevelOffset - CRABBY_DRAWOFFSET_X + c.flipX(),
                         (int) c.getHitBox().y - CRABBY_DRAWOFFSET_Y,
-                        CrabbySpriteAtlas.getTileWidth() * c.flipW(),
-                        CrabbySpriteAtlas.getTileHeight(), null);
+                        CrabbySpriteAtlas.getTileWidth(Game.SCALE) * c.flipW(),
+                        CrabbySpriteAtlas.getTileHeight(Game.SCALE), null);
 //            c.drawHitBox(g, xLevelOffset);
 //            c.drawAttackBox(g, xLevelOffset);
             }
