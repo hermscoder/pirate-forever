@@ -1,5 +1,6 @@
 package com.hermscoder.objects;
 
+import com.hermscoder.entities.Player;
 import com.hermscoder.gamestates.Playing;
 import com.hermscoder.levels.Level;
 import com.hermscoder.levels.LevelManager;
@@ -12,20 +13,29 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import static com.hermscoder.utils.ObjectConstants.*;
-import static com.hermscoder.utils.Sprite.ContainersSpriteAtlas;
-import static com.hermscoder.utils.Sprite.PotionSpriteAtlas;
+import static com.hermscoder.utils.Sprite.*;
 
 public class ObjectManager {
     private final Playing playing;
     private LevelManager levelManager;
     private BufferedImage[][] potionImgs, containerImgs;
+    private BufferedImage spikeImg;
 
     private ArrayList<Potion> potions;
     private ArrayList<Container> containers;
+    private ArrayList<Spike> spikes;
 
     public ObjectManager(Playing playing) {
         this.playing = playing;
         loadImages();
+    }
+
+    public void checkSpikesTouched(Player player) {
+        for (Spike s : spikes) {
+            if (s.getHitBox().intersects(player.getHitBox())) {
+                player.kill();
+            }
+        }
     }
 
     public void checkObjectTouched(Rectangle2D.Float hitbox) {
@@ -65,6 +75,7 @@ public class ObjectManager {
     public void loadObjects(Level newLevel) {
         potions = new ArrayList<>(newLevel.getPotions());
         containers = new ArrayList<>(newLevel.getContainers());
+        spikes = newLevel.getSpikes();
     }
 
     private void loadImages() {
@@ -92,6 +103,9 @@ public class ObjectManager {
                         ContainersSpriteAtlas.getTileHeight());
             }
         }
+
+        spikeImg = LoadSave.getSpriteAtlas(SpikeTrapSpriteAtlas.getFilename());
+
     }
 
     public void update() {
@@ -109,6 +123,18 @@ public class ObjectManager {
     public void draw(Graphics g, int xLvlOffset) {
         drawPotions(g, xLvlOffset);
         drawContainers(g, xLvlOffset);
+        drawTraps(g, xLvlOffset);
+    }
+
+    private void drawTraps(Graphics g, int xLvlOffset) {
+        for (Spike s : spikes) {
+                g.drawImage(spikeImg,
+                        (int) (s.getHitBox().x - s.getxDrawOffset() - xLvlOffset),
+                        (int) (s.getHitBox().y - s.getyDrawOffset()),
+                        SpikeTrapSpriteAtlas.getTileWidth(Game.SCALE),
+                        SpikeTrapSpriteAtlas.getTileHeight(Game.SCALE), null);
+                s.drawHitBox(g, xLvlOffset);
+        }
     }
 
     private void drawContainers(Graphics g, int xLvlOffset) {

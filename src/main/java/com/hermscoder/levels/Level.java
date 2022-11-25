@@ -4,6 +4,7 @@ import com.hermscoder.entities.Crabby;
 import com.hermscoder.main.Game;
 import com.hermscoder.objects.Container;
 import com.hermscoder.objects.Potion;
+import com.hermscoder.objects.Spike;
 import com.hermscoder.utils.HelpMethods;
 import com.hermscoder.utils.LoadSave;
 
@@ -19,6 +20,7 @@ public class Level {
     private ArrayList<Crabby> crabs;
     private ArrayList<Potion> potions;
     private ArrayList<Container> containers;
+    private ArrayList<Spike> spikes;
 
     private int levelTilesWide;
     private int maxTilesOffset;
@@ -33,8 +35,13 @@ public class Level {
         createEnemies();
         createPotions();
         createContainers();
+        createSpikes();
         calculateOffsets();
         calculatePlayerSpawn();
+    }
+
+    private void createSpikes() {
+        spikes = HelpMethods.getSpikes(image);
     }
 
     private void calculatePlayerSpawn() {
@@ -94,5 +101,9 @@ public class Level {
 
     public Point getPlayerSpawn() {
         return playerSpawn;
+    }
+
+    public ArrayList<Spike> getSpikes() {
+        return spikes;
     }
 }

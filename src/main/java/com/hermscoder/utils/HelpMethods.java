@@ -5,6 +5,7 @@ import com.hermscoder.main.Game;
 import com.hermscoder.objects.Container;
 import com.hermscoder.objects.GameObject;
 import com.hermscoder.objects.Potion;
+import com.hermscoder.objects.Spike;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -201,6 +202,19 @@ public class HelpMethods {
                 int value = color.getBlue();
                 if (value == ObjectConstants.BOX || value == ObjectConstants.BARREL )
                     list.add(new Container(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
+            }
+        }
+        return list;
+    }
+
+    public static ArrayList<Spike> getSpikes(BufferedImage levelImage) {
+        ArrayList<Spike> list = new ArrayList<>();
+        for (int j = 0; j < levelImage.getHeight(); j++) {
+            for (int i = 0; i < levelImage.getWidth(); i++) {
+                Color color = new Color(levelImage.getRGB(i, j));
+                int value = color.getBlue();
+                if (value == ObjectConstants.SPIKE_TRAP)
+                    list.add(new Spike(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
             }
         }
         return list;

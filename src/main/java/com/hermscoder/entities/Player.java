@@ -80,20 +80,29 @@ public class Player extends Entity {
 
     public void update() {
         updateHealthBar();
-        if (currentHealth <= 0) {
-            playing.setGameOver(true);
-            return;
+        if (currentHealth <= 0 && state == DEAD) {
+            if(checkAnimationIsLastFrame(DEAD)) {
+                playing.setGameOver(true);
+                return;
+            }
+        } else {
+            updateAttackBox();
+            updatePosition();
+            if(moving) {
+                checkPotionTouched();
+                checkSpikesTouched();
+            }
+            if (attacking) {
+                checkAttack();
+            }
         }
-        updateAttackBox();
-        updatePosition();
-        if(moving) {
-            checkPotionTouched();
-        }
-        if (attacking) {
-            checkAttack();
-        }
+
         updateAnimationTick();
         setAnimation();
+    }
+
+    private void checkSpikesTouched() {
+        playing.checkSpikesTouched(this);
     }
 
     private void checkPotionTouched() {
@@ -230,11 +239,15 @@ public class Player extends Entity {
     public void changeHealth(int value) {
         currentHealth += value;
         if (currentHealth <= 0) {
-            currentHealth = 0;
+            kill();
             //gameOver();
         } else if (currentHealth >= maxHealth) {
             currentHealth = maxHealth;
         }
+    }
+
+    public void kill() {
+        currentHealth = 0;
     }
 
     public void changePower(int value) {
@@ -257,28 +270,35 @@ public class Player extends Entity {
     private void setAnimation() {
         int startAnimation = state;
 
-        if (moving)
-            state = RUNNING;
-        else
-            state = IDLE;
-
-        if (inAir) {
-            if (airSpeed < 0)
-                state = JUMP;
+        if(currentHealth <= 0) {
+            state = DEAD;
+            return;
+        } else {
+            if (moving)
+                state = RUNNING;
             else
-                state = FALLING;
+                state = IDLE;
 
-        }
+            if (inAir) {
+                if (airSpeed < 0)
+                    state = JUMP;
+                else
+                    state = FALLING;
 
-        if (attacking) {
-            state = ATTACK_1;
-            // if we were already attacking we jump to animation index 1 to make the animation more responsive
-            if (startAnimation != ATTACK_1) {
-                animationIndex = 1;
-                animationTick = 0;
-                return;
+            }
+
+            if (attacking) {
+                state = ATTACK_1;
+                // if we were already attacking we jump to animation index 1 to make the animation more responsive
+                if (startAnimation != ATTACK_1) {
+                    animationIndex = 1;
+                    animationTick = 0;
+                    return;
+                }
             }
         }
+
+
 
         //if there was a change of action. we need to reset the animation tick so we can display the full animation
         if (startAnimation != state) {
@@ -302,6 +322,9 @@ public class Player extends Entity {
         }
     }
 
+    private boolean checkAnimationIsLastFrame(int state) {
+        return animationIndex + 1 == entityConstants.getSpriteAmount(state);
+    }
 
     public void resetAll() {
         resetDirBoolean();
@@ -358,5 +381,4 @@ public class Player extends Entity {
     public void setJump(boolean jump) {
         this.jump = jump;
     }
-
 }

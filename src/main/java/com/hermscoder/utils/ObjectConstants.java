@@ -9,6 +9,8 @@ public class ObjectConstants {
     public static final int BARREL = 3;
     public static final int BOX = 2;
 
+    public static final int SPIKE_TRAP = 50;
+
     public static final int RED_POTION_VALUE = 15;
     public static final int BLUE_POTION_VALUE = 10;
 

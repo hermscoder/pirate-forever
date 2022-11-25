@@ -124,9 +124,12 @@ public class Playing extends State implements StateMethods {
         objectManager.checkObjectTouched(hitBox);
     }
 
-
     public void checkObjectHit(Rectangle2D.Float attackBox) {
         objectManager.checkObjectHit(attackBox);
+    }
+
+    public void checkSpikesTouched(Player player) {
+        objectManager.checkSpikesTouched(player);
     }
 
     @Override
