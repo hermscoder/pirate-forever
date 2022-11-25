@@ -80,8 +80,8 @@ public class Player extends Entity {
 
     public void update() {
         updateHealthBar();
-        if (currentHealth <= 0 && state == DEAD) {
-            if(checkAnimationIsLastFrame(DEAD)) {
+        if (currentHealth <= 0) {
+            if(checkAnimationFinished(DEAD)) {
                 playing.setGameOver(true);
                 return;
             }
@@ -322,8 +322,8 @@ public class Player extends Entity {
         }
     }
 
-    private boolean checkAnimationIsLastFrame(int state) {
-        return animationIndex + 1 == entityConstants.getSpriteAmount(state);
+    private boolean checkAnimationFinished(int state) {
+        return this.state == state && animationIndex + 1 == entityConstants.getSpriteAmount(state);
     }
 
     public void resetAll() {
