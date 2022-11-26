@@ -11,6 +11,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import static com.hermscoder.main.Game.SCALE;
+import static com.hermscoder.main.Game.TILES_SIZE;
 import static com.hermscoder.utils.Constants.PlayerConstants.*;
 import static com.hermscoder.utils.Sprite.PlayerSpriteAtlas;
 import static com.hermscoder.utils.Sprite.StatusBar;
@@ -53,6 +54,7 @@ public class Player extends Entity {
     private int flipX = 0;
     private int flipW = 1;
     private boolean attackChecked;
+    private int tileY;
 
     public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
@@ -91,6 +93,7 @@ public class Player extends Entity {
             if(moving) {
                 checkPotionTouched();
                 checkSpikesTouched();
+                tileY = (int) (hitBox.y / TILES_SIZE);
             }
             if (attacking) {
                 checkAttack();
@@ -380,5 +383,9 @@ public class Player extends Entity {
 
     public void setJump(boolean jump) {
         this.jump = jump;
+    }
+
+    public int getTileY() {
+        return this.tileY;
     }
 }

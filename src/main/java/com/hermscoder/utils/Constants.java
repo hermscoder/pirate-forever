@@ -143,6 +143,31 @@ public class Constants {
                 .yDrawOffset((int) (16 * Game.SCALE))
                 .build()
         );
+        put(ObjectConstants.CANNON_LEFT, ObjectConstants.newBuilder()
+                .spriteAtlas(Sprite.CannonSpriteAtlas)
+                .animationSprite(ObjectConstants.CANNON_LEFT, 7)
+                .gravity(GRAVITY)
+                .value(50)
+                .animationSpeed(25)
+                .hitboxWidth(40)
+                .hitboxHeight(26)
+                .xDrawOffset(-4)
+                .yDrawOffset((int) (0 * Game.SCALE))
+                .build()
+        );
+        put(ObjectConstants.CANNON_RIGHT, ObjectConstants.newBuilder()
+                .spriteAtlas(Sprite.CannonSpriteAtlas)
+                .animationSprite(ObjectConstants.CANNON_RIGHT, 7)
+                .gravity(GRAVITY)
+                .value(50)
+                .animationSpeed(25)
+                .startAnimated(false)
+                .hitboxWidth(40)
+                .hitboxHeight(26)
+                .xDrawOffset(-4)
+                .yDrawOffset((int) (0 * Game.SCALE))
+                .build()
+        );
     }};
 
     public static EntityConstants getEntityConstants(int enemyType) {

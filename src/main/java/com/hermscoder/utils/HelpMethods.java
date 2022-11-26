@@ -2,10 +2,8 @@ package com.hermscoder.utils;
 
 import com.hermscoder.entities.Crabby;
 import com.hermscoder.main.Game;
+import com.hermscoder.objects.*;
 import com.hermscoder.objects.Container;
-import com.hermscoder.objects.GameObject;
-import com.hermscoder.objects.Potion;
-import com.hermscoder.objects.Spike;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -41,14 +39,21 @@ public class HelpMethods {
         return true;
     }
 
+
     public static boolean isAllTilesWalkable(int xStart, int xEnd, int y, int[][] levelData) {
-        for (int i = 0; i < xEnd - xStart; i++) {
+        if(isAllTilesClear(xStart, xEnd, y, levelData))
+            for (int i = 0; i < xEnd - xStart; i++) {
+                if (!isTileSolid(xStart + i, y + 1, levelData))
+                    return false;
+
+            }
+        return true;
+    }
+
+    public static boolean isAllTilesClear(int xStart, int xEnd, int y, int[][] levelData) {
+        for (int i = 0; i < xEnd - xStart; i++)
             if (isTileSolid(xStart + i, y, levelData))
                 return false;
-            if (!isTileSolid(xStart + i, y + 1, levelData))
-                return false;
-
-        }
         return true;
     }
 
@@ -73,6 +78,17 @@ public class HelpMethods {
             return true;
 
         return false;
+    }
+
+    public static boolean canCannonSeePlayer(int[][] levelData, Rectangle2D.Float firstHitbox, Rectangle2D.Float secondHitbox, int yTile) {
+        int firstXTile = (int) (firstHitbox.x / Game.TILES_SIZE);
+        int secondXTile = (int) (secondHitbox.x / Game.TILES_SIZE);
+
+        int statTile = Math.min(firstXTile, secondXTile);
+        int endTile = Math.max(firstXTile, secondXTile);
+
+        isAllTilesClear(statTile, endTile, yTile, levelData);
+        return true;
     }
 
     public static float getEntityXPosNextToWall(Rectangle2D.Float hitBox, float xSpeed) {
@@ -215,6 +231,18 @@ public class HelpMethods {
                 int value = color.getBlue();
                 if (value == ObjectConstants.SPIKE_TRAP)
                     list.add(new Spike(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
+            }
+        }
+        return list;
+    }
+    public static ArrayList<Cannon> getCannons(BufferedImage levelImage) {
+        ArrayList<Cannon> list = new ArrayList<>();
+        for (int j = 0; j < levelImage.getHeight(); j++) {
+            for (int i = 0; i < levelImage.getWidth(); i++) {
+                Color color = new Color(levelImage.getRGB(i, j));
+                int value = color.getBlue();
+                if (value == ObjectConstants.CANNON_LEFT || value == ObjectConstants.CANNON_RIGHT)
+                    list.add(new Cannon(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
             }
         }
         return list;

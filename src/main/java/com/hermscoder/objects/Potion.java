@@ -26,4 +26,13 @@ public class Potion extends GameObject {
 
         hitBox.y = y + hoverOffset;
     }
+
+    public int getCureValue() {
+        return objectConstants.getValue();
+    }
+
+    public int getPowerValue() {
+        return objectConstants.getPower();
+    }
+
 }

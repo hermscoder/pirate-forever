@@ -1,7 +1,10 @@
 package com.hermscoder.utils;
 
+import com.hermscoder.objects.GameObject;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 public class ObjectConstants {
     public static final int RED_POTION = 0;
@@ -10,6 +13,8 @@ public class ObjectConstants {
     public static final int BOX = 2;
 
     public static final int SPIKE_TRAP = 50;
+    public static final int CANNON_LEFT = 51;
+    public static final int CANNON_RIGHT = 52;
 
     public static final int RED_POTION_VALUE = 15;
     public static final int BLUE_POTION_VALUE = 10;

@@ -21,7 +21,8 @@ public enum Sprite {
     CompletedLevel("completed_sprite.png", 1, 1, 224, 204),
     PotionSpriteAtlas("potions_sprites.png", 2, 7, 12, 16),
     ContainersSpriteAtlas("objects_sprites.png", 2, 8, 40, 30),
-    SpikeTrapSpriteAtlas("trap_atlas.png", 1, 1, 32, 32);
+    SpikeTrapSpriteAtlas("trap_atlas.png", 1, 1, 32, 32),
+    CannonSpriteAtlas("cannon_atlas.png", 1, 7, 40, 26);
 
     private String filename;
     private int heightInSprites;

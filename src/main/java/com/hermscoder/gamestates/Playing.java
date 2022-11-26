@@ -78,7 +78,7 @@ public class Playing extends State implements StateMethods {
             levelCompletedOverlay.update();
         } else if (!gameOver) {
             levelRender.update();
-            objectManager.update();
+            objectManager.update(levelManager.getCurrentLevel().getLvlData(), player);
             player.update();
             enemyManager.update(levelManager.getCurrentLevel().getLvlData(), player);
         }

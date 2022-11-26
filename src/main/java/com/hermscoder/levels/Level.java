@@ -2,6 +2,7 @@ package com.hermscoder.levels;
 
 import com.hermscoder.entities.Crabby;
 import com.hermscoder.main.Game;
+import com.hermscoder.objects.Cannon;
 import com.hermscoder.objects.Container;
 import com.hermscoder.objects.Potion;
 import com.hermscoder.objects.Spike;
@@ -21,6 +22,7 @@ public class Level {
     private ArrayList<Potion> potions;
     private ArrayList<Container> containers;
     private ArrayList<Spike> spikes;
+    private ArrayList<Cannon> cannons;
 
     private int levelTilesWide;
     private int maxTilesOffset;
@@ -36,8 +38,13 @@ public class Level {
         createPotions();
         createContainers();
         createSpikes();
+        createCannons();
         calculateOffsets();
         calculatePlayerSpawn();
+    }
+
+    private void createCannons() {
+        cannons = HelpMethods.getCannons(image);
     }
 
     private void createSpikes() {
@@ -105,5 +112,9 @@ public class Level {
 
     public ArrayList<Spike> getSpikes() {
         return spikes;
+    }
+
+    public ArrayList<Cannon> getCannons() {
+        return cannons;
     }
 }

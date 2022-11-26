@@ -7,8 +7,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 import static com.hermscoder.main.Game.*;
-import static com.hermscoder.utils.ObjectConstants.BARREL;
-import static com.hermscoder.utils.ObjectConstants.BOX;
+import static com.hermscoder.utils.ObjectConstants.*;
 
 public class GameObject {
     protected final int x, y, objectType;
@@ -39,7 +38,8 @@ public class GameObject {
                 if (objectType == BARREL || objectType == BOX) {
                     doAnimation = false;
                     active = false;
-                }
+                } else if (objectType == CANNON_LEFT || objectType == CANNON_RIGHT)
+                    doAnimation = false;
             }
         }
     }
@@ -53,7 +53,7 @@ public class GameObject {
 
     }
 
-    protected void initHitBox(int width, int height) {
+    private void initHitBox(int width, int height) {
         hitBox = new Rectangle2D.Float(x, y, (int) (width * SCALE), (int) (height * SCALE));
         hitBox.y += yDrawOffset + differenceBetweenSpriteAndTileSize();
         hitBox.x += xDrawOffset / 2;
@@ -97,11 +97,7 @@ public class GameObject {
         return animationIndex;
     }
 
-    public ObjectConstants getObjectConstants() {
-        return objectConstants;
-    }
-
-    public void setDoAnimation(boolean doAnimation) {
+    public void setAnimation(boolean doAnimation) {
         this.doAnimation = doAnimation;
     }
 }
