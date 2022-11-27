@@ -82,11 +82,9 @@ public class Player extends Entity {
 
     public void update() {
         updateHealthBar();
-        if (currentHealth <= 0) {
-            if(checkAnimationFinished(DEAD)) {
-                playing.setGameOver(true);
-                return;
-            }
+        if (currentHealth <= 0 && checkAnimationFinished(DEAD)) {
+            playing.setGameOver(true);
+            return;
         } else {
             updateAttackBox();
             updatePosition();
@@ -107,6 +105,7 @@ public class Player extends Entity {
     private void checkSpikesTouched() {
         playing.checkSpikesTouched(this);
     }
+
 
     private void checkPotionTouched() {
         playing.checkPotionTouched(hitBox);
@@ -174,29 +173,31 @@ public class Player extends Entity {
 
     private void updatePosition() {
         moving = false;
-        if (jump)
-            jump();
-        if (!inAir)
-            if ((!left && !right) || (right && left))
-                return;
-
         float xSpeed = 0;
 
-        if (left) {
-            xSpeed -= walkSpeed;
-            flipX = width;
-            flipW = -1;
-        }
-        if (right) {
-            xSpeed += walkSpeed;
-            flipX = 0;
-            flipW = 1;
+        if(state != DEAD) {
+            if (jump)
+                jump();
+            if (!inAir)
+                if ((!left && !right) || (right && left))
+                    return;
+
+
+            if (left) {
+                xSpeed -= walkSpeed;
+                flipX = width;
+                flipW = -1;
+            }
+            if (right) {
+                xSpeed += walkSpeed;
+                flipX = 0;
+                flipW = 1;
+            }
         }
 
-        if (!inAir) {
-            if (!HelpMethods.isEntityOnFloor(hitBox, lvlData))
+
+        if (!inAir && !HelpMethods.isEntityOnFloor(hitBox, lvlData)) {
                 inAir = true;
-
         }
 
         if (inAir) {

@@ -168,6 +168,17 @@ public class Constants {
                 .yDrawOffset((int) (0 * Game.SCALE))
                 .build()
         );
+
+        put(ObjectConstants.CANNON_BALL, ObjectConstants.newBuilder()
+                .spriteAtlas(Sprite.CannonBallSprite)
+                .animationSprite(ObjectConstants.CANNON_BALL, 1)
+                .gravity(GRAVITY)
+                .value(-100)
+                .hitboxWidth(15)
+                .hitboxHeight(15)
+                .yDrawOffset((int) (5 * Game.SCALE))
+                .build()
+        );
     }};
 
     public static EntityConstants getEntityConstants(int enemyType) {

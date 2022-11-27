@@ -14,7 +14,8 @@ public class GameObject {
     protected Rectangle2D.Float hitBox;
     protected boolean doAnimation, active = true;
     protected int animationTick, animationIndex;
-    protected final int xDrawOffset, yDrawOffset;
+    protected int xDrawOffset;
+    protected int yDrawOffset;
     protected final ObjectConstants objectConstants;
 
     public GameObject(int x, int y, int objectType) {
@@ -53,7 +54,7 @@ public class GameObject {
 
     }
 
-    private void initHitBox(int width, int height) {
+    protected void initHitBox(int width, int height) {
         hitBox = new Rectangle2D.Float(x, y, (int) (width * SCALE), (int) (height * SCALE));
         hitBox.y += yDrawOffset + differenceBetweenSpriteAndTileSize();
         hitBox.x += xDrawOffset / 2;
@@ -95,6 +96,10 @@ public class GameObject {
 
     public int getAnimationIndex() {
         return animationIndex;
+    }
+
+    public int getAnimationTick() {
+        return animationTick;
     }
 
     public void setAnimation(boolean doAnimation) {

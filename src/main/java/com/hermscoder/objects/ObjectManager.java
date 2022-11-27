@@ -13,6 +13,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import static com.hermscoder.utils.HelpMethods.isHitBoxHittingLevel;
 import static com.hermscoder.utils.ObjectConstants.*;
 import static com.hermscoder.utils.Sprite.*;
 
@@ -20,13 +21,14 @@ public class ObjectManager {
     private final Playing playing;
     private LevelManager levelManager;
     private BufferedImage[][] potionImgs, containerImgs;
-    private BufferedImage spikeImg;
+    private BufferedImage spikeImg, cannonBallImg;
     private BufferedImage[] cannonImgs;
 
     private ArrayList<Potion> potions;
     private ArrayList<Container> containers;
     private ArrayList<Spike> spikes;
     private ArrayList<Cannon> cannons;
+    private ArrayList<Projectile> projectiles = new ArrayList<>();
 
     public ObjectManager(Playing playing) {
         this.playing = playing;
@@ -80,6 +82,7 @@ public class ObjectManager {
         containers = new ArrayList<>(newLevel.getContainers());
         spikes = newLevel.getSpikes();
         cannons = newLevel.getCannons();
+        projectiles.clear();
     }
 
     private void loadImages() {
@@ -119,6 +122,7 @@ public class ObjectManager {
                     CannonSpriteAtlas.getTileHeight());
         }
 
+        cannonBallImg = LoadSave.getSpriteAtlas(CannonBallSprite.getFilename());
     }
 
     public void update(int[][] lvlData, Player player) {
@@ -133,6 +137,22 @@ public class ObjectManager {
         }
 
         updateCannons(lvlData, player);
+        updateProjectiles(lvlData, player);
+
+    }
+
+    private void updateProjectiles(int[][] lvlData, Player player) {
+        for (Projectile projectile : projectiles) {
+            if(projectile.isActive()) {
+                projectile.updatePos();
+                if(projectile.getHitBox().intersects(player.getHitBox())) {
+                    player.changeHealth(projectile.getDamage());
+                    projectile.setActive(false);
+                } else if(isHitBoxHittingLevel(projectile.getHitBox(), lvlData)) {
+                    projectile.setActive(false);
+                }
+            }
+        }
     }
 
     private void updateCannons(int[][] lvlData, Player player) {
@@ -142,23 +162,19 @@ public class ObjectManager {
                     if (isPlayerInRange(cannon, player))
                         if (isPlayerInFrontOfCannon(cannon, player))
                             if(HelpMethods.canCannonSeePlayer(lvlData, player.getHitBox(), cannon.getHitBox(), cannon.getTileY())) {
-                                shootCannon(cannon);
+                                cannon.setAnimation(true);
                             }
                 }
             cannon.update();
+            if (cannon.getAnimationIndex() == 4 && cannon.getAnimationTick() == 0)
+                shootCannon(cannon);
         }
-        /*
-            if cannon is not animating
-                if it's in the same tileY
-                    if player is in range?
-                        is player in front of cannon?
-                            check line of sight
-                                shoot
-         */
     }
 
     private void shootCannon(Cannon cannon) {
         cannon.setAnimation(true);
+        int direction = cannon.getObjectType() == CANNON_LEFT ? -1 : 1;
+        projectiles.add(new Projectile((int) cannon.getHitBox().x, (int) cannon.getHitBox().y, direction));
     }
 
     private boolean isPlayerInFrontOfCannon(Cannon cannon, Player player) {
@@ -182,6 +198,20 @@ public class ObjectManager {
         drawContainers(g, xLvlOffset);
         drawTraps(g, xLvlOffset);
         drawCannons(g, xLvlOffset);
+        drawProjectiles(g, xLvlOffset);
+    }
+
+    private void drawProjectiles(Graphics g, int xLvlOffset) {
+        for (Projectile projectile : projectiles) {
+            if(projectile.isActive()) {
+                g.drawImage(cannonBallImg,
+                        (int) (projectile.getHitBox().x - xLvlOffset),
+                        (int) (projectile.getHitBox().y),
+                        CannonBallSprite.getTileWidth(Game.SCALE),
+                        CannonBallSprite.getTileHeight(Game.SCALE), null);
+                projectile.drawHitBox(g, xLvlOffset);
+            }
+        }
     }
 
     private void drawCannons(Graphics g, int xLvlOffset) {

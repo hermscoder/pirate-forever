@@ -1,6 +1,7 @@
 package com.hermscoder.utils;
 
 import com.hermscoder.entities.Crabby;
+import com.hermscoder.entities.Player;
 import com.hermscoder.main.Game;
 import com.hermscoder.objects.*;
 import com.hermscoder.objects.Container;
@@ -246,5 +247,16 @@ public class HelpMethods {
             }
         }
         return list;
+    }
+
+    public static boolean isHitBoxHittingLevel(Rectangle2D.Float hitBox, int[][] lvlData) {
+        FloatPoint2D middle = getMiddlePositionOfHitBox(hitBox);
+        return isSolid(middle.getX(), middle.getY(), lvlData);
+    }
+
+    private static FloatPoint2D getMiddlePositionOfHitBox(Rectangle2D.Float hitBox) {
+        return new FloatPoint2D(
+                hitBox.x + hitBox.width/2,
+                hitBox.y + hitBox.height/2);
     }
 }

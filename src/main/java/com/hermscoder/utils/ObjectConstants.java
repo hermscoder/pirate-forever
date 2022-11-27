@@ -16,8 +16,7 @@ public class ObjectConstants {
     public static final int CANNON_LEFT = 51;
     public static final int CANNON_RIGHT = 52;
 
-    public static final int RED_POTION_VALUE = 15;
-    public static final int BLUE_POTION_VALUE = 10;
+    public static final int CANNON_BALL = 256;
 
     private final Map<Integer, Integer> entitiesAnimationSpritesAmount;
     private final int maxHealth;
