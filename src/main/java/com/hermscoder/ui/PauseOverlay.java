@@ -11,29 +11,23 @@ import java.util.Arrays;
 
 import static com.hermscoder.main.Game.GAME_WIDTH;
 import static com.hermscoder.main.Game.SCALE;
-import static com.hermscoder.utils.Sprite.*;
+import static com.hermscoder.ui.UrmButton.*;
+import static com.hermscoder.utils.Sprite.PauseMenuBackgroundSprite;
+import static com.hermscoder.utils.Sprite.UrmButtonsSpriteAtlas;
 
 public class PauseOverlay {
     private BufferedImage backgroundImage;
     private int bgX, bgY;
+    private AudioOptions audioOptions;
+
     private PauseButton pauseButtons[];
     private final Playing playing;
+
     public PauseOverlay(Playing playing) {
         this.playing = playing;
         loadBackground();
-        createSoundButtons();
+        audioOptions = playing.getGame().getAudioOptions();
         createUrmButtons();
-        createVolumeButton();
-    }
-
-    private void createSoundButtons() {
-        int soundBtnX = (int) (450 * SCALE);
-        int musicBtnY = (int) (140 * SCALE);
-        int sfxY = (int) (186 * SCALE);
-        pauseButtons = new PauseButton[] {
-            new SoundButton(soundBtnX, musicBtnY, SoundButtonsSpriteAtlas.getTileWidth(SCALE), SoundButtonsSpriteAtlas.getTileHeight(SCALE)),
-            new SoundButton(soundBtnX, sfxY, SoundButtonsSpriteAtlas.getTileWidth(SCALE), SoundButtonsSpriteAtlas.getTileHeight(SCALE))
-        };
     }
 
     private void createUrmButtons() {
@@ -44,22 +38,17 @@ public class PauseOverlay {
         int buttonWidth = UrmButtonsSpriteAtlas.getTileWidth(SCALE);
         int buttonHeight = UrmButtonsSpriteAtlas.getTileHeight(SCALE);
 
-        pauseButtons = concat(pauseButtons, new PauseButton[] {
-                new UrmButton(menuX, urmY, buttonWidth, buttonHeight, 2, () -> {
-                    GameState.state = GameState.MENU; playing.unpauseGame();
+        pauseButtons = new PauseButton[]{
+                new UrmButton(menuX, urmY, buttonWidth, buttonHeight, MENU_BUTTON, () -> {
+                    GameState.state = GameState.MENU;
+                    playing.unpauseGame();
                 }),
-                new UrmButton(replayX, urmY, buttonWidth, buttonHeight, 1, () -> { playing.resetAll(); playing.unpauseGame(); }),
-                new UrmButton(unpauseX, urmY, buttonWidth, buttonHeight, 0, playing::unpauseGame)
-        });
-    }
-
-    private void createVolumeButton() {
-        int volumeX = (int) (309 * SCALE);
-        int volumeY = (int) (278 * SCALE);
-
-        pauseButtons = concat(pauseButtons, new PauseButton[] {
-                new VolumeButton(volumeX, volumeY, VolumeSliderSprite.getTileWidth(SCALE), VolumeButtonsSpriteAtlas.getTileHeight(SCALE))
-        });
+                new UrmButton(replayX, urmY, buttonWidth, buttonHeight, REPLAY_BUTTON, () -> {
+                    playing.resetAll();
+                    playing.unpauseGame();
+                }),
+                new UrmButton(unpauseX, urmY, buttonWidth, buttonHeight, PLAY_BUTTON, playing::unpauseGame)
+        };
     }
 
     private void loadBackground() {
@@ -72,6 +61,7 @@ public class PauseOverlay {
         for (PauseButton pauseButton : pauseButtons) {
             pauseButton.update();
         }
+        audioOptions.update();
     }
 
     public void draw(Graphics g) {
@@ -83,24 +73,29 @@ public class PauseOverlay {
         for (PauseButton pauseButton : pauseButtons) {
             pauseButton.draw(g);
         }
+        audioOptions.draw(g);
     }
 
     public void mousePressed(MouseEvent e) {
         for (PauseButton pauseButton : pauseButtons) {
-            if(isIn(e, pauseButton)) {
+            if (isIn(e, pauseButton)) {
                 pauseButton.setMousePressed(true);
                 break;
             }
         }
+        audioOptions.mousePressed(e);
     }
 
     public void mouseReleased(MouseEvent e) {
         for (PauseButton pauseButton : pauseButtons) {
-            if(isIn(e, pauseButton)) {
+            if (isIn(e, pauseButton)) {
                 pauseButton.onClickAction(e);
                 break;
             }
         }
+
+        audioOptions.mouseReleased(e);
+
         for (PauseButton pauseButton : pauseButtons) {
             pauseButton.resetBooleans();
         }
@@ -110,16 +105,16 @@ public class PauseOverlay {
         for (PauseButton pauseButton : pauseButtons) {
             pauseButton.setMouseOver(false);
 
-            if(isIn(e, pauseButton)) {
+            if (isIn(e, pauseButton)) {
                 pauseButton.setMouseOver(true);
                 break;
             }
         }
+        audioOptions.mouseMoved(e);
     }
 
     public void mouseDragged(MouseEvent e) {
-        if(pauseButtons[5].isMousePressed())
-            ((VolumeButton)pauseButtons[5]).changeX(e.getX());
+        audioOptions.mouseDragged(e);
     }
 
     public boolean isIn(MouseEvent e, PauseButton pauseButton) {

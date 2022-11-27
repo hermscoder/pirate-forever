@@ -24,7 +24,8 @@ public enum Sprite {
     SpikeTrapSpriteAtlas("trap_atlas.png", 1, 1, 32, 32),
     CannonSpriteAtlas("cannon_atlas.png", 1, 7, 40, 26),
     CannonBallSprite("ball.png", 1, 1, 15, 15),
-    DeathScreenSprite("death_screen.png", 1, 1, 235, 225);
+    DeathScreenSprite("death_screen.png", 1, 1, 235, 225),
+    OptionsBackgroundSprite("options_background.png", 1, 1, 282, 393);
 
     private String filename;
     private int heightInSprites;
