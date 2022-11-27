@@ -80,21 +80,25 @@ public class PauseOverlay {
         for (PauseButton pauseButton : pauseButtons) {
             if (isIn(e, pauseButton)) {
                 pauseButton.setMousePressed(true);
-                break;
+                return;
             }
         }
         audioOptions.mousePressed(e);
     }
 
     public void mouseReleased(MouseEvent e) {
+        boolean isPauseButton = false;
         for (PauseButton pauseButton : pauseButtons) {
             if (isIn(e, pauseButton)) {
                 pauseButton.onClickAction(e);
+                isPauseButton = true;
                 break;
             }
         }
 
-        audioOptions.mouseReleased(e);
+        if(!isPauseButton) {
+            audioOptions.mouseReleased(e);
+        }
 
         for (PauseButton pauseButton : pauseButtons) {
             pauseButton.resetBooleans();
@@ -107,7 +111,7 @@ public class PauseOverlay {
 
             if (isIn(e, pauseButton)) {
                 pauseButton.setMouseOver(true);
-                break;
+                return;
             }
         }
         audioOptions.mouseMoved(e);
