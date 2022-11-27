@@ -31,6 +31,7 @@ public class Playing extends State implements StateMethods {
     private boolean paused;
     private boolean gameOver;
     private boolean levelCompleted;
+    private boolean playerDying;
 
     public Playing(Game game) {
         super(game);
@@ -76,7 +77,11 @@ public class Playing extends State implements StateMethods {
             pauseOverlay.update();
         } else if (levelCompleted) {
             levelCompletedOverlay.update();
-        } else if (!gameOver) {
+        } else if(gameOver) {
+            gameOverOverlay.update();
+        } else if(playerDying) {
+            player.update();
+        } else {
             levelRender.update();
             objectManager.update(levelManager.getCurrentLevel().getLvlData(), player);
             player.update();
@@ -107,6 +112,7 @@ public class Playing extends State implements StateMethods {
         paused = false;
         gameOver = false;
         levelCompleted = false;
+        playerDying = false;
         player.resetAll();
         enemyManager.resetAllEnemies();
         objectManager.resetAllObjects();
@@ -147,6 +153,8 @@ public class Playing extends State implements StateMethods {
                 pauseOverlay.mousePressed(e);
             else if (levelCompleted)
                 levelCompletedOverlay.mousePressed(e);
+        } else {
+            gameOverOverlay.mousePressed(e);
         }
     }
 
@@ -157,6 +165,8 @@ public class Playing extends State implements StateMethods {
                 pauseOverlay.mouseReleased(e);
             else if (levelCompleted)
                 levelCompletedOverlay.mouseReleased(e);
+        } else {
+            gameOverOverlay.mouseReleased(e);
         }
     }
 
@@ -167,6 +177,8 @@ public class Playing extends State implements StateMethods {
                 pauseOverlay.mouseMoved(e);
             else if (levelCompleted)
                 levelCompletedOverlay.mouseMoved(e);
+        } else {
+            gameOverOverlay.mouseMoved(e);
         }
     }
 
@@ -239,5 +251,9 @@ public class Playing extends State implements StateMethods {
 
     public LevelManager getLevelManager() {
         return levelManager;
+    }
+
+    public void setPlayerDying(boolean dying) {
+        this.playerDying = dying;
     }
 }

@@ -11,6 +11,10 @@ import static com.hermscoder.main.Game.SCALE;
 import static com.hermscoder.utils.Sprite.UrmButtonsSpriteAtlas;
 
 public class UrmButton extends PauseButton {
+    public static final int PLAY_BUTTON = 0;
+    public static final int REPLAY_BUTTON = 1;
+    public static final int MENU_BUTTON = 2;
+
     private BufferedImage[] imgs;
     private int rowIndex, columnIndex;
     private final Runnable onClickAction;

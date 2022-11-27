@@ -82,20 +82,30 @@ public class Player extends Entity {
 
     public void update() {
         updateHealthBar();
-        if (currentHealth <= 0 && checkAnimationFinished(DEAD)) {
-            playing.setGameOver(true);
+        if (currentHealth <= 0) {
+            if(state != DEAD) {
+                state = DEAD;
+                animationTick = 0;
+                animationIndex = 0;
+                playing.setPlayerDying(true);
+            } else if (checkAnimationFinished(DEAD)) {
+                playing.setGameOver(true);
+            } else {
+                updateAnimationTick();
+                updatePosition();
+            }
             return;
-        } else {
-            updateAttackBox();
-            updatePosition();
-            if(moving) {
-                checkPotionTouched();
-                checkSpikesTouched();
-                tileY = (int) (hitBox.y / TILES_SIZE);
-            }
-            if (attacking) {
-                checkAttack();
-            }
+        }
+
+        updateAttackBox();
+        updatePosition();
+        if(moving) {
+            checkPotionTouched();
+            checkSpikesTouched();
+            tileY = (int) (hitBox.y / TILES_SIZE);
+        }
+        if (attacking) {
+            checkAttack();
         }
 
         updateAnimationTick();
@@ -327,7 +337,9 @@ public class Player extends Entity {
     }
 
     private boolean checkAnimationFinished(int state) {
-        return this.state == state && animationIndex + 1 == entityConstants.getSpriteAmount(state);
+        return this.state == state
+                && animationIndex == (entityConstants.getSpriteAmount(state) - 1)
+                && animationTick >= (entityConstants.getAnimationSpeed() - 1);
     }
 
     public void resetAll() {
