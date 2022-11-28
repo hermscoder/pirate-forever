@@ -209,7 +209,7 @@ public class ObjectManager {
                         (int) (projectile.getHitBox().y),
                         CannonBallSprite.getTileWidth(Game.SCALE),
                         CannonBallSprite.getTileHeight(Game.SCALE), null);
-                projectile.drawHitBox(g, xLvlOffset);
+//                projectile.drawHitBox(g, xLvlOffset);
             }
         }
     }
@@ -224,7 +224,7 @@ public class ObjectManager {
                 width *= -1;
             }
             g.drawImage(cannonImgs[cannon.getAnimationIndex()], x,
-                    (int) cannon.getHitBox().y, width,
+                    (int) cannon.getHitBox().y , width,
                     CannonSpriteAtlas.getTileHeight(Game.SCALE), null);
 //            cannon.drawHitBox(g, xLvlOffset);
         }
@@ -237,7 +237,7 @@ public class ObjectManager {
                     (int) (s.getHitBox().y - s.getyDrawOffset()),
                     SpikeTrapSpriteAtlas.getTileWidth(Game.SCALE),
                     SpikeTrapSpriteAtlas.getTileHeight(Game.SCALE), null);
-            s.drawHitBox(g, xLvlOffset);
+//            s.drawHitBox(g, xLvlOffset);
         }
     }
 
@@ -251,7 +251,7 @@ public class ObjectManager {
                         (int) (container.getHitBox().y - container.getyDrawOffset()),
                         ContainersSpriteAtlas.getTileWidth(Game.SCALE),
                         ContainersSpriteAtlas.getTileHeight(Game.SCALE), null);
-                container.drawHitBox(g, xLvlOffset);
+//                container.drawHitBox(g, xLvlOffset);
             }
         }
     }
@@ -267,7 +267,7 @@ public class ObjectManager {
                         PotionSpriteAtlas.getTileWidth(Game.SCALE),
                         PotionSpriteAtlas.getTileHeight(Game.SCALE), null);
 
-                potion.drawHitBox(g, xLvlOffset);
+//                potion.drawHitBox(g, xLvlOffset);
             }
         }
     }

@@ -152,7 +152,7 @@ public class Constants {
                 .hitboxWidth(40)
                 .hitboxHeight(26)
                 .xDrawOffset(-4)
-                .yDrawOffset((int) (0 * Game.SCALE))
+                .yDrawOffset((int) (1 * Game.SCALE))
                 .build()
         );
         put(ObjectConstants.CANNON_RIGHT, ObjectConstants.newBuilder()
@@ -165,7 +165,7 @@ public class Constants {
                 .hitboxWidth(40)
                 .hitboxHeight(26)
                 .xDrawOffset(-4)
-                .yDrawOffset((int) (0 * Game.SCALE))
+                .yDrawOffset((int) (1 * Game.SCALE))
                 .build()
         );
 
