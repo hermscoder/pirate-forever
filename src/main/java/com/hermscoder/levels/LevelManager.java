@@ -8,7 +8,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import static com.hermscoder.main.Game.*;
+import static com.hermscoder.main.Game.TILES_IN_HEIGHT;
+import static com.hermscoder.main.Game.TILES_SIZE;
 import static com.hermscoder.utils.Sprite.LevelSpriteAtlas;
 
 public class LevelManager {
@@ -16,35 +17,38 @@ public class LevelManager {
     private final Game game;
     private BufferedImage[] levelSprite;
     private ArrayList<Level> levels;
-    private int levelIndex = 0;
+    private Level currentLevel;
 
     public LevelManager(Game game) {
         this.game = game;
         importOutsideSprites();
         levels = new ArrayList<>();
         buildAllLevels();
+        changeLevel(0);
     }
 
     public void loadNextLevel() {
-        levelIndex++;
-        if(levelIndex >= levels.size()) {
-            levelIndex = 0;
+        int nextLevelIndex = getCurrentLevel().getIndex() + 1;
+        if (nextLevelIndex >= levels.size()) {
+            nextLevelIndex = 0;
             System.out.println("NO MORE LEVELS! GAME COMPLETED!");
-            GameState.state = GameState.MENU;
+            game.getPlaying().setGameState(GameState.MENU);
         }
 
-        Level newLevel = levels.get(levelIndex);
-        game.getPlaying().getEnemyManager().loadEnemies(newLevel);
-        game.getPlaying().getPlayer().loadLvlData(newLevel.getLvlData());
-        game.getPlaying().getLevelRender().setMaxLevelOffsetX(newLevel.getMaxLevelOffsetX());
-        game.getPlaying().getPlayer().setSpawn(newLevel.getPlayerSpawn());
-        game.getPlaying().getObjectManager().loadObjects(newLevel);
+        changeLevel(nextLevelIndex);
+        game.getPlaying().getEnemyManager().loadEnemies(getCurrentLevel());
+        game.getPlaying().getPlayer().loadLvlData(getCurrentLevel().getLvlData());
+        game.getPlaying().getLevelRender().setMaxLevelOffsetX(getCurrentLevel().getMaxLevelOffsetX());
+        game.getPlaying().getPlayer().setSpawn(getCurrentLevel().getPlayerSpawn());
+        game.getPlaying().getObjectManager().loadObjects(getCurrentLevel());
     }
 
     private void buildAllLevels() {
         BufferedImage[] allLevels = LoadSave.getAllLevels();
+        int index = 0;
         for (BufferedImage levelImage : allLevels) {
-            levels.add(new Level(levelImage));
+            levels.add(new Level(index, levelImage));
+            index++;
         }
     }
 
@@ -52,9 +56,9 @@ public class LevelManager {
         BufferedImage img = LoadSave.getSpriteAtlas(LevelSpriteAtlas.getFilename());
         int size = LevelSpriteAtlas.getHeightInSprites() * LevelSpriteAtlas.getWidthInSprites();
         levelSprite = new BufferedImage[size];
-        for(int j = 0; j < LevelSpriteAtlas.getHeightInSprites(); j ++) {
-            for(int i = 0; i < LevelSpriteAtlas.getWidthInSprites(); i++) {
-                int index = j* LevelSpriteAtlas.getWidthInSprites() + i;
+        for (int j = 0; j < LevelSpriteAtlas.getHeightInSprites(); j++) {
+            for (int i = 0; i < LevelSpriteAtlas.getWidthInSprites(); i++) {
+                int index = j * LevelSpriteAtlas.getWidthInSprites() + i;
                 levelSprite[index] = img.getSubimage(
                         i * LevelSpriteAtlas.getTileWidth(),
                         j * LevelSpriteAtlas.getTileHeight(),
@@ -65,9 +69,9 @@ public class LevelManager {
     }
 
     public void draw(Graphics g, int xLevelOffset) {
-        for(int j = 0; j < TILES_IN_HEIGHT; j ++) {
-            for(int i = 0; i < levels.get(levelIndex).getLvlData()[0].length; i++) {
-                int index = levels.get(levelIndex).getSpriteIndex(i,j);
+        for (int j = 0; j < TILES_IN_HEIGHT; j++) {
+            for (int i = 0; i < getCurrentLevel().getLvlData()[0].length; i++) {
+                int index = getCurrentLevel().getSpriteIndex(i, j);
                 g.drawImage(levelSprite[index], i * TILES_SIZE - xLevelOffset, j * TILES_SIZE, TILES_SIZE, TILES_SIZE, null);
             }
         }
@@ -78,7 +82,11 @@ public class LevelManager {
     }
 
     public Level getCurrentLevel() {
-        return levels.get(levelIndex);
+        return currentLevel;
+    }
+
+    public void changeLevel(int levelIndex) {
+        this.currentLevel = levels.get(levelIndex);
     }
 
     public int getAmountOfLevels() {

@@ -77,9 +77,9 @@ public class Playing extends State implements StateMethods {
             pauseOverlay.update();
         } else if (levelCompleted) {
             levelCompletedOverlay.update();
-        } else if(gameOver) {
+        } else if (gameOver) {
             gameOverOverlay.update();
-        } else if(playerDying) {
+        } else if (playerDying) {
             player.update();
         } else {
             levelRender.update();
@@ -184,23 +184,20 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (gameOver)
-            gameOverOverlay.keyPressed(e);
-        else
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_A:
-                    player.setLeft(true);
-                    break;
-                case KeyEvent.VK_D:
-                    player.setRight(true);
-                    break;
-                case KeyEvent.VK_SPACE:
-                    player.setJump(true);
-                    break;
-                case KeyEvent.VK_ESCAPE:
-                    paused = !paused;
-                    break;
-            }
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_A:
+                player.setLeft(true);
+                break;
+            case KeyEvent.VK_D:
+                player.setRight(true);
+                break;
+            case KeyEvent.VK_SPACE:
+                player.setJump(true);
+                break;
+            case KeyEvent.VK_ESCAPE:
+                paused = !paused;
+                break;
+        }
     }
 
     @Override
@@ -243,6 +240,8 @@ public class Playing extends State implements StateMethods {
 
     public void setLevelCompleted(boolean levelCompleted) {
         this.levelCompleted = levelCompleted;
+        if (levelCompleted)
+            game.getAudioPlayer().levelCompleted();
     }
 
     public ObjectManager getObjectManager() {

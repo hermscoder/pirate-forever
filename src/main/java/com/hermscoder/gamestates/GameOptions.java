@@ -39,7 +39,7 @@ public class GameOptions extends State implements StateMethods {
                 menuX, menuY,
                 MenuButtonsSpriteAtlas.getTileWidth(Game.SCALE),
                 MenuButtonsSpriteAtlas.getTileHeight(Game.SCALE),
-                UrmButton.MENU_BUTTON, () -> GameState.state = GameState.MENU);
+                UrmButton.MENU_BUTTON, () -> game.getPlaying().setGameState(GameState.MENU));
     }
 
     private void loadImages() {
@@ -103,7 +103,7 @@ public class GameOptions extends State implements StateMethods {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            GameState.state = GameState.MENU;
+            game.getPlaying().setGameState(GameState.MENU);
         }
     }
 

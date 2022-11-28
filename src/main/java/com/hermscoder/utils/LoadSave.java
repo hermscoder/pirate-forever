@@ -1,8 +1,5 @@
 package com.hermscoder.utils;
 
-import com.hermscoder.entities.Crabby;
-import com.hermscoder.main.Game;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class LoadSave {
 
@@ -40,7 +36,7 @@ public class LoadSave {
     }
 
     public static BufferedImage[] getAllLevels() {
-        URL url = LoadSave.class.getResource("/levels");
+        URL url = LoadSave.class.getResource(Constants.LEVELS_FOLDER);
         File file = null;
         try {
             file = new File(url.toURI());

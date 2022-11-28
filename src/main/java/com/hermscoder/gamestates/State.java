@@ -1,5 +1,6 @@
 package com.hermscoder.gamestates;
 
+import com.hermscoder.audio.Song;
 import com.hermscoder.main.Game;
 import com.hermscoder.ui.MenuButton;
 
@@ -18,5 +19,15 @@ public class State {
 
     public Game getGame() {
         return game;
+    }
+
+    public void setGameState(GameState state) {
+        switch (state) {
+            case MENU:
+                game.getAudioPlayer().playSong(Song.MENU_1);
+            case PLAYING:
+                game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getCurrentLevel().getIndex());
+        }
+        GameState.state = state;
     }
 }

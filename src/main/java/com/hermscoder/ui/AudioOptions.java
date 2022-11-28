@@ -1,5 +1,7 @@
 package com.hermscoder.ui;
 
+import com.hermscoder.main.Game;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
@@ -9,8 +11,10 @@ import static com.hermscoder.utils.Sprite.*;
 
 public class AudioOptions {
     private PauseButton audioButtons[];
+    private final Game game;
 
-    public AudioOptions() {
+    public AudioOptions(Game game) {
+        this.game = game;
         createSoundButtons();
         createVolumeButton();
     }
@@ -20,8 +24,18 @@ public class AudioOptions {
         int musicBtnY = (int) (140 * SCALE);
         int sfxY = (int) (186 * SCALE);
         audioButtons = new PauseButton[]{
-                new SoundButton(soundBtnX, musicBtnY, SoundButtonsSpriteAtlas.getTileWidth(SCALE), SoundButtonsSpriteAtlas.getTileHeight(SCALE)),
-                new SoundButton(soundBtnX, sfxY, SoundButtonsSpriteAtlas.getTileWidth(SCALE), SoundButtonsSpriteAtlas.getTileHeight(SCALE))
+                new SoundButton(
+                        soundBtnX,
+                        musicBtnY,
+                        SoundButtonsSpriteAtlas.getTileWidth(SCALE),
+                        SoundButtonsSpriteAtlas.getTileHeight(SCALE),
+                        () -> game.getAudioPlayer().toggleSongMute()),
+                new SoundButton(
+                        soundBtnX,
+                        sfxY,
+                        SoundButtonsSpriteAtlas.getTileWidth(SCALE),
+                        SoundButtonsSpriteAtlas.getTileHeight(SCALE),
+                        () -> game.getAudioPlayer().toggleEffectMute()),
         };
     }
 
@@ -79,8 +93,14 @@ public class AudioOptions {
     }
 
     public void mouseDragged(MouseEvent e) {
-        if (audioButtons[2].isMousePressed())
-            ((VolumeButton) audioButtons[2]).changeX(e.getX());
+        if (audioButtons[2].isMousePressed()) {
+            VolumeButton volumeButton = (VolumeButton) audioButtons[2];
+            float valueBefore = volumeButton.getValue();
+            volumeButton.changeX(e.getX());
+            float valueAfter = volumeButton.getValue();
+            if (valueBefore != valueAfter)
+                game.getAudioPlayer().setVolume(valueAfter);
+        }
     }
 
     public boolean isIn(MouseEvent e, PauseButton pauseButton) {

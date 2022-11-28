@@ -39,8 +39,9 @@ public class EnemyManager {
                 isAnyActive = true;
             }
         }
-        if(!isAnyActive)
+        if (!isAnyActive) {
             playing.setLevelCompleted(true);
+        }
     }
 
     public void draw(Graphics g, int xLevelOffset) {
@@ -63,7 +64,7 @@ public class EnemyManager {
 
     public void checkEnemyHit(Rectangle2D.Float attackBox) {
         for (Crabby c : crabbies) {
-            if(c.isActive()) {
+            if (c.isActive()) {
                 if (attackBox.intersects(c.getHitBox())) {
                     c.hurt(10);
                     return;

@@ -7,6 +7,9 @@ import java.util.Map;
 
 public class Constants {
 
+    public static final String LEVELS_FOLDER = "/levels";
+    public static final String AUDIO_FOLDER = "/audio";
+
     public static final float GRAVITY = 0.04f * Game.SCALE;
 
     public static class Directions {
@@ -47,16 +50,16 @@ public class Constants {
 
     private static final Map<Integer, EntityConstants> entitiesConstants = new HashMap<>() {{
         put(PlayerConstants.PLAYER, EntityConstants.newBuilder()
-                .sprite(PlayerConstants.DEAD, 8)
-                .sprite(PlayerConstants.RUNNING, 6)
-                .sprite(PlayerConstants.IDLE, 5)
-                .sprite(PlayerConstants.HIT, 4)
-                .sprite(PlayerConstants.JUMP, 3)
-                .sprite(PlayerConstants.ATTACK_1, 3)
-                .sprite(PlayerConstants.ATTACK_JUMP_1, 3)
-                .sprite(PlayerConstants.ATTACK_JUMP_2, 3)
-                .sprite(PlayerConstants.GROUND, 2)
-                .sprite(PlayerConstants.FALLING, 1)
+                .animation(PlayerConstants.DEAD, 8)
+                .animation(PlayerConstants.RUNNING, 6)
+                .animation(PlayerConstants.IDLE, 5)
+                .animation(PlayerConstants.HIT, 4)
+                .animation(PlayerConstants.JUMP, 3)
+                .animation(PlayerConstants.ATTACK_1, 3)
+                .animation(PlayerConstants.ATTACK_JUMP_1, 3)
+                .animation(PlayerConstants.ATTACK_JUMP_2, 3)
+                .animation(PlayerConstants.GROUND, 2)
+                .animation(PlayerConstants.FALLING, 1)
                 .maxHealth(100)
                 .damage(10)
                 .gravity(GRAVITY)
@@ -64,11 +67,11 @@ public class Constants {
                 .build()
         );
         put(CrabbyConstants.CRABBY, EntityConstants.newBuilder()
-                .sprite(CrabbyConstants.IDLE, 9)
-                .sprite(CrabbyConstants.RUNNING, 6)
-                .sprite(CrabbyConstants.ATTACK, 7)
-                .sprite(CrabbyConstants.HIT, 4)
-                .sprite(CrabbyConstants.DEAD, 5)
+                .animation(CrabbyConstants.IDLE, 9)
+                .animation(CrabbyConstants.RUNNING, 6)
+                .animation(CrabbyConstants.ATTACK, 7)
+                .animation(CrabbyConstants.HIT, 4)
+                .animation(CrabbyConstants.DEAD, 5)
                 .maxHealth(10)
                 .damage(10)
                 .gravity(GRAVITY)
@@ -87,8 +90,8 @@ public class Constants {
                 .startAnimated(true)
                 .hitboxWidth(7)
                 .hitboxHeight(14)
-                .xDrawOffset((int) (3* Game.SCALE))
-                .yDrawOffset((int) (2* Game.SCALE))
+                .xDrawOffset((int) (3 * Game.SCALE))
+                .yDrawOffset((int) (2 * Game.SCALE))
                 .build()
         );
         put(ObjectConstants.BLUE_POTION, ObjectConstants.newBuilder()
@@ -100,7 +103,7 @@ public class Constants {
                 .startAnimated(true)
                 .hitboxWidth(7)
                 .hitboxHeight(14)
-                .xDrawOffset((int) (3* Game.SCALE))
+                .xDrawOffset((int) (3 * Game.SCALE))
                 .yDrawOffset((int) (2 * Game.SCALE))
                 .build()
         );
@@ -126,8 +129,8 @@ public class Constants {
                 .startAnimated(false)
                 .hitboxWidth(23)
                 .hitboxHeight(25)
-                .xDrawOffset((int) (8* Game.SCALE))
-                .yDrawOffset((int) (5* Game.SCALE))
+                .xDrawOffset((int) (8 * Game.SCALE))
+                .yDrawOffset((int) (5 * Game.SCALE))
                 .build()
         );
         put(ObjectConstants.SPIKE_TRAP, ObjectConstants.newBuilder()
@@ -184,7 +187,7 @@ public class Constants {
     public static EntityConstants getEntityConstants(int enemyType) {
         EntityConstants entityConstants = entitiesConstants
                 .get(enemyType);
-        if(entityConstants == null)
+        if (entityConstants == null)
             throw new RuntimeException("No properties found for entity type " + enemyType);
 
         return entityConstants;
@@ -193,7 +196,7 @@ public class Constants {
     public static ObjectConstants getObjectConstants(int objectType) {
         ObjectConstants objConstants = objectConstants
                 .get(objectType);
-        if(objConstants == null)
+        if (objConstants == null)
             throw new RuntimeException("No properties found for object type " + objectType);
 
         return objConstants;

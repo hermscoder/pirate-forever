@@ -2,17 +2,16 @@ package com.hermscoder.ui;
 
 import com.hermscoder.gamestates.GameState;
 import com.hermscoder.gamestates.Playing;
-import com.hermscoder.levels.LevelManager;
 import com.hermscoder.main.Game;
 import com.hermscoder.utils.LoadSave;
-import com.hermscoder.utils.Sprite;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import static com.hermscoder.main.Game.SCALE;
-import static com.hermscoder.utils.Sprite.*;
+import static com.hermscoder.utils.Sprite.CompletedLevel;
+import static com.hermscoder.utils.Sprite.UrmButtonsSpriteAtlas;
 
 public class LevelCompletedOverlay {
     private final Playing playing;
@@ -33,8 +32,23 @@ public class LevelCompletedOverlay {
         int y = (int) (195 * SCALE);
 
         urmButtons = new UrmButton[]{
-                new UrmButton(nextX, y, UrmButtonsSpriteAtlas.getTileWidth(SCALE), UrmButtonsSpriteAtlas.getTileHeight(SCALE), 0, () -> playing.loadNextLevel()),
-                new UrmButton(menuX, y, UrmButtonsSpriteAtlas.getTileWidth(SCALE), UrmButtonsSpriteAtlas.getTileHeight(SCALE), 2, () -> { playing.resetAll(); GameState.state = GameState.MENU; })
+                new UrmButton(
+                        nextX, y,
+                        UrmButtonsSpriteAtlas.getTileWidth(SCALE),
+                        UrmButtonsSpriteAtlas.getTileHeight(SCALE), 0,
+                        () -> {
+                            playing.loadNextLevel();
+                            playing.getGame().getAudioPlayer()
+                                    .setLevelSong(playing.getLevelManager().getCurrentLevel().getIndex());
+                        }),
+                new UrmButton(menuX, y,
+                        UrmButtonsSpriteAtlas.getTileWidth(SCALE),
+                        UrmButtonsSpriteAtlas.getTileHeight(SCALE), 2,
+                        () -> {
+                            playing.resetAll();
+                            playing.setGameState(GameState.MENU);
+                        }
+                )
         };
     }
 
@@ -62,7 +76,7 @@ public class LevelCompletedOverlay {
 
     public void mousePressed(MouseEvent e) {
         for (UrmButton urmButton : urmButtons) {
-            if(isIn(e, urmButton)) {
+            if (isIn(e, urmButton)) {
                 urmButton.setMousePressed(true);
                 break;
             }
@@ -71,7 +85,7 @@ public class LevelCompletedOverlay {
 
     public void mouseReleased(MouseEvent e) {
         for (UrmButton urmButton : urmButtons) {
-            if(isIn(e, urmButton)) {
+            if (isIn(e, urmButton)) {
                 urmButton.onClickAction(e);
                 break;
             }
@@ -85,7 +99,7 @@ public class LevelCompletedOverlay {
         for (UrmButton urmButton : urmButtons) {
             urmButton.setMouseOver(false);
 
-            if(isIn(e, urmButton)) {
+            if (isIn(e, urmButton)) {
                 urmButton.setMouseOver(true);
                 break;
             }

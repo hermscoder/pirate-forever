@@ -1,5 +1,6 @@
 package com.hermscoder.main;
 
+import com.hermscoder.audio.AudioPlayer;
 import com.hermscoder.gamestates.GameOptions;
 import com.hermscoder.gamestates.GameState;
 import com.hermscoder.gamestates.Menu;
@@ -20,6 +21,7 @@ public class Game implements Runnable {
     private Menu menu;
     private GameOptions gameOptions;
     private AudioOptions audioOptions;
+    private AudioPlayer audioPlayer;
 
     public final static int TILES_DEFAULT_SIZE = 32;
     public final static float SCALE = 1.3f;
@@ -39,10 +41,11 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
-        audioOptions = new AudioOptions();
+        audioOptions = new AudioOptions(this);
         menu = new Menu(this);
         playing = new Playing(this);
         gameOptions = new GameOptions(this);
+        audioPlayer = new AudioPlayer();
     }
 
     private void startGameLoop() {
@@ -126,7 +129,7 @@ public class Game implements Runnable {
     }
 
     public void windowFocusLost() {
-        if(GameState.state == GameState.PLAYING)
+        if (GameState.state == GameState.PLAYING)
             playing.getPlayer().resetDirBoolean();
     }
 
@@ -144,5 +147,9 @@ public class Game implements Runnable {
 
     public AudioOptions getAudioOptions() {
         return audioOptions;
+    }
+
+    public AudioPlayer getAudioPlayer() {
+        return audioPlayer;
     }
 }

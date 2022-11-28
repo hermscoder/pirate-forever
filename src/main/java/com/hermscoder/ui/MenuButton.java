@@ -11,7 +11,7 @@ import static com.hermscoder.utils.Sprite.MenuButtonsSpriteAtlas;
 
 public class MenuButton {
     private final int xPos, yPos, rowIndex;
-    private final int xOffsetCenter = MenuButtonsSpriteAtlas.getTileWidth(Game.SCALE)/2;
+    private final int xOffsetCenter = MenuButtonsSpriteAtlas.getTileWidth(Game.SCALE) / 2;
     private final GameState state;
 
     private BufferedImage[] imgs;
@@ -53,10 +53,10 @@ public class MenuButton {
 
     public void update() {
         index = 0;
-        if(mouseOver) {
+        if (mouseOver) {
             index = 1;
         }
-        if(mousePressed)
+        if (mousePressed)
             index = 2;
     }
 
@@ -90,5 +90,9 @@ public class MenuButton {
 
     public Rectangle getBounds() {
         return bounds;
+    }
+
+    public GameState getState() {
+        return state;
     }
 }

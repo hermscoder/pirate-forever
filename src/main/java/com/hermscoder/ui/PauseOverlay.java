@@ -40,7 +40,7 @@ public class PauseOverlay {
 
         pauseButtons = new PauseButton[]{
                 new UrmButton(menuX, urmY, buttonWidth, buttonHeight, MENU_BUTTON, () -> {
-                    GameState.state = GameState.MENU;
+                    playing.setGameState(GameState.MENU);
                     playing.unpauseGame();
                 }),
                 new UrmButton(replayX, urmY, buttonWidth, buttonHeight, REPLAY_BUTTON, () -> {
@@ -96,7 +96,7 @@ public class PauseOverlay {
             }
         }
 
-        if(!isPauseButton) {
+        if (!isPauseButton) {
             audioOptions.mouseReleased(e);
         }
 

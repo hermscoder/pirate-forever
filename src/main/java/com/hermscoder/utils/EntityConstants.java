@@ -17,6 +17,7 @@ public class EntityConstants {
         this.gravity = entityConstantsBuilder.gravity;
         this.animationSpeed = entityConstantsBuilder.animationSpeed;
     }
+
     public static EntityConstantsBuilder newBuilder() {
         return new EntityConstantsBuilder();
     }
@@ -24,6 +25,7 @@ public class EntityConstants {
     public Map<Integer, Integer> getSpritesAmount() {
         return spritesAmount;
     }
+
     public int getSpriteAmount(int state) {
         return spritesAmount.getOrDefault(state, 0);
     }
@@ -51,7 +53,7 @@ public class EntityConstants {
         private float gravity;
         private int animationSpeed;
 
-        public EntityConstantsBuilder sprite(int animationIndex, int spritesQuantity) {
+        public EntityConstantsBuilder animation(int animationIndex, int spritesQuantity) {
             entitiesSpritesAmount.put(animationIndex, spritesQuantity);
             return this;
         }
@@ -65,14 +67,17 @@ public class EntityConstants {
             this.damage = damage;
             return this;
         }
+
         public EntityConstantsBuilder gravity(float gravity) {
             this.gravity = gravity;
             return this;
         }
+
         public EntityConstantsBuilder animationSpeed(int animationSpeed) {
             this.animationSpeed = animationSpeed;
             return this;
         }
+
         public EntityConstants build() {
             return new EntityConstants(this);
         }

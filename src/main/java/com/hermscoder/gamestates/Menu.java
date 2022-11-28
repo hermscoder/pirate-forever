@@ -4,19 +4,18 @@ import com.hermscoder.main.Game;
 import com.hermscoder.ui.MenuButton;
 import com.hermscoder.utils.LoadSave;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
-import static com.hermscoder.main.Game.*;
+import static com.hermscoder.main.Game.SCALE;
 import static com.hermscoder.utils.Sprite.*;
 
-public class Menu extends State implements StateMethods{
+public class Menu extends State implements StateMethods {
 
     private final static int NUMBER_OF_MENU_BUTTONS = 3;
-    private final static GameState[] BUTTON_STATES = new GameState[] { GameState.PLAYING, GameState.OPTIONS, GameState.QUIT };
+    private final static GameState[] BUTTON_STATES = new GameState[]{GameState.PLAYING, GameState.OPTIONS, GameState.QUIT};
     private final static int VERTICAL_SPACE_BETWEEN_BUTTONS = (int) (14 * SCALE);
     private final static int FIRST_MENU_ITEM_MARGIN_TOP = (int) (150 * SCALE);
     private final static int MENU_MARGIN_TOP = 45;
@@ -42,7 +41,7 @@ public class Menu extends State implements StateMethods{
     }
 
     private void loadButtons() {
-        for (int i =0; i < buttons.length; i++) {
+        for (int i = 0; i < buttons.length; i++) {
             buttons[i] = new MenuButton(
                     Game.GAME_WIDTH / 2,
                     (int) (FIRST_MENU_ITEM_MARGIN_TOP + ((MenuButtonsSpriteAtlas.getTileHeight(SCALE) + VERTICAL_SPACE_BETWEEN_BUTTONS) * i)),
@@ -79,7 +78,7 @@ public class Menu extends State implements StateMethods{
     @Override
     public void mousePressed(MouseEvent e) {
         for (MenuButton menuButton : buttons) {
-            if(isIn(e, menuButton)) {
+            if (isIn(e, menuButton)) {
                 menuButton.setMousePressed(true);
                 break;
             }
@@ -89,11 +88,14 @@ public class Menu extends State implements StateMethods{
     @Override
     public void mouseReleased(MouseEvent e) {
         for (MenuButton menuButton : buttons) {
-            if(isIn(e, menuButton)) {
-                if(menuButton.isMousePressed()) {
+            if (isIn(e, menuButton)) {
+                if (menuButton.isMousePressed()) {
                     menuButton.applyGameState();
-                    break;
                 }
+                if (menuButton.getState() == GameState.PLAYING) {
+                    game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getCurrentLevel().getIndex());
+                }
+                break;
             }
         }
         resetButtons();
@@ -109,7 +111,7 @@ public class Menu extends State implements StateMethods{
     public void mouseMoved(MouseEvent e) {
         for (MenuButton menuButton : buttons) {
             menuButton.setMouseOver(false);
-            if(isIn(e, menuButton)) {
+            if (isIn(e, menuButton)) {
                 menuButton.setMouseOver(true);
                 break;
             }
@@ -118,12 +120,14 @@ public class Menu extends State implements StateMethods{
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_ENTER)
-            GameState.state = GameState.PLAYING;
+        if (e.getKeyCode() == KeyEvent.VK_ENTER)
+            game.getPlaying().setGameState(GameState.PLAYING);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
 
     }
+
+
 }

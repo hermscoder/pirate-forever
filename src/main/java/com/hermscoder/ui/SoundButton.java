@@ -12,9 +12,11 @@ public class SoundButton extends PauseButton {
     private BufferedImage[][] soundImgs;
     private boolean muted;
     private int rowIndex, columnIndex;
+    private final Runnable onClickAction;
 
-    public SoundButton(int x, int y, int width, int height) {
+    public SoundButton(int x, int y, int width, int height, Runnable onClickAction) {
         super(x, y, width, height);
+        this.onClickAction = onClickAction;
         loadSoundImages();
     }
 
@@ -34,15 +36,15 @@ public class SoundButton extends PauseButton {
 
     @Override
     public void update() {
-        if(muted)
+        if (muted)
             rowIndex = 1;
         else
             rowIndex = 0;
 
         columnIndex = 0;
-        if(mouseOver)
+        if (mouseOver)
             columnIndex = 1;
-        if(mousePressed)
+        if (mousePressed)
             columnIndex = 2;
     }
 
@@ -53,8 +55,9 @@ public class SoundButton extends PauseButton {
 
     @Override
     public void onClickAction(MouseEvent e) {
-        if(mousePressed){
+        if (mousePressed) {
             muted = !muted;
+            onClickAction.run();
         }
     }
 }

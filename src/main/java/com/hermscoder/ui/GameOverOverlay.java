@@ -5,14 +5,14 @@ import com.hermscoder.gamestates.Playing;
 import com.hermscoder.utils.LoadSave;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import static com.hermscoder.main.Game.*;
 import static com.hermscoder.ui.UrmButton.MENU_BUTTON;
 import static com.hermscoder.ui.UrmButton.PLAY_BUTTON;
-import static com.hermscoder.utils.Sprite.*;
+import static com.hermscoder.utils.Sprite.DeathScreenSprite;
+import static com.hermscoder.utils.Sprite.UrmButtonsSpriteAtlas;
 
 public class GameOverOverlay {
 
@@ -35,13 +35,14 @@ public class GameOverOverlay {
         int buttonWidth = UrmButtonsSpriteAtlas.getTileWidth(SCALE);
         int buttonHeight = UrmButtonsSpriteAtlas.getTileHeight(SCALE);
 
-        urmButtons = new UrmButton[] {
+        urmButtons = new UrmButton[]{
                 new UrmButton(menuX, urmY, buttonWidth, buttonHeight, MENU_BUTTON, () -> {
                     playing.resetAll();
-                    GameState.state = GameState.MENU;
+                    playing.setGameState(GameState.MENU);
                 }),
                 new UrmButton(playX, urmY, buttonWidth, buttonHeight, PLAY_BUTTON, () -> {
                     playing.resetAll();
+                    playing.getGame().getAudioPlayer().setLevelSong(playing.getLevelManager().getCurrentLevel().getIndex());
                 }),
         };
     }
@@ -72,16 +73,9 @@ public class GameOverOverlay {
         }
     }
 
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            playing.resetAll();
-            GameState.state = GameState.MENU;
-        }
-    }
-
     public void mousePressed(MouseEvent e) {
         for (UrmButton urmButton : urmButtons) {
-            if(isIn(e, urmButton)) {
+            if (isIn(e, urmButton)) {
                 urmButton.setMousePressed(true);
                 break;
             }
@@ -90,7 +84,7 @@ public class GameOverOverlay {
 
     public void mouseReleased(MouseEvent e) {
         for (UrmButton urmButton : urmButtons) {
-            if(isIn(e, urmButton)) {
+            if (isIn(e, urmButton)) {
                 urmButton.onClickAction(e);
                 break;
             }
@@ -104,7 +98,7 @@ public class GameOverOverlay {
         for (UrmButton urmButton : urmButtons) {
             urmButton.setMouseOver(false);
 
-            if(isIn(e, urmButton)) {
+            if (isIn(e, urmButton)) {
                 urmButton.setMouseOver(true);
                 break;
             }

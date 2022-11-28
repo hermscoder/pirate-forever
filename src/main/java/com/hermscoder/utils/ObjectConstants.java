@@ -1,14 +1,11 @@
 package com.hermscoder.utils;
 
-import com.hermscoder.objects.GameObject;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 public class ObjectConstants {
-    public static final int RED_POTION = 0;
-    public static final int BLUE_POTION = 1;
+    public static final int RED_POTION = 1;
+    public static final int BLUE_POTION = 0;
     public static final int BARREL = 3;
     public static final int BOX = 2;
 
@@ -45,6 +42,7 @@ public class ObjectConstants {
         this.yDrawOffset = objectConstantsBuilder.yDrawOffset;
         this.spriteAtlas = objectConstantsBuilder.spriteAtlas;
     }
+
     public static ObjectConstantsBuilder newBuilder() {
         return new ObjectConstantsBuilder();
     }
@@ -135,26 +133,32 @@ public class ObjectConstants {
             this.gravity = gravity;
             return this;
         }
+
         public ObjectConstantsBuilder animationSpeed(int animationSpeed) {
             this.animationSpeed = animationSpeed;
             return this;
         }
+
         public ObjectConstantsBuilder startAnimated(boolean startAnimated) {
             this.startAnimated = startAnimated;
             return this;
         }
+
         public ObjectConstantsBuilder hitboxWidth(int hitboxWidth) {
             this.hitboxWidth = hitboxWidth;
             return this;
         }
+
         public ObjectConstantsBuilder hitboxHeight(int hitboxHeight) {
             this.hitboxHeight = hitboxHeight;
             return this;
         }
+
         public ObjectConstantsBuilder xDrawOffset(int xDrawOffset) {
             this.xDrawOffset = xDrawOffset;
             return this;
         }
+
         public ObjectConstantsBuilder yDrawOffset(int yDrawOffset) {
             this.yDrawOffset = yDrawOffset;
             return this;

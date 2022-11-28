@@ -7,7 +7,6 @@ import com.hermscoder.objects.Container;
 import com.hermscoder.objects.Potion;
 import com.hermscoder.objects.Spike;
 import com.hermscoder.utils.HelpMethods;
-import com.hermscoder.utils.LoadSave;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 
 public class Level {
 
-    private int id;
+    private int index;
     private BufferedImage image;
     private int[][] lvlData;
     private ArrayList<Crabby> crabs;
@@ -29,7 +28,8 @@ public class Level {
     private int maxLevelOffsetX;
     private Point playerSpawn;
 
-    public Level(BufferedImage image) {
+    public Level(int index, BufferedImage image) {
+        this.index = index;
         this.image = image;
 
         createLevelData();
@@ -86,10 +86,6 @@ public class Level {
         return lvlData;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public int getMaxLevelOffsetX() {
         return maxLevelOffsetX;
     }
@@ -116,5 +112,9 @@ public class Level {
 
     public ArrayList<Cannon> getCannons() {
         return cannons;
+    }
+
+    public int getIndex() {
+        return index;
     }
 }

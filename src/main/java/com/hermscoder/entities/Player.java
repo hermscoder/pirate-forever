@@ -1,5 +1,6 @@
 package com.hermscoder.entities;
 
+import com.hermscoder.audio.SoundEffect;
 import com.hermscoder.gamestates.Playing;
 import com.hermscoder.utils.Constants;
 import com.hermscoder.utils.EntityConstants;
@@ -65,7 +66,7 @@ public class Player extends Entity {
         this.currentHealth = maxHealth;
         this.walkSpeed = 1.0f * SCALE;
         loadAnimations();
-        initHitBox(20,27);
+        initHitBox(20, 27);
         initAttackBox();
     }
 
@@ -83,13 +84,16 @@ public class Player extends Entity {
     public void update() {
         updateHealthBar();
         if (currentHealth <= 0) {
-            if(state != DEAD) {
+            if (state != DEAD) {
                 state = DEAD;
                 animationTick = 0;
                 animationIndex = 0;
                 playing.setPlayerDying(true);
+                playing.getGame().getAudioPlayer().playEffect(SoundEffect.DIE);
             } else if (checkAnimationFinished(DEAD)) {
                 playing.setGameOver(true);
+                playing.getGame().getAudioPlayer().stopSong();
+                playing.getGame().getAudioPlayer().playEffect(SoundEffect.GAME_OVER);
             } else {
                 updateAnimationTick();
                 updatePosition();
@@ -99,7 +103,7 @@ public class Player extends Entity {
 
         updateAttackBox();
         updatePosition();
-        if(moving) {
+        if (moving) {
             checkPotionTouched();
             checkSpikesTouched();
             tileY = (int) (hitBox.y / TILES_SIZE);
@@ -128,6 +132,7 @@ public class Player extends Entity {
         attackChecked = true;
         playing.checkEnemyHit(attackBox);
         playing.checkObjectHit(attackBox);
+        playing.getGame().getAudioPlayer().playAttackSound();
     }
 
     private void updateAttackBox() {
@@ -185,7 +190,7 @@ public class Player extends Entity {
         moving = false;
         float xSpeed = 0;
 
-        if(state != DEAD) {
+        if (state != DEAD) {
             if (jump)
                 jump();
             if (!inAir)
@@ -207,7 +212,7 @@ public class Player extends Entity {
 
 
         if (!inAir && !HelpMethods.isEntityOnFloor(hitBox, lvlData)) {
-                inAir = true;
+            inAir = true;
         }
 
         if (inAir) {
@@ -233,6 +238,7 @@ public class Player extends Entity {
     private void jump() {
         if (inAir)
             return;
+        playing.getGame().getAudioPlayer().playEffect(SoundEffect.JUMP);
         inAir = true;
         airSpeed = jumpSpeed;
     }
@@ -254,7 +260,6 @@ public class Player extends Entity {
         currentHealth += value;
         if (currentHealth <= 0) {
             kill();
-            //gameOver();
         } else if (currentHealth >= maxHealth) {
             currentHealth = maxHealth;
         }
@@ -284,8 +289,7 @@ public class Player extends Entity {
     private void setAnimation() {
         int startAnimation = state;
 
-        if(currentHealth <= 0) {
-            state = DEAD;
+        if (currentHealth <= 0) {
             return;
         } else {
             if (moving)
@@ -311,7 +315,6 @@ public class Player extends Entity {
                 }
             }
         }
-
 
 
         //if there was a change of action. we need to reset the animation tick so we can display the full animation

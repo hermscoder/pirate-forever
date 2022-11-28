@@ -18,6 +18,7 @@ public class VolumeButton extends PauseButton {
     private int sliderX;
     private int sliderWidth;
     private int minSliderX, maxSliderX;
+    private float value = 0f;
 
     public VolumeButton(int x, int y, int width, int height) {
         super(x + width / 2, y, VolumeButtonsSpriteAtlas.getTileWidth(SCALE), height);
@@ -58,23 +59,35 @@ public class VolumeButton extends PauseButton {
     @Override
     public void draw(Graphics g) {
         g.drawImage(sliderImg, sliderX, y, sliderWidth, height, null);
-        g.drawImage(imgs[index], buttonX - VolumeButtonsSpriteAtlas.getTileWidth(SCALE)/2, y, VolumeButtonsSpriteAtlas.getTileWidth(SCALE), height, null);
+        g.drawImage(imgs[index], buttonX - VolumeButtonsSpriteAtlas.getTileWidth(SCALE) / 2, y, VolumeButtonsSpriteAtlas.getTileWidth(SCALE), height, null);
     }
 
     public void changeX(int x) {
-        if(x < minSliderX)
+        if (x < minSliderX)
             buttonX = minSliderX;
-        else if(x > maxSliderX)
+        else if (x > maxSliderX)
             buttonX = maxSliderX;
         else
-            buttonX = x ;
+            buttonX = x;
 
-        bounds.x = buttonX - VolumeButtonsSpriteAtlas.getTileWidth(SCALE)/2;
+        updateValue();
+        bounds.x = buttonX - VolumeButtonsSpriteAtlas.getTileWidth(SCALE) / 2;
+    }
+
+    private void updateValue() {
+        float range = maxSliderX - minSliderX;
+        float value = buttonX - minSliderX;
+
+        this.value = value / range;
     }
 
     @Override
     public void onClickAction(MouseEvent e) {
         if (mousePressed) {
         }
+    }
+
+    public float getValue() {
+        return value;
     }
 }
