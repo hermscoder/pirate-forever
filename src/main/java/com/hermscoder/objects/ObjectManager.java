@@ -259,9 +259,7 @@ public class ObjectManager {
     private void drawPotions(Graphics g, int xLvlOffset) {
         for (Potion potion : potions) {
             if (potion.isActive()) {
-                int type = potion.getObjectType() == RED_POTION ? 0 : 1;
-
-                g.drawImage(potionImgs[type][potion.getAnimationIndex()],
+                g.drawImage(potionImgs[potion.getObjectType()][potion.getAnimationIndex()],
                         (int) (potion.getHitBox().x - potion.getxDrawOffset() - xLvlOffset),
                         (int) (potion.getHitBox().y - potion.getyDrawOffset()),
                         PotionSpriteAtlas.getTileWidth(Game.SCALE),

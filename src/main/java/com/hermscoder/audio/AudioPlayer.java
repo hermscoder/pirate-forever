@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 public class AudioPlayer {
 
     private static final Logger logger = Logger.getLogger(AudioPlayer.class.getName());
-    ;
 
     private Clip[] songs, effects;
 
@@ -24,6 +23,7 @@ public class AudioPlayer {
         loadSongs();
         loadEffects();
         playSong(currentSong);
+        toggleSongMute();
     }
 
     private void loadSongs() {
