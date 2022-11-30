@@ -41,6 +41,7 @@ public class PauseOverlay {
         pauseButtons = new PauseButton[]{
                 new UrmButton(menuX, urmY, buttonWidth, buttonHeight, MENU_BUTTON, () -> {
                     playing.setGameState(GameState.MENU);
+                    playing.resetAll();
                     playing.unpauseGame();
                 }),
                 new UrmButton(replayX, urmY, buttonWidth, buttonHeight, REPLAY_BUTTON, () -> {

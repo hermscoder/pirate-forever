@@ -11,8 +11,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import static com.hermscoder.utils.Constants.CrabbyConstants.CRABBY_DRAWOFFSET_X;
-import static com.hermscoder.utils.Constants.CrabbyConstants.CRABBY_DRAWOFFSET_Y;
+import static com.hermscoder.utils.Constants.CrabbyConstants.*;
 import static com.hermscoder.utils.Sprite.CrabbySpriteAtlas;
 
 public class EnemyManager {
@@ -64,7 +63,7 @@ public class EnemyManager {
 
     public void checkEnemyHit(Rectangle2D.Float attackBox) {
         for (Crabby c : crabbies) {
-            if (c.isActive()) {
+            if (c.isActive() && c.getCurrentHealth() > 0 ) {
                 if (attackBox.intersects(c.getHitBox())) {
                     c.hurt(10);
                     return;

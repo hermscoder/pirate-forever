@@ -64,7 +64,6 @@ public class Playing extends State implements StateMethods {
     public void loadNextLevel() {
         resetAll();
         levelManager.loadNextLevel();
-
     }
 
     public Player getPlayer() {

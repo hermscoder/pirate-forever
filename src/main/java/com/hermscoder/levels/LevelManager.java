@@ -41,6 +41,7 @@ public class LevelManager {
         game.getPlaying().getLevelRender().setMaxLevelOffsetX(getCurrentLevel().getMaxLevelOffsetX());
         game.getPlaying().getPlayer().setSpawn(getCurrentLevel().getPlayerSpawn());
         game.getPlaying().getObjectManager().loadObjects(getCurrentLevel());
+        game.getPlaying().resetAll();
     }
 
     private void buildAllLevels() {
