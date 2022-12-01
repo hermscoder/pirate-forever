@@ -9,6 +9,7 @@ public class EntityConstants {
     private final int damage;
     private float gravity;
     private final int animationSpeed;
+    private final float walkSpeed;
 
     private EntityConstants(EntityConstantsBuilder entityConstantsBuilder) {
         this.spritesAmount = entityConstantsBuilder.entitiesSpritesAmount;
@@ -16,6 +17,7 @@ public class EntityConstants {
         this.damage = entityConstantsBuilder.damage;
         this.gravity = entityConstantsBuilder.gravity;
         this.animationSpeed = entityConstantsBuilder.animationSpeed;
+        this.walkSpeed = entityConstantsBuilder.walkSpeed;
     }
 
     public static EntityConstantsBuilder newBuilder() {
@@ -46,12 +48,17 @@ public class EntityConstants {
         return animationSpeed;
     }
 
+    public float getWalkSpeed() {
+        return walkSpeed;
+    }
+
     static class EntityConstantsBuilder {
         private final Map<Integer, Integer> entitiesSpritesAmount = new HashMap<>();
         private int maxHealth;
         private int damage;
         private float gravity;
         private int animationSpeed;
+        private float walkSpeed;
 
         public EntityConstantsBuilder animation(int animationIndex, int spritesQuantity) {
             entitiesSpritesAmount.put(animationIndex, spritesQuantity);
@@ -80,6 +87,11 @@ public class EntityConstants {
 
         public EntityConstants build() {
             return new EntityConstants(this);
+        }
+
+        public EntityConstantsBuilder walkSpeed(float walkSpeed) {
+            this.walkSpeed = walkSpeed;
+            return this;
         }
     }
 }

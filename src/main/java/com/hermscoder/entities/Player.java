@@ -25,7 +25,7 @@ public class Player extends Entity {
     private static final int POWER_ATTACK_TICKS = 35;
     private static final int POWER_ATTACK_COST = 60;
 
-    private final EntityConstants entityConstants;
+//    private final EntityConstants entityConstants;
 
     private final Playing playing;
     private BufferedImage[][] animations;
@@ -72,18 +72,14 @@ public class Player extends Entity {
 
     private boolean powerAttackActive;
     private int powerAttackTick;
-    private int powerGrowSpeed = 15;
-    private int powerGrowTick = 15;
+    private static final int POWER_GROW_SPEED = 20;
+    private int powerGrowTick = 0;
 
 
     public Player(float x, float y, int width, int height, Playing playing) {
-        super(x, y, width, height);
+        super(x, y, width, height, PLAYER);
         this.playing = playing;
-        this.entityConstants = Constants.getEntityConstants(PLAYER);
         this.state = IDLE;
-        this.maxHealth = entityConstants.getMaxHealth();
-        this.currentHealth = maxHealth;
-        this.walkSpeed = 1.0f * SCALE;
         loadAnimations();
         initHitBox(20, 27);
         initAttackBox();
@@ -185,7 +181,7 @@ public class Player extends Entity {
     private void updatePowerBar() {
         powerWidth = (int) ((powerValue / (float) powerMaxValue) * powerBarWidth);
         powerGrowTick++;
-        if(powerGrowTick >= powerGrowSpeed) {
+        if(powerGrowTick >= POWER_GROW_SPEED) {
             powerGrowTick = 0;
             changePower(1);
         }

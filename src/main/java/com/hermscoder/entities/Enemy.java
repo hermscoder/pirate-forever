@@ -6,7 +6,6 @@ import com.hermscoder.utils.EntityConstants;
 
 import java.awt.geom.Rectangle2D;
 
-import static com.hermscoder.main.Game.SCALE;
 import static com.hermscoder.utils.Constants.CrabbyConstants.*;
 import static com.hermscoder.utils.Constants.Directions.LEFT;
 import static com.hermscoder.utils.Constants.Directions.RIGHT;
@@ -15,9 +14,6 @@ import static com.hermscoder.utils.HelpMethods.*;
 
 public abstract class Enemy extends Entity {
 
-    private final EntityConstants entityConstants;
-
-    protected int enemyType;
     protected boolean firstUpdate = true;
     protected float walkingDirection = LEFT;
     protected int tileY;
@@ -28,12 +24,7 @@ public abstract class Enemy extends Entity {
     protected boolean attackChecked;
 
     public Enemy(float x, float y, int width, int height, int enemyType) {
-        super(x, y, width, height);
-        this.enemyType = enemyType;
-        this.entityConstants = Constants.getEntityConstants(enemyType);
-        this.maxHealth = entityConstants.getMaxHealth();
-        this.currentHealth = maxHealth;
-        this.walkSpeed = 0.35f * Game.SCALE;
+        super(x, y, width, height, enemyType);
     }
 
     protected void firstUpdateCheck(int[][] levelData) {

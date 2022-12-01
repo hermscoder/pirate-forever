@@ -64,6 +64,7 @@ public class Constants {
                 .damage(10)
                 .gravity(GRAVITY)
                 .animationSpeed(25)
+                .walkSpeed(1f * Game.SCALE)
                 .build()
         );
         put(CrabbyConstants.CRABBY, EntityConstants.newBuilder()
@@ -76,6 +77,7 @@ public class Constants {
                 .damage(10)
                 .gravity(GRAVITY)
                 .animationSpeed(25)
+                .walkSpeed(0.35f * Game.SCALE)
                 .build()
         );
     }};
@@ -184,11 +186,11 @@ public class Constants {
         );
     }};
 
-    public static EntityConstants getEntityConstants(int enemyType) {
+    public static EntityConstants getEntityConstants(int entityType) {
         EntityConstants entityConstants = entitiesConstants
-                .get(enemyType);
+                .get(entityType);
         if (entityConstants == null)
-            throw new RuntimeException("No properties found for entity type " + enemyType);
+            throw new RuntimeException("No properties found for entity type " + entityType);
 
         return entityConstants;
     }

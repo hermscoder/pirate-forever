@@ -1,13 +1,20 @@
 package com.hermscoder.entities;
 
+import com.hermscoder.utils.Constants;
+import com.hermscoder.utils.EntityConstants;
+
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 import static com.hermscoder.main.Game.SCALE;
 
 public abstract class Entity {
+
+    protected final EntityConstants entityConstants;
+
     protected float x,y;
     protected int width, height;
+    protected int entityType;
     protected Rectangle2D.Float hitBox;
     protected int animationTick, animationIndex;
     protected int state;
@@ -22,11 +29,16 @@ public abstract class Entity {
 
     protected float walkSpeed;
 
-    public Entity(float x, float y, int width, int height) {
+    public Entity(float x, float y, int width, int height, int entityType) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.entityType = entityType;
+        this.entityConstants = Constants.getEntityConstants(entityType);
+        this.maxHealth = entityConstants.getMaxHealth();
+        this.currentHealth = maxHealth;
+        this.walkSpeed = entityConstants.getWalkSpeed();
     }
 
     protected void drawHitBox(Graphics g, int xLevelOffset){
