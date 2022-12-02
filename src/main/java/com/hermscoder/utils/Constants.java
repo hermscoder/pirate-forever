@@ -8,6 +8,7 @@ import java.util.Map;
 public class Constants {
 
     public static final String LEVELS_FOLDER = "/levels";
+    public static final String LEVEL_DESIGN_FOLDER = "/level_design";
     public static final String AUDIO_FOLDER = "/audio";
 
     public static final float GRAVITY = 0.04f * Game.SCALE;
@@ -20,7 +21,7 @@ public class Constants {
     }
 
     public static class CrabbyConstants {
-        public static final int CRABBY = 0;
+        public static final int CRABBY = 1;
 
         public static final int IDLE = 0;
         public static final int RUNNING = 1;
@@ -85,7 +86,7 @@ public class Constants {
     private static final Map<Integer, ObjectConstants> objectConstants = new HashMap<>() {{
         put(ObjectConstants.RED_POTION, ObjectConstants.newBuilder()
                 .spriteAtlas(Sprite.PotionSpriteAtlas)
-                .animationSprite(ObjectConstants.RED_POTION, 7)
+                .animationSprite(ObjectConstants.RED_POTION_ANIMATION, 7)
                 .value(40)
                 .gravity(GRAVITY)
                 .animationSpeed(25)
@@ -98,7 +99,7 @@ public class Constants {
         );
         put(ObjectConstants.BLUE_POTION, ObjectConstants.newBuilder()
                 .spriteAtlas(Sprite.PotionSpriteAtlas)
-                .animationSprite(ObjectConstants.BLUE_POTION, 7)
+                .animationSprite(ObjectConstants.BLUE_POTION_ANIMATION, 7)
                 .power(40)
                 .gravity(GRAVITY)
                 .animationSpeed(25)
@@ -111,7 +112,7 @@ public class Constants {
         );
         put(ObjectConstants.BOX, ObjectConstants.newBuilder()
                 .spriteAtlas(Sprite.ContainersSpriteAtlas)
-                .animationSprite(ObjectConstants.BOX, 7)
+                .animationSprite(ObjectConstants.BOX_ANIMATION, 7)
                 .value(0)
                 .gravity(GRAVITY)
                 .animationSpeed(25)
@@ -124,7 +125,7 @@ public class Constants {
         );
         put(ObjectConstants.BARREL, ObjectConstants.newBuilder()
                 .spriteAtlas(Sprite.ContainersSpriteAtlas)
-                .animationSprite(ObjectConstants.BARREL, 7)
+                .animationSprite(ObjectConstants.BARREL_ANIMATION, 7)
                 .value(0)
                 .gravity(GRAVITY)
                 .animationSpeed(25)
