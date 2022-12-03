@@ -20,25 +20,29 @@ public class GenerateLevels {
 
 
     public static void main(String[] args) {
-        generateAllLevelData();
+        generateAllLevelData(args != null && args.length > 0 ? args[0] : null);
     }
 
-    public static void generateAllLevelData() {
+    public static void generateAllLevelData(String specificLevel) {
+        boolean generateSpecificLevel = specificLevel != null;
+
         URL url = LoadSave.class.getResource(Constants.LEVEL_DESIGN_FOLDER);
         File file = null;
         try {
             file = new File(url.toURI());
             File[] files = file.listFiles();
-//            File[] filesSorted = new File[files.length];
-            BufferedImage[] imgs = new BufferedImage[files.length];
+            var images = new BufferedImage[files.length];
 
-            for (int i = 0; i < imgs.length; i++) {
-                for (int j = 0; j < files.length; j++) {
-                    int level = i + 1;
-                    if (files[j].getName().equals(level + ".drawio")) {
-                        Color[][] document = getDocument(files[i], i);
-                        generateLevelDataImage(document, level);
-                    }
+            String fileName;
+            for (int i = 0; i < images.length; i++) {
+                int level = i + 1;
+                fileName = (specificLevel == null ? level : specificLevel) + ".drawio";
+                if (files[i].getName().equals(fileName)) {
+                    Color[][] document = getDocument(files[i], i);
+                    generateLevelDataImage(document, level);
+
+                    if(generateSpecificLevel)
+                        break;
                 }
             }
 //            return imgs;
@@ -65,9 +69,11 @@ public class GenerateLevels {
     public static void generateLevelDataImage(Color[][] lvlData, int level) {
         BufferedImage image = new BufferedImage(lvlData[0].length, lvlData.length, BufferedImage.TYPE_INT_ARGB);
 
+        Color tileColor;
         for (int y = 0; y < lvlData.length; y++) {
             for (int x = 0; x < lvlData[y].length; x++) {
-                image.setRGB(x, y, lvlData[y][x].getRGB());
+                tileColor = lvlData[y][x] != null ? lvlData[y][x] : new Color(11, 0, 0);
+                image.setRGB(x, y, tileColor.getRGB());
             }
         }
 

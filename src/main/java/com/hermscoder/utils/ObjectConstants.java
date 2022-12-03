@@ -11,10 +11,8 @@ public class ObjectConstants {
     public static final int BLUE_POTION_ANIMATION = 0;
 
     public static final int BARREL = 4;
-    public static final int BARREL_ANIMATION = 1;
 
     public static final int BOX = 3;
-    public static final int BOX_ANIMATION = 0;
 
     public static final int SPIKE_TRAP = 50;
     public static final int CANNON_LEFT = 51;
@@ -22,7 +20,7 @@ public class ObjectConstants {
 
     public static final int CANNON_BALL = 256;
 
-    private final Map<Integer, Integer> entitiesAnimationSpritesAmount;
+    private final Map<Integer, Integer> objectAnimationsSpritesAmount;
     private final int maxHealth;
     private final int value;
     private final int power;
@@ -36,7 +34,7 @@ public class ObjectConstants {
     private final Sprite spriteAtlas;
 
     private ObjectConstants(ObjectConstantsBuilder objectConstantsBuilder) {
-        this.entitiesAnimationSpritesAmount = objectConstantsBuilder.entitiesAnimationSpritesAmount;
+        this.objectAnimationsSpritesAmount = objectConstantsBuilder.entitiesAnimationSpritesAmount;
         this.maxHealth = objectConstantsBuilder.maxHealth;
         this.value = objectConstantsBuilder.value;
         this.power = objectConstantsBuilder.power;
@@ -54,8 +52,8 @@ public class ObjectConstants {
         return new ObjectConstantsBuilder();
     }
 
-    public int getAnimationSpriteAmount(int state) {
-        return entitiesAnimationSpritesAmount.getOrDefault(state, 0);
+    public int getAnimationSpriteAmount(int animation) {
+        return objectAnimationsSpritesAmount.getOrDefault(animation, 0);
     }
 
     public int getMaxHealth() {
@@ -116,8 +114,8 @@ public class ObjectConstants {
         private int yDrawOffset;
         private Sprite spriteAtlas;
 
-        public ObjectConstantsBuilder animationSprite(int animationIndex, int spritesQuantity) {
-            entitiesAnimationSpritesAmount.put(animationIndex, spritesQuantity);
+        public ObjectConstantsBuilder animationSprite(int animation, int spritesQuantity) {
+            entitiesAnimationSpritesAmount.put(animation, spritesQuantity);
             return this;
         }
 

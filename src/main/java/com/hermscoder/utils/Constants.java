@@ -112,7 +112,7 @@ public class Constants {
         );
         put(ObjectConstants.BOX, ObjectConstants.newBuilder()
                 .spriteAtlas(Sprite.ContainersSpriteAtlas)
-                .animationSprite(ObjectConstants.BOX_ANIMATION, 7)
+                .animationSprite(ObjectConstants.BOX, 7)
                 .value(0)
                 .gravity(GRAVITY)
                 .animationSpeed(25)
@@ -125,7 +125,7 @@ public class Constants {
         );
         put(ObjectConstants.BARREL, ObjectConstants.newBuilder()
                 .spriteAtlas(Sprite.ContainersSpriteAtlas)
-                .animationSprite(ObjectConstants.BARREL_ANIMATION, 7)
+                .animationSprite(ObjectConstants.BARREL, 7)
                 .value(0)
                 .gravity(GRAVITY)
                 .animationSpeed(25)
