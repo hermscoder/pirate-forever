@@ -1,25 +1,22 @@
 package com.hermscoder.entities;
 
-import com.hermscoder.utils.Constants;
 
 import static com.hermscoder.main.Game.SCALE;
-import static com.hermscoder.utils.Constants.CrabbyConstants.*;
+import static com.hermscoder.utils.Constants.Directions.LEFT;
 import static com.hermscoder.utils.Constants.Directions.RIGHT;
-import static com.hermscoder.utils.Sprite.CrabbySpriteAtlas;
+import static com.hermscoder.utils.Constants.SharkConstants.*;
+import static com.hermscoder.utils.Sprite.SharkSpriteAtlas;
 
-public class Crabby extends Enemy {
-    private int attackBoxOffsetX;
+public class Shark extends Enemy {
 
 
-    public Crabby(float x, float y) {
+    public Shark(float x, float y) {
         super(x, y,
-                CrabbySpriteAtlas.getTileWidth(SCALE),
-                CrabbySpriteAtlas.getTileHeight(SCALE),
-                Constants.CrabbyConstants.CRABBY);
+                SharkSpriteAtlas.getTileWidth(SCALE),
+                SharkSpriteAtlas.getTileHeight(SCALE),
+                SHARK);
         initHitBox(entityConstants.getHitBoxWidth(), entityConstants.getHitBoxHeight());
         initAttackBox();
-        initAttackBox();
-        attackBoxOffsetX = (int) (30 * SCALE);
     }
 
 
@@ -30,8 +27,13 @@ public class Crabby extends Enemy {
     }
 
     private void updateAttackBox() {
-        attackBox.x = hitBox.x - attackBoxOffsetX;
-        attackBox.y = hitBox.y;
+        if (walkingDirection == RIGHT) {
+            attackBox.x = hitBox.x + SHARK_DRAWOFFSET_X;
+        } else if (walkingDirection == LEFT) {
+            attackBox.x = hitBox.x - SHARK_DRAWOFFSET_X;
+        }
+
+        attackBox.y = hitBox.y + (0 * SCALE);
     }
 
     @Override

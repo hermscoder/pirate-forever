@@ -6,13 +6,11 @@ import com.hermscoder.utils.EntityConstants;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-import static com.hermscoder.main.Game.SCALE;
-
 public abstract class Entity {
 
     protected final EntityConstants entityConstants;
 
-    protected float x,y;
+    protected float x, y;
     protected int width, height;
     protected int entityType;
     protected Rectangle2D.Float hitBox;
@@ -41,7 +39,7 @@ public abstract class Entity {
         this.walkSpeed = entityConstants.getWalkSpeed();
     }
 
-    protected void drawHitBox(Graphics g, int xLevelOffset){
+    protected void drawHitBox(Graphics g, int xLevelOffset) {
         //For debugging the hitbox
         g.setColor(Color.PINK);
         g.drawRect((int) hitBox.x - xLevelOffset, (int) hitBox.y, (int) hitBox.width, (int) hitBox.height);
@@ -53,14 +51,12 @@ public abstract class Entity {
     }
 
     protected void initHitBox(int width, int height) {
-        hitBox = new Rectangle2D.Float(x, y, (int)(width * SCALE), (int)(height * SCALE));
+        hitBox = new Rectangle2D.Float(x, y, width, height);
     }
 
-//    protected void updateHitBox() {
-//        hitBox.x = (int) x;
-//        hitBox.y = (int) y;
-//    }
-
+    protected void initAttackBox() {
+        attackBox = new Rectangle2D.Float(x, y, entityConstants.getAttackBoxWidth(), entityConstants.getAttackBoxHeight());
+    }
 
     public Rectangle2D.Float getHitBox() {
         return hitBox;

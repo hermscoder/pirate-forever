@@ -1,10 +1,10 @@
 package com.hermscoder.utils;
 
 import com.hermscoder.entities.Crabby;
-import com.hermscoder.entities.Player;
+import com.hermscoder.entities.Shark;
 import com.hermscoder.main.Game;
-import com.hermscoder.objects.*;
 import com.hermscoder.objects.Container;
+import com.hermscoder.objects.*;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -42,7 +42,7 @@ public class HelpMethods {
 
 
     public static boolean isAllTilesWalkable(int xStart, int xEnd, int y, int[][] levelData) {
-        if(isAllTilesClear(xStart, xEnd, y, levelData))
+        if (isAllTilesClear(xStart, xEnd, y, levelData))
             for (int i = 0; i < xEnd - xStart; i++) {
                 if (!isTileSolid(xStart + i, y + 1, levelData))
                     return false;
@@ -131,7 +131,7 @@ public class HelpMethods {
     }
 
     public static boolean isFloor(Rectangle2D.Float hitbox, float xSpeed, int[][] lvlData) {
-        if(xSpeed > 0)
+        if (xSpeed > 0)
             return isSolid(hitbox.x + hitbox.width, hitbox.y + hitbox.height + 1, lvlData);
         else
             return isSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, lvlData);
@@ -160,6 +160,20 @@ public class HelpMethods {
                 int value = color.getGreen();
                 if (value == Constants.CrabbyConstants.CRABBY)
                     list.add(new Crabby(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
+            }
+        }
+
+        return list;
+    }
+
+    public static ArrayList<Shark> getShark(BufferedImage levelImage) {
+        ArrayList<Shark> list = new ArrayList<>();
+        for (int j = 0; j < levelImage.getHeight(); j++) {
+            for (int i = 0; i < levelImage.getWidth(); i++) {
+                Color color = new Color(levelImage.getRGB(i, j));
+                int value = color.getGreen();
+                if (value == Constants.SharkConstants.SHARK)
+                    list.add(new Shark(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
             }
         }
 
@@ -204,7 +218,7 @@ public class HelpMethods {
             for (int i = 0; i < levelImage.getWidth(); i++) {
                 Color color = new Color(levelImage.getRGB(i, j));
                 int value = color.getBlue();
-                if (value == ObjectConstants.RED_POTION || value == ObjectConstants.BLUE_POTION )
+                if (value == ObjectConstants.RED_POTION || value == ObjectConstants.BLUE_POTION)
                     list.add(new Potion(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
             }
         }
@@ -217,7 +231,7 @@ public class HelpMethods {
             for (int i = 0; i < levelImage.getWidth(); i++) {
                 Color color = new Color(levelImage.getRGB(i, j));
                 int value = color.getBlue();
-                if (value == ObjectConstants.BOX || value == ObjectConstants.BARREL )
+                if (value == ObjectConstants.BOX || value == ObjectConstants.BARREL)
                     list.add(new Container(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
             }
         }
@@ -236,6 +250,7 @@ public class HelpMethods {
         }
         return list;
     }
+
     public static ArrayList<Cannon> getCannons(BufferedImage levelImage) {
         ArrayList<Cannon> list = new ArrayList<>();
         for (int j = 0; j < levelImage.getHeight(); j++) {
@@ -256,7 +271,7 @@ public class HelpMethods {
 
     private static FloatPoint2D getMiddlePositionOfHitBox(Rectangle2D.Float hitBox) {
         return new FloatPoint2D(
-                hitBox.x + hitBox.width/2,
-                hitBox.y + hitBox.height/2);
+                hitBox.x + hitBox.width / 2,
+                hitBox.y + hitBox.height / 2);
     }
 }

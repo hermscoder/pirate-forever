@@ -2,13 +2,10 @@ package com.hermscoder.entities;
 
 import com.hermscoder.audio.SoundEffect;
 import com.hermscoder.gamestates.Playing;
-import com.hermscoder.utils.Constants;
-import com.hermscoder.utils.EntityConstants;
 import com.hermscoder.utils.HelpMethods;
 import com.hermscoder.utils.LoadSave;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import static com.hermscoder.main.Game.SCALE;
@@ -81,8 +78,9 @@ public class Player extends Entity {
         this.playing = playing;
         this.state = IDLE;
         loadAnimations();
-        initHitBox(20, 27);
+        initHitBox(entityConstants.getHitBoxWidth(), entityConstants.getHitBoxHeight());
         initAttackBox();
+        resetAttackBox();
     }
 
     public void setSpawn(Point spawn) {
@@ -90,11 +88,6 @@ public class Player extends Entity {
         this.y = spawn.y;
         hitBox.x = x;
         hitBox.y = y;
-    }
-
-    private void initAttackBox() {
-        attackBox = new Rectangle2D.Float(x, y, (int) (20 * SCALE), (int) (20 * SCALE));
-        resetAttackBox();
     }
 
     public void update() {
@@ -124,9 +117,9 @@ public class Player extends Entity {
             checkPotionTouched();
             checkSpikesTouched();
             tileY = (int) (hitBox.y / TILES_SIZE);
-            if(powerAttackActive) {
+            if (powerAttackActive) {
                 powerAttackTick++;
-                if(powerAttackTick >= POWER_ATTACK_TICKS)
+                if (powerAttackTick >= POWER_ATTACK_TICKS)
                     stopPowerAttack();
             }
         }
@@ -154,7 +147,7 @@ public class Player extends Entity {
         attackChecked = true;
 
         //to make sure every update we will be attacking
-        if(powerAttackActive)
+        if (powerAttackActive)
             attackChecked = false;
 
         playing.checkEnemyHit(attackBox);
@@ -163,9 +156,9 @@ public class Player extends Entity {
     }
 
     private void updateAttackBox() {
-        if(right && left) {
+        if (right && left) {
             attackBox.x = hitBox.x + (hitBox.width * flipW) + ((int) (10 * SCALE) * flipW);
-        }else if (right || (powerAttackActive && flipW == FACING_RIGHT)) {
+        } else if (right || (powerAttackActive && flipW == FACING_RIGHT)) {
             attackBox.x = hitBox.x + hitBox.width + (int) (10 * SCALE);
         } else if (left || (powerAttackActive && flipW == FACING_LEFT)) {
             attackBox.x = hitBox.x - hitBox.width - (int) (10 * SCALE);
@@ -181,7 +174,7 @@ public class Player extends Entity {
     private void updatePowerBar() {
         powerWidth = (int) ((powerValue / (float) powerMaxValue) * powerBarWidth);
         powerGrowTick++;
-        if(powerGrowTick >= POWER_GROW_SPEED) {
+        if (powerGrowTick >= POWER_GROW_SPEED) {
             powerGrowTick = 0;
             changePower(1);
         }
@@ -236,7 +229,7 @@ public class Player extends Entity {
             if (jump)
                 jump();
             if (!inAir)
-                if(!powerAttackActive)
+                if (!powerAttackActive)
                     if ((!left && !right) || (right && left))
                         return;
 
@@ -252,8 +245,8 @@ public class Player extends Entity {
                 flipW = FACING_RIGHT;
             }
 
-            if(powerAttackActive) {
-                if((!left && !right) || (left && right))
+            if (powerAttackActive) {
+                if ((!left && !right) || (left && right))
                     xSpeed = walkSpeed * flipW;
                 xSpeed *= 3;
             }
@@ -301,15 +294,17 @@ public class Player extends Entity {
         if (HelpMethods.canMoveHere(hitBox.x + xSpeed, hitBox.y, hitBox.width, hitBox.height, lvlData)) {
             hitBox.x += xSpeed;
         } else {
-            if(powerAttackActive)
+            if (powerAttackActive)
                 stopPowerAttack();
             hitBox.x = HelpMethods.getEntityXPosNextToWall(hitBox, xSpeed);
         }
     }
+
     private void stopPowerAttack() {
         powerAttackActive = false;
         powerAttackTick = 0;
     }
+
     public void changeHealth(int value) {
         currentHealth += value;
         if (currentHealth <= 0) {
@@ -327,7 +322,7 @@ public class Player extends Entity {
         powerValue += value;
         if (powerValue >= powerMaxValue)
             powerValue = powerMaxValue;
-        else if(powerValue <= 0)
+        else if (powerValue <= 0)
             powerValue = 0;
     }
 
@@ -363,7 +358,7 @@ public class Player extends Entity {
 
             }
 
-            if(powerAttackActive) {
+            if (powerAttackActive) {
                 state = ATTACK_JUMP_1;
                 animationIndex = 1;
                 animationTick = 0;
@@ -389,9 +384,9 @@ public class Player extends Entity {
     }
 
     public void powerAttack() {
-        if(powerAttackActive)
+        if (powerAttackActive)
             return;
-        if(powerValue >= POWER_ATTACK_COST) {
+        if (powerValue >= POWER_ATTACK_COST) {
             powerAttackActive = true;
             changePower(-POWER_ATTACK_COST);
         }

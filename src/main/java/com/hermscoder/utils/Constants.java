@@ -5,19 +5,36 @@ import com.hermscoder.main.Game;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.hermscoder.main.Game.*;
+
 public class Constants {
 
     public static final String LEVELS_FOLDER = "/levels";
     public static final String LEVEL_DESIGN_FOLDER = "/level_design";
     public static final String AUDIO_FOLDER = "/audio";
 
-    public static final float GRAVITY = 0.04f * Game.SCALE;
+    public static final float GRAVITY = 0.04f * SCALE;
 
     public static class Directions {
         public static final int LEFT = 0;
         public static final int UP = 1;
         public static final int RIGHT = 2;
         public static final int DOWN = 3;
+    }
+
+
+    public static class SharkConstants {
+        public static final int SHARK = 2;
+
+        public static final int IDLE = 0;
+        public static final int RUNNING = 1;
+        public static final int ATTACK = 6;
+        public static final int HIT = 7;
+        public static final int DEAD = 8;
+
+        public static final int SHARK_DRAWOFFSET_X = (int) (5 * SCALE);
+        public static final int SHARK_DRAWOFFSET_Y = (int) (5 * SCALE);
+
     }
 
     public static class CrabbyConstants {
@@ -29,8 +46,8 @@ public class Constants {
         public static final int HIT = 3;
         public static final int DEAD = 4;
 
-        public static final int CRABBY_DRAWOFFSET_X = (int) (26 * Game.SCALE);
-        public static final int CRABBY_DRAWOFFSET_Y = (int) (9 * Game.SCALE);
+        public static final int CRABBY_DRAWOFFSET_X = (int) (26 * SCALE);
+        public static final int CRABBY_DRAWOFFSET_Y = (int) (9 * SCALE);
 
     }
 
@@ -65,7 +82,9 @@ public class Constants {
                 .damage(10)
                 .gravity(GRAVITY)
                 .animationSpeed(25)
-                .walkSpeed(1f * Game.SCALE)
+                .walkSpeed(1f * SCALE)
+                .hitBox((int)(20 * SCALE), (int)(27 * SCALE))
+                .attackBox((int)(20 * SCALE), (int)(20 * SCALE))
                 .build()
         );
         put(CrabbyConstants.CRABBY, EntityConstants.newBuilder()
@@ -78,7 +97,24 @@ public class Constants {
                 .damage(10)
                 .gravity(GRAVITY)
                 .animationSpeed(25)
-                .walkSpeed(0.35f * Game.SCALE)
+                .walkSpeed(0.35f * SCALE)
+                .hitBox((int)(22 * SCALE), (int)(19 * SCALE))
+                .attackBox((int)(82 * SCALE), (int)(19 * SCALE))
+                .build()
+        );
+        put(SharkConstants.SHARK, EntityConstants.newBuilder()
+                .animation(SharkConstants.IDLE, 8)
+                .animation(SharkConstants.RUNNING, 6)
+                .animation(SharkConstants.ATTACK, 5)
+                .animation(SharkConstants.HIT, 4)
+                .animation(SharkConstants.DEAD, 4)
+                .maxHealth(10)
+                .damage(10)
+                .gravity(GRAVITY)
+                .animationSpeed(25)
+                .walkSpeed(0.35f * SCALE)
+                .hitBox((int)(22 * SCALE), (int)(21 * SCALE))
+                .attackBox((int)(20 * SCALE), (int)(15 * SCALE))
                 .build()
         );
     }};
@@ -93,8 +129,8 @@ public class Constants {
                 .startAnimated(true)
                 .hitboxWidth(7)
                 .hitboxHeight(14)
-                .xDrawOffset((int) (3 * Game.SCALE))
-                .yDrawOffset((int) (2 * Game.SCALE))
+                .xDrawOffset((int) (3 * SCALE))
+                .yDrawOffset((int) (2 * SCALE))
                 .build()
         );
         put(ObjectConstants.BLUE_POTION, ObjectConstants.newBuilder()
@@ -106,8 +142,8 @@ public class Constants {
                 .startAnimated(true)
                 .hitboxWidth(7)
                 .hitboxHeight(14)
-                .xDrawOffset((int) (3 * Game.SCALE))
-                .yDrawOffset((int) (2 * Game.SCALE))
+                .xDrawOffset((int) (3 * SCALE))
+                .yDrawOffset((int) (2 * SCALE))
                 .build()
         );
         put(ObjectConstants.BOX, ObjectConstants.newBuilder()
@@ -119,8 +155,8 @@ public class Constants {
                 .startAnimated(false)
                 .hitboxWidth(25)
                 .hitboxHeight(18)
-                .xDrawOffset((int) (7 * Game.SCALE))
-                .yDrawOffset((int) (12 * Game.SCALE))
+                .xDrawOffset((int) (7 * SCALE))
+                .yDrawOffset((int) (12 * SCALE))
                 .build()
         );
         put(ObjectConstants.BARREL, ObjectConstants.newBuilder()
@@ -132,8 +168,8 @@ public class Constants {
                 .startAnimated(false)
                 .hitboxWidth(23)
                 .hitboxHeight(25)
-                .xDrawOffset((int) (8 * Game.SCALE))
-                .yDrawOffset((int) (5 * Game.SCALE))
+                .xDrawOffset((int) (8 * SCALE))
+                .yDrawOffset((int) (5 * SCALE))
                 .build()
         );
         put(ObjectConstants.SPIKE_TRAP, ObjectConstants.newBuilder()
@@ -146,7 +182,7 @@ public class Constants {
                 .hitboxWidth(32)
                 .hitboxHeight(16)
                 .xDrawOffset(0)
-                .yDrawOffset((int) (16 * Game.SCALE))
+                .yDrawOffset((int) (16 * SCALE))
                 .build()
         );
         put(ObjectConstants.CANNON_LEFT, ObjectConstants.newBuilder()
@@ -158,7 +194,7 @@ public class Constants {
                 .hitboxWidth(40)
                 .hitboxHeight(26)
                 .xDrawOffset(-4)
-                .yDrawOffset((int) (1 * Game.SCALE))
+                .yDrawOffset((int) (1 * SCALE))
                 .build()
         );
         put(ObjectConstants.CANNON_RIGHT, ObjectConstants.newBuilder()
@@ -171,7 +207,7 @@ public class Constants {
                 .hitboxWidth(40)
                 .hitboxHeight(26)
                 .xDrawOffset(-4)
-                .yDrawOffset((int) (1 * Game.SCALE))
+                .yDrawOffset((int) (1 * SCALE))
                 .build()
         );
 
@@ -182,7 +218,7 @@ public class Constants {
                 .value(-100)
                 .hitboxWidth(15)
                 .hitboxHeight(15)
-                .yDrawOffset((int) (5 * Game.SCALE))
+                .yDrawOffset((int) (5 * SCALE))
                 .build()
         );
     }};

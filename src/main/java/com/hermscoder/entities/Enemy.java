@@ -1,12 +1,9 @@
 package com.hermscoder.entities;
 
 import com.hermscoder.main.Game;
-import com.hermscoder.utils.Constants;
-import com.hermscoder.utils.EntityConstants;
 
 import java.awt.geom.Rectangle2D;
 
-import static com.hermscoder.utils.Constants.CrabbyConstants.*;
 import static com.hermscoder.utils.Constants.Directions.LEFT;
 import static com.hermscoder.utils.Constants.Directions.RIGHT;
 import static com.hermscoder.utils.HelpMethods.*;
@@ -26,6 +23,10 @@ public abstract class Enemy extends Entity {
     public Enemy(float x, float y, int width, int height, int enemyType) {
         super(x, y, width, height, enemyType);
     }
+
+    public abstract void hurt(int amount);
+
+    public abstract void afterAnimationFinishedAction(int state);
 
     protected void firstUpdateCheck(int[][] levelData) {
         if (!isEntityOnFloor(hitBox, levelData))
@@ -105,14 +106,6 @@ public abstract class Enemy extends Entity {
         animationIndex = 0;
     }
 
-    public void hurt(int amount) {
-        currentHealth -= amount;
-        if (currentHealth <= 0) {
-            newState(DEAD);
-        } else
-            newState(HIT);
-    }
-
 
     protected void checkEnemyHit(Rectangle2D.Float attackBox, Player player) {
         if (attackBox.intersects(player.hitBox))
@@ -129,15 +122,7 @@ public abstract class Enemy extends Entity {
 
             if (animationIndex >= entityConstants.getSpriteAmount(state)) {
                 animationIndex = 0;
-                switch (state) {
-                    case ATTACK:
-                    case HIT:
-                        state = IDLE;
-                        break;
-                    case DEAD:
-                        active = false;
-                        break;
-                }
+                afterAnimationFinishedAction(state);
             }
         }
     }
@@ -146,12 +131,16 @@ public abstract class Enemy extends Entity {
         return active;
     }
 
+    protected void setActive(boolean active) {
+        this.active = active;
+    }
+
     public void resetEnemy() {
         hitBox.x = x;
         hitBox.y = y;
         firstUpdate = true;
         currentHealth = maxHealth;
-        newState(IDLE);
+        newState(0);// IDLE
         active = true;
         airSpeed = 0;
     }

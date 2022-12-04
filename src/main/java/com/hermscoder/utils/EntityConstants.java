@@ -10,6 +10,10 @@ public class EntityConstants {
     private float gravity;
     private final int animationSpeed;
     private final float walkSpeed;
+    private final int hitBoxWidth;
+    private final int hitBoxHeight;
+    private final int attackBoxWidth;
+    private final int attackBoxHeight;
 
     private EntityConstants(EntityConstantsBuilder entityConstantsBuilder) {
         this.spritesAmount = entityConstantsBuilder.entitiesSpritesAmount;
@@ -18,14 +22,14 @@ public class EntityConstants {
         this.gravity = entityConstantsBuilder.gravity;
         this.animationSpeed = entityConstantsBuilder.animationSpeed;
         this.walkSpeed = entityConstantsBuilder.walkSpeed;
+        this.hitBoxWidth = entityConstantsBuilder.hitBoxWidth;
+        this.hitBoxHeight = entityConstantsBuilder.hitBoxHeight;
+        this.attackBoxWidth = entityConstantsBuilder.attackBoxWidth;
+        this.attackBoxHeight = entityConstantsBuilder.attackBoxHeight;
     }
 
     public static EntityConstantsBuilder newBuilder() {
         return new EntityConstantsBuilder();
-    }
-
-    public Map<Integer, Integer> getSpritesAmount() {
-        return spritesAmount;
     }
 
     public int getSpriteAmount(int state) {
@@ -52,6 +56,22 @@ public class EntityConstants {
         return walkSpeed;
     }
 
+    public int getHitBoxWidth() {
+        return hitBoxWidth;
+    }
+
+    public int getHitBoxHeight() {
+        return hitBoxHeight;
+    }
+
+    public int getAttackBoxWidth() {
+        return attackBoxWidth;
+    }
+
+    public int getAttackBoxHeight() {
+        return attackBoxHeight;
+    }
+
     static class EntityConstantsBuilder {
         private final Map<Integer, Integer> entitiesSpritesAmount = new HashMap<>();
         private int maxHealth;
@@ -59,6 +79,10 @@ public class EntityConstants {
         private float gravity;
         private int animationSpeed;
         private float walkSpeed;
+        private int hitBoxWidth;
+        private int hitBoxHeight;
+        private int attackBoxWidth;
+        private int attackBoxHeight;
 
         public EntityConstantsBuilder animation(int animationIndex, int spritesQuantity) {
             entitiesSpritesAmount.put(animationIndex, spritesQuantity);
@@ -82,6 +106,18 @@ public class EntityConstants {
 
         public EntityConstantsBuilder animationSpeed(int animationSpeed) {
             this.animationSpeed = animationSpeed;
+            return this;
+        }
+
+        public EntityConstantsBuilder hitBox(int width, int height) {
+            this.hitBoxWidth = width;
+            this.hitBoxHeight = height;
+            return this;
+        }
+
+        public EntityConstantsBuilder attackBox(int width, int height) {
+            this.attackBoxWidth = width;
+            this.attackBoxHeight = height;
             return this;
         }
 

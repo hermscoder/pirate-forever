@@ -1,6 +1,7 @@
 package com.hermscoder.levels;
 
 import com.hermscoder.entities.Crabby;
+import com.hermscoder.entities.Shark;
 import com.hermscoder.main.Game;
 import com.hermscoder.objects.Cannon;
 import com.hermscoder.objects.Container;
@@ -18,6 +19,7 @@ public class Level {
     private BufferedImage image;
     private int[][] lvlData;
     private ArrayList<Crabby> crabs;
+    private ArrayList<Shark> sharks;
     private ArrayList<Potion> potions;
     private ArrayList<Container> containers;
     private ArrayList<Spike> spikes;
@@ -61,6 +63,7 @@ public class Level {
 
     private void createEnemies() {
         crabs = HelpMethods.getCrabs(image);
+        sharks = HelpMethods.getShark(image);
     }
 
     private void createPotions() {
@@ -92,6 +95,10 @@ public class Level {
 
     public ArrayList<Crabby> getCrabs() {
         return crabs;
+    }
+
+    public ArrayList<Shark> getSharks() {
+        return sharks;
     }
 
     public ArrayList<Potion> getPotions() {
