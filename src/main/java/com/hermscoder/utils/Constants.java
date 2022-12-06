@@ -28,6 +28,7 @@ public class Constants {
 
         public static final int IDLE = 0;
         public static final int RUNNING = 1;
+        public static final int ATTACK_ANTICIPATION = 5;
         public static final int ATTACK = 6;
         public static final int HIT = 7;
         public static final int DEAD = 8;
@@ -95,6 +96,7 @@ public class Constants {
                 .animation(CrabbyConstants.DEAD, 5)
                 .maxHealth(10)
                 .damage(10)
+                .viewRangeInTiles(5)
                 .gravity(GRAVITY)
                 .animationSpeed(25)
                 .walkSpeed(0.35f * SCALE)
@@ -105,11 +107,13 @@ public class Constants {
         put(SharkConstants.SHARK, EntityConstants.newBuilder()
                 .animation(SharkConstants.IDLE, 8)
                 .animation(SharkConstants.RUNNING, 6)
+                .animation(SharkConstants.ATTACK_ANTICIPATION, 3)
                 .animation(SharkConstants.ATTACK, 5)
                 .animation(SharkConstants.HIT, 4)
                 .animation(SharkConstants.DEAD, 4)
                 .maxHealth(10)
                 .damage(10)
+                .viewRangeInTiles(5)
                 .gravity(GRAVITY)
                 .animationSpeed(25)
                 .walkSpeed(0.35f * SCALE)

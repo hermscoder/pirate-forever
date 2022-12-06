@@ -7,6 +7,7 @@ public class EntityConstants {
     private final Map<Integer, Integer> spritesAmount;
     private final int maxHealth;
     private final int damage;
+    private final int viewRangeInTiles;
     private float gravity;
     private final int animationSpeed;
     private final float walkSpeed;
@@ -19,6 +20,7 @@ public class EntityConstants {
         this.spritesAmount = entityConstantsBuilder.entitiesSpritesAmount;
         this.maxHealth = entityConstantsBuilder.maxHealth;
         this.damage = entityConstantsBuilder.damage;
+        this.viewRangeInTiles = entityConstantsBuilder.viewRangeInTiles;
         this.gravity = entityConstantsBuilder.gravity;
         this.animationSpeed = entityConstantsBuilder.animationSpeed;
         this.walkSpeed = entityConstantsBuilder.walkSpeed;
@@ -72,10 +74,15 @@ public class EntityConstants {
         return attackBoxHeight;
     }
 
+    public int getViewRangeInTiles() {
+        return this.viewRangeInTiles;
+    }
+
     static class EntityConstantsBuilder {
         private final Map<Integer, Integer> entitiesSpritesAmount = new HashMap<>();
         private int maxHealth;
         private int damage;
+        public int viewRangeInTiles;
         private float gravity;
         private int animationSpeed;
         private float walkSpeed;
@@ -118,6 +125,11 @@ public class EntityConstants {
         public EntityConstantsBuilder attackBox(int width, int height) {
             this.attackBoxWidth = width;
             this.attackBoxHeight = height;
+            return this;
+        }
+
+        public EntityConstantsBuilder viewRangeInTiles(int viewRangeInTiles) {
+            this.viewRangeInTiles = viewRangeInTiles;
             return this;
         }
 

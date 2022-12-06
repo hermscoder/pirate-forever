@@ -15,7 +15,6 @@ public abstract class Enemy extends Entity {
     protected float walkingDirection = LEFT;
     protected int tileY;
     protected float attackDistance = Game.TILES_SIZE;
-    protected int viewRangeInTiles = 5;
 
     private boolean active = true;
     protected boolean attackChecked;
@@ -84,7 +83,7 @@ public abstract class Enemy extends Entity {
     protected boolean isPlayerInRange(Player player) {
         int absValue = (int) Math.abs(player.hitBox.x - hitBox.x);
 
-        return absValue <= attackDistance * viewRangeInTiles;
+        return absValue <= attackDistance * entityConstants.getViewRangeInTiles();
     }
 
     protected boolean isPlayerCloseForAttack(Player player) {
