@@ -1,14 +1,19 @@
 package com.hermscoder.entities;
 
 
+import com.hermscoder.main.Game;
+
 import static com.hermscoder.main.Game.SCALE;
 import static com.hermscoder.utils.Constants.Directions.LEFT;
 import static com.hermscoder.utils.Constants.Directions.RIGHT;
 import static com.hermscoder.utils.Constants.SharkConstants.*;
+import static com.hermscoder.utils.HelpMethods.*;
 import static com.hermscoder.utils.Sprite.SharkSpriteAtlas;
 
 public class Shark extends Enemy {
 
+    //Jumping / Gravity
+    private float jumpSpeed = -1f * SCALE;
 
     public Shark(float x, float y) {
         super(x, y,
@@ -48,6 +53,9 @@ public class Shark extends Enemy {
     @Override
     public void afterAnimationFinishedAction(int state) {
         switch (state) {
+            case ATTACK_ANTICIPATION:
+                newState(ATTACK);
+                break;
             case ATTACK:
             case HIT:
                 newState(IDLE);
@@ -58,19 +66,6 @@ public class Shark extends Enemy {
         }
     }
 
-    public int flipX() {
-        if (walkingDirection == RIGHT)
-            return width;
-        else
-            return 0;
-    }
-
-    public int flipW() {
-        if (walkingDirection == RIGHT)
-            return -1;
-        else
-            return 1;
-    }
 
     private void updateBehavior(int[][] levelData, Player player) {
         if (firstUpdate) {
@@ -88,7 +83,7 @@ public class Shark extends Enemy {
                     if (canSeePlayer(levelData, player)) {
                         turnTowardsPlayer(player);
                         if (isPlayerCloseForAttack(player))
-                            newState(ATTACK);
+                            newState(ATTACK_ANTICIPATION);
                     }
 
                     move(levelData);
@@ -106,4 +101,17 @@ public class Shark extends Enemy {
         }
     }
 
+    public int flipX() {
+        if (walkingDirection == RIGHT)
+            return width;
+        else
+            return 0;
+    }
+
+    public int flipW() {
+        if (walkingDirection == RIGHT)
+            return -1;
+        else
+            return 1;
+    }
 }
