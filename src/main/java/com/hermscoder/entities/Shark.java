@@ -1,8 +1,6 @@
 package com.hermscoder.entities;
 
 
-import com.hermscoder.main.Game;
-
 import static com.hermscoder.main.Game.SCALE;
 import static com.hermscoder.utils.Constants.Directions.LEFT;
 import static com.hermscoder.utils.Constants.Directions.RIGHT;
@@ -54,9 +52,11 @@ public class Shark extends Enemy {
     public void afterAnimationFinishedAction(int state) {
         switch (state) {
             case ATTACK_ANTICIPATION:
+                jump();
                 newState(ATTACK);
                 break;
             case ATTACK:
+                attackChecked = false;
             case HIT:
                 newState(IDLE);
                 break;
@@ -66,7 +66,6 @@ public class Shark extends Enemy {
         }
     }
 
-
     private void updateBehavior(int[][] levelData, Player player) {
         if (firstUpdate) {
             firstUpdateCheck(levelData);
@@ -74,6 +73,7 @@ public class Shark extends Enemy {
 
         if (inAir) {
             updateInAir(levelData);
+            move(levelData);
         } else {
             switch (state) {
                 case IDLE:
@@ -85,20 +85,25 @@ public class Shark extends Enemy {
                         if (isPlayerCloseForAttack(player))
                             newState(ATTACK_ANTICIPATION);
                     }
-
                     move(levelData);
                     break;
                 case ATTACK:
-                    if (animationIndex == 0)
-                        attackChecked = false;
                     //checking if we are hurting the player when we are in the attack moment of the animation
-                    if (animationIndex == 3 && !attackChecked)
+                    if (animationIndex < 3 && !attackChecked)
                         checkEnemyHit(attackBox, player);
                     break;
                 case HIT:
                     break;
             }
         }
+    }
+
+    private void jump() {
+        if (inAir)
+            return;
+//        playing.getGame().getAudioPlayer().playEffect(SoundEffect.JUMP);
+        inAir = true;
+        airSpeed = jumpSpeed;
     }
 
     public int flipX() {

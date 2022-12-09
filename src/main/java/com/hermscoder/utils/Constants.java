@@ -118,7 +118,7 @@ public class Constants {
                 .animationSpeed(25)
                 .walkSpeed(0.35f * SCALE)
                 .hitBox((int)(22 * SCALE), (int)(21 * SCALE))
-                .attackBox((int)(20 * SCALE), (int)(15 * SCALE))
+                .attackBox((int)(25 * SCALE), (int)(15 * SCALE))
                 .build()
         );
     }};

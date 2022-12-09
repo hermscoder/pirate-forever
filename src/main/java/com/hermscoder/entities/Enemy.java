@@ -51,13 +51,12 @@ public abstract class Enemy extends Entity {
         } else {
             xSpeed = walkSpeed;
         }
-        if (canMoveHere(hitBox.x + xSpeed, hitBox.y, hitBox.width, hitBox.height, levelData))
-            if (isFloor(hitBox, xSpeed, levelData)) {
-                hitBox.x += xSpeed;
-                return;
-            }
-
-        changeWalkDir();
+        if (canMoveHere(hitBox.x + xSpeed, hitBox.y, hitBox.width, hitBox.height, levelData) && (isFloor(hitBox, xSpeed, levelData) || inAir)) {
+            hitBox.x += xSpeed;
+        } else {
+            if(!inAir)
+                changeWalkDir();
+        }
     }
 
     protected void turnTowardsPlayer(Player player) {
@@ -107,10 +106,11 @@ public abstract class Enemy extends Entity {
 
 
     protected void checkEnemyHit(Rectangle2D.Float attackBox, Player player) {
-        if (attackBox.intersects(player.hitBox))
+        if (attackBox.intersects(player.hitBox)) {
             player.changeHealth(-entityConstants.getDamage());
+            attackChecked = true;
+        }
 
-        attackChecked = true;
     }
 
     protected void updateAnimationTick() {

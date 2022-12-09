@@ -81,8 +81,8 @@ public class EnemyManager {
                         (int) s.getHitBox().y - SHARK_DRAWOFFSET_Y,
                         SharkSpriteAtlas.getTileWidth(Game.SCALE) * s.flipW(),
                         SharkSpriteAtlas.getTileHeight(Game.SCALE), null);
-//                s.drawHitBox(g, xLevelOffset);
-//                s.drawAttackBox(g, xLevelOffset);
+                s.drawHitBox(g, xLevelOffset);
+                s.drawAttackBox(g, xLevelOffset);
             }
     }
 

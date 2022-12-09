@@ -18,7 +18,6 @@ public class Crabby extends Enemy {
                 Constants.CrabbyConstants.CRABBY);
         initHitBox(entityConstants.getHitBoxWidth(), entityConstants.getHitBoxHeight());
         initAttackBox();
-        initAttackBox();
         attackBoxOffsetX = (int) (30 * SCALE);
     }
 
