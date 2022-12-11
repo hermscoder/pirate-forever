@@ -161,11 +161,11 @@ public class Player extends Entity {
 
     private void updateAttackBox() {
         if (right && left) {
-            attackBox.x = hitBox.x + (hitBox.width * flipW) + ((int) (10 * SCALE) * flipW);
+            attackBox.x = hitBox.x + (hitBox.width * flipW);
         } else if (right || (powerAttackActive && flipW == FACING_RIGHT)) {
-            attackBox.x = hitBox.x + hitBox.width + (int) (10 * SCALE);
+            attackBox.x = hitBox.x + hitBox.width;
         } else if (left || (powerAttackActive && flipW == FACING_LEFT)) {
-            attackBox.x = hitBox.x - hitBox.width - (int) (10 * SCALE);
+            attackBox.x = hitBox.x - hitBox.width;
         }
 
         attackBox.y = hitBox.y + (10 * SCALE);
@@ -483,9 +483,9 @@ public class Player extends Entity {
 
     private void resetAttackBox() {
         if (flipW == FACING_RIGHT) {
-            attackBox.x = hitBox.x + hitBox.width + (int) (10 * SCALE);
+            attackBox.x = hitBox.x + hitBox.width;
         } else {
-            attackBox.x = hitBox.x - hitBox.width - (int) (10 * SCALE);
+            attackBox.x = hitBox.x - hitBox.width;
         }
 
     }

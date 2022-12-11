@@ -88,7 +88,7 @@ public class Constants {
                 .animationSpeed(25)
                 .walkSpeed(1f * SCALE)
                 .hitBox((int)(20 * SCALE), (int)(27 * SCALE))
-                .attackBox((int)(20 * SCALE), (int)(20 * SCALE))
+                .attackBox((int)(30 * SCALE), (int)(20 * SCALE))
                 .build()
         );
         put(CrabbyConstants.CRABBY, EntityConstants.newBuilder()
