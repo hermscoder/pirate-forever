@@ -53,6 +53,9 @@ public class Constants {
     }
 
     public static class PlayerConstants {
+        public static final int FACING_LEFT = -1;
+        public static final int FACING_RIGHT = 1;
+
         public static final int PLAYER = 100;
 
         public static final int IDLE = 0;
@@ -179,7 +182,7 @@ public class Constants {
         put(ObjectConstants.SPIKE_TRAP, ObjectConstants.newBuilder()
                 .spriteAtlas(Sprite.SpikeTrapSpriteAtlas)
                 .animationSprite(ObjectConstants.SPIKE_TRAP, 1)
-                .value(-100)
+                .damage(100)
                 .gravity(GRAVITY)
                 .animationSpeed(25)
                 .startAnimated(false)
@@ -193,7 +196,7 @@ public class Constants {
                 .spriteAtlas(Sprite.CannonSpriteAtlas)
                 .animationSprite(ObjectConstants.CANNON_LEFT, 7)
                 .gravity(GRAVITY)
-                .value(50)
+                .damage(50)
                 .animationSpeed(25)
                 .hitboxWidth(40)
                 .hitboxHeight(26)
@@ -205,7 +208,7 @@ public class Constants {
                 .spriteAtlas(Sprite.CannonSpriteAtlas)
                 .animationSprite(ObjectConstants.CANNON_RIGHT, 7)
                 .gravity(GRAVITY)
-                .value(50)
+                .damage(50)
                 .animationSpeed(25)
                 .startAnimated(false)
                 .hitboxWidth(40)
@@ -219,7 +222,6 @@ public class Constants {
                 .spriteAtlas(Sprite.CannonBallSprite)
                 .animationSprite(ObjectConstants.CANNON_BALL, 1)
                 .gravity(GRAVITY)
-                .value(-100)
                 .hitboxWidth(15)
                 .hitboxHeight(15)
                 .yDrawOffset((int) (5 * SCALE))

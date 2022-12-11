@@ -20,8 +20,8 @@ public abstract class Entity {
     protected float airSpeed = 0f;
     protected boolean inAir = false;
 
-    protected int maxHealth = 100;
-    protected int currentHealth = maxHealth;
+    protected int maxHealth;
+    protected int currentHealth;
 
     protected Rectangle2D.Float attackBox;
 
@@ -38,6 +38,8 @@ public abstract class Entity {
         this.currentHealth = maxHealth;
         this.walkSpeed = entityConstants.getWalkSpeed();
     }
+
+    public abstract void afterAnimationFinishedAction(int state);
 
     protected void drawHitBox(Graphics g, int xLevelOffset) {
         //For debugging the hitbox

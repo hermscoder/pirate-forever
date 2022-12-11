@@ -9,20 +9,22 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 public class Projectile {
-    private static final int LEFT = -1;
-    private static final int RIGHT = 1;
+    public static final int LEFT = -1;
+    public static final int RIGHT = 1;
 
     private Rectangle2D.Float hitBox;
     private int direction;
     private boolean active = true;
+    private int damage;
 
     protected final ObjectConstants objectConstants;
 
     private float SPEED = (.9f * Game.SCALE);
 
-    public Projectile(int x, int y, int direction) {
+    public Projectile(int x, int y, int direction, int parentObjectType) {
         this.direction = direction;
         this.objectConstants = Constants.getObjectConstants(ObjectConstants.CANNON_BALL);
+        this.damage = Constants.getObjectConstants(parentObjectType).getDamage();
 
         int xOffset = direction == LEFT ? (int) (-3 * Game.SCALE) : (int) (29 * Game.SCALE);
 
@@ -55,7 +57,7 @@ public class Projectile {
     }
 
     public int getDamage() {
-        return objectConstants.getValue();
+        return damage;
     }
 
     public void setActive(boolean active) {

@@ -38,7 +38,7 @@ public class ObjectManager {
     public void checkSpikesTouched(Player player) {
         for (Spike s : spikes) {
             if (s.getHitBox().intersects(player.getHitBox())) {
-                player.kill();
+                player.hit(s.getHitBox(), s.objectConstants.getDamage());;
             }
         }
     }
@@ -73,7 +73,7 @@ public class ObjectManager {
     }
 
     private void applyEffectToPlayer(Potion p) {
-        playing.getPlayer().changeHealth(p.getCureValue());
+        playing.getPlayer().heal(p.getCureValue());
         playing.getPlayer().changePower(p.getPowerValue());
     }
 
@@ -146,7 +146,7 @@ public class ObjectManager {
             if (projectile.isActive()) {
                 projectile.updatePos();
                 if (projectile.getHitBox().intersects(player.getHitBox())) {
-                    player.changeHealth(projectile.getDamage());
+                    player.hit(projectile.getHitBox(), projectile.getDamage());
                     projectile.setActive(false);
                 } else if (isHitBoxHittingLevel(projectile.getHitBox(), lvlData)) {
                     projectile.setActive(false);
@@ -173,8 +173,8 @@ public class ObjectManager {
 
     private void shootCannon(Cannon cannon) {
         cannon.setAnimation(true);
-        int direction = cannon.getObjectType() == CANNON_LEFT ? -1 : 1;
-        projectiles.add(new Projectile((int) cannon.getHitBox().x, (int) cannon.getHitBox().y, direction));
+        int direction = cannon.getObjectType() == CANNON_LEFT ? Projectile.LEFT : Projectile.RIGHT;
+        projectiles.add(new Projectile((int) cannon.getHitBox().x, (int) cannon.getHitBox().y, direction, cannon.getObjectType()));
     }
 
     private boolean isPlayerInFrontOfCannon(Cannon cannon, Player player) {

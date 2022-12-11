@@ -25,8 +25,6 @@ public abstract class Enemy extends Entity {
 
     public abstract void hurt(int amount);
 
-    public abstract void afterAnimationFinishedAction(int state);
-
     protected void firstUpdateCheck(int[][] levelData) {
         if (!isEntityOnFloor(hitBox, levelData))
             inAir = true;
@@ -107,7 +105,7 @@ public abstract class Enemy extends Entity {
 
     protected void checkEnemyHit(Rectangle2D.Float attackBox, Player player) {
         if (attackBox.intersects(player.hitBox)) {
-            player.changeHealth(-entityConstants.getDamage());
+            player.hit(hitBox, entityConstants.getDamage());
             attackChecked = true;
         }
 

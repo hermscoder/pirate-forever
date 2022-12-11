@@ -22,7 +22,8 @@ public class ObjectConstants {
 
     private final Map<Integer, Integer> objectAnimationsSpritesAmount;
     private final int maxHealth;
-    private final int value;
+    private final int damage;
+    private final int heal;
     private final int power;
     private float gravity;
     private final int animationSpeed;
@@ -36,7 +37,8 @@ public class ObjectConstants {
     private ObjectConstants(ObjectConstantsBuilder objectConstantsBuilder) {
         this.objectAnimationsSpritesAmount = objectConstantsBuilder.entitiesAnimationSpritesAmount;
         this.maxHealth = objectConstantsBuilder.maxHealth;
-        this.value = objectConstantsBuilder.value;
+        this.damage = objectConstantsBuilder.damage;
+        this.heal = objectConstantsBuilder.heal;
         this.power = objectConstantsBuilder.power;
         this.gravity = objectConstantsBuilder.gravity;
         this.animationSpeed = objectConstantsBuilder.animationSpeed;
@@ -60,12 +62,16 @@ public class ObjectConstants {
         return maxHealth;
     }
 
-    public int getValue() {
-        return value;
+    public int getHeal() {
+        return heal;
     }
 
     public int getPower() {
         return power;
+    }
+
+    public int getDamage() {
+        return damage;
     }
 
     public float getGravity() {
@@ -103,7 +109,8 @@ public class ObjectConstants {
     static class ObjectConstantsBuilder {
         private final Map<Integer, Integer> entitiesAnimationSpritesAmount = new HashMap<>();
         private int maxHealth;
-        private int value;
+        private int damage;
+        private int heal;
         private int power;
         private float gravity;
         private int animationSpeed;
@@ -125,7 +132,12 @@ public class ObjectConstants {
         }
 
         public ObjectConstantsBuilder value(int value) {
-            this.value = value;
+            this.heal = value;
+            return this;
+        }
+
+        public ObjectConstantsBuilder damage(int damage) {
+            this.damage = damage;
             return this;
         }
 

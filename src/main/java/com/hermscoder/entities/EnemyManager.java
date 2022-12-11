@@ -69,8 +69,8 @@ public class EnemyManager {
                         (int) c.getHitBox().y - CRABBY_DRAWOFFSET_Y,
                         CrabbySpriteAtlas.getTileWidth(Game.SCALE) * c.flipW(),
                         CrabbySpriteAtlas.getTileHeight(Game.SCALE), null);
-//            c.drawHitBox(g, xLevelOffset);
-//            c.drawAttackBox(g, xLevelOffset);
+            c.drawHitBox(g, xLevelOffset);
+            c.drawAttackBox(g, xLevelOffset);
             }
 
         for (Shark s : sharks)

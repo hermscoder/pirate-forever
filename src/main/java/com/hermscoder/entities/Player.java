@@ -6,6 +6,7 @@ import com.hermscoder.utils.HelpMethods;
 import com.hermscoder.utils.LoadSave;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import static com.hermscoder.main.Game.SCALE;
@@ -15,9 +16,6 @@ import static com.hermscoder.utils.Sprite.PlayerSpriteAtlas;
 import static com.hermscoder.utils.Sprite.StatusBar;
 
 public class Player extends Entity {
-
-    private static final int FACING_LEFT = -1;
-    private static final int FACING_RIGHT = 1;
 
     private static final int POWER_ATTACK_TICKS = 35;
     private static final int POWER_ATTACK_COST = 60;
@@ -71,6 +69,12 @@ public class Player extends Entity {
     private int powerAttackTick;
     private static final int POWER_GROW_SPEED = 20;
     private int powerGrowTick = 0;
+
+    private boolean takingHit;
+    private int hitPushDirection;
+    private float hitPushXForce = 0.3f * SCALE;
+    private float hitPushYForce = -0.9f * SCALE;
+
 
 
     public Player(float x, float y, int width, int height, Playing playing) {
@@ -230,8 +234,9 @@ public class Player extends Entity {
                 jump();
             if (!inAir)
                 if (!powerAttackActive)
-                    if ((!left && !right) || (right && left))
-                        return;
+                    if(!takingHit)
+                        if ((!left && !right) || (right && left))
+                            return;
 
 
             if (left && !right) {
@@ -249,6 +254,15 @@ public class Player extends Entity {
                 if ((!left && !right) || (left && right))
                     xSpeed = walkSpeed * flipW;
                 xSpeed *= 3;
+            }
+
+            if(takingHit) {
+                if(animationIndex == 0){
+                    inAir = true;
+                    airSpeed = hitPushYForce;
+                }
+                xSpeed += hitPushDirection * hitPushXForce;
+                resetAttackBox();
             }
         }
 
@@ -305,11 +319,19 @@ public class Player extends Entity {
         powerAttackTick = 0;
     }
 
-    public void changeHealth(int value) {
-        currentHealth += value;
+    public void hit(Rectangle2D.Float hitterHitBox, int amount) {
+        currentHealth -= amount;
         if (currentHealth <= 0) {
             kill();
-        } else if (currentHealth >= maxHealth) {
+        } else {
+            takingHit = true;
+            hitPushDirection = hitterHitBox.x - hitBox.x < 0 ? FACING_RIGHT : FACING_LEFT;
+        }
+    }
+
+    public void heal(int value) {
+        currentHealth += value;
+        if (currentHealth >= maxHealth) {
             currentHealth = maxHealth;
         }
     }
@@ -333,8 +355,9 @@ public class Player extends Entity {
             animationIndex++;
             if (animationIndex >= entityConstants.getSpriteAmount(state)) {
                 animationIndex = 0;
-                attacking = false;
-                attackChecked = false;
+//                attacking = false;
+//                attackChecked = false;
+                afterAnimationFinishedAction(state);
             }
         }
     }
@@ -345,35 +368,42 @@ public class Player extends Entity {
         if (currentHealth <= 0) {
             return;
         } else {
-            if (moving)
-                state = RUNNING;
-            else
-                state = IDLE;
-
-            if (inAir) {
-                if (airSpeed < 0)
-                    state = JUMP;
+            if(takingHit) {
+                state = HIT;
+            } else {
+                if (moving)
+                    state = RUNNING;
                 else
-                    state = FALLING;
+                    state = IDLE;
 
-            }
+                if (inAir) {
+                    if (airSpeed < 0)
+                        state = JUMP;
+                    else
+                        state = FALLING;
 
-            if (powerAttackActive) {
-                state = ATTACK_JUMP_1;
-                animationIndex = 1;
-                animationTick = 0;
-                return;
-            }
+                }
 
-            if (attacking) {
-                state = ATTACK_1;
-                // if we were already attacking we jump to animation index 1 to make the animation more responsive
-                if (startAnimation != ATTACK_1) {
+                if (powerAttackActive) {
+                    state = ATTACK_JUMP_1;
                     animationIndex = 1;
                     animationTick = 0;
                     return;
                 }
+
+                if (attacking) {
+                    state = ATTACK_1;
+                    // if we were already attacking we jump to animation index 1 to make the animation more responsive
+                    if (startAnimation != ATTACK_1) {
+                        animationIndex = 1;
+                        animationTick = 0;
+                        return;
+                    }
+                }
             }
+
+
+
         }
 
 
@@ -392,14 +422,7 @@ public class Player extends Entity {
         }
     }
 
-    private void resetAnimationTick() {
-        animationTick = 0;
-        animationIndex = 0;
-    }
 
-    public void resetDirBoolean() {
-        left = right = up = down = false;
-    }
 
     public void loadLvlData(int[][] lvlData) {
         this.lvlData = lvlData;
@@ -412,6 +435,30 @@ public class Player extends Entity {
         return this.state == state
                 && animationIndex == (entityConstants.getSpriteAmount(state) - 1)
                 && animationTick >= (entityConstants.getAnimationSpeed() - 1);
+    }
+
+    @Override
+    public void afterAnimationFinishedAction(int state) {
+        switch (state) {
+            case ATTACK_1:
+                attacking = false;
+                attackChecked = false;
+                break;
+            case HIT:
+                takingHit = false;
+                break;
+            case DEAD:
+                break;
+        }
+    }
+
+    private void resetAnimationTick() {
+        animationTick = 0;
+        animationIndex = 0;
+    }
+
+    public void resetDirBoolean() {
+        left = right = up = down = false;
     }
 
     public void resetAll() {

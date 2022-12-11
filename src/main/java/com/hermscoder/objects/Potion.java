@@ -28,7 +28,7 @@ public class Potion extends GameObject {
     }
 
     public int getCureValue() {
-        return objectConstants.getValue();
+        return objectConstants.getHeal();
     }
 
     public int getPowerValue() {
