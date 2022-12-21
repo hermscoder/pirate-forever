@@ -18,6 +18,10 @@ public class ObjectConstants {
     public static final int CANNON_LEFT = 51;
     public static final int CANNON_RIGHT = 52;
 
+    //Weapons
+    public static final int SWORD = 101;
+    public static final int FIRE_SWORD = 102;
+
     public static final int CANNON_BALL = 256;
 
     private final Map<Integer, Integer> objectAnimationsSpritesAmount;

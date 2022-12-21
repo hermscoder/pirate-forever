@@ -241,6 +241,19 @@ public class HelpMethods {
         return list;
     }
 
+    public static ArrayList<Weapon> getWeapons(BufferedImage levelImage) {
+        ArrayList<Weapon> list = new ArrayList<>();
+        for (int j = 0; j < levelImage.getHeight(); j++) {
+            for (int i = 0; i < levelImage.getWidth(); i++) {
+                Color color = new Color(levelImage.getRGB(i, j));
+                int value = color.getBlue();
+                if (value > 100)
+                    list.add(new Sword(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
+            }
+        }
+        return list;
+    }
+
     public static ArrayList<Spike> getSpikes(BufferedImage levelImage) {
         ArrayList<Spike> list = new ArrayList<>();
         for (int j = 0; j < levelImage.getHeight(); j++) {
@@ -277,4 +290,5 @@ public class HelpMethods {
                 hitBox.x + hitBox.width / 2,
                 hitBox.y + hitBox.height / 2);
     }
+
 }

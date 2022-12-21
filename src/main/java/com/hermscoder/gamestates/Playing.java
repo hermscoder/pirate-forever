@@ -137,12 +137,16 @@ public class Playing extends State implements StateMethods {
         objectManager.checkSpikesTouched(player);
     }
 
+    public void checkWeaponTouched(Player player) {
+        objectManager.checkWeaponTouched(player);
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         if (!gameOver)
             if (e.getButton() == MouseEvent.BUTTON1) {
                 player.setAttacking(true);
-            } else if(e.getButton() == MouseEvent.BUTTON3)
+            } else if (e.getButton() == MouseEvent.BUTTON3)
                 player.powerAttack();
     }
 

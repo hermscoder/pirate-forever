@@ -2,6 +2,7 @@ package com.hermscoder.entities;
 
 import com.hermscoder.audio.SoundEffect;
 import com.hermscoder.gamestates.Playing;
+import com.hermscoder.objects.Weapon;
 import com.hermscoder.utils.HelpMethods;
 import com.hermscoder.utils.LoadSave;
 
@@ -71,10 +72,11 @@ public class Player extends Entity {
     private int powerGrowTick = 0;
 
     private boolean takingHit;
-    private int hitPushDirection;
-    private float hitPushXForce = 0.3f * SCALE;
-    private float hitPushYForce = -0.9f * SCALE;
+    private int knockBackDirection;
+    private float knockBackXForce = 0.3f * SCALE;
+    private float knockBackYForce = -0.9f * SCALE;
 
+    private Weapon currentWeapon;
 
 
     public Player(float x, float y, int width, int height, Playing playing) {
@@ -120,6 +122,7 @@ public class Player extends Entity {
         if (moving) {
             checkPotionTouched();
             checkSpikesTouched();
+            checkWeaponTouched();
             tileY = (int) (hitBox.y / TILES_SIZE);
             if (powerAttackActive) {
                 powerAttackTick++;
@@ -143,6 +146,11 @@ public class Player extends Entity {
     private void checkPotionTouched() {
         playing.checkPotionTouched(hitBox);
     }
+
+    private void checkWeaponTouched() {
+        playing.checkWeaponTouched(this);
+    }
+
 
     private void checkAttack() {
         if (attackChecked || animationIndex != 1)
@@ -234,7 +242,7 @@ public class Player extends Entity {
                 jump();
             if (!inAir)
                 if (!powerAttackActive)
-                    if(!takingHit)
+                    if (!takingHit)
                         if ((!left && !right) || (right && left))
                             return;
 
@@ -256,12 +264,12 @@ public class Player extends Entity {
                 xSpeed *= 3;
             }
 
-            if(takingHit) {
-                if(animationIndex == 0){
+            if (takingHit) {
+                if (animationIndex == 0) {
                     inAir = true;
-                    airSpeed = hitPushYForce;
+                    airSpeed = knockBackYForce;
                 }
-                xSpeed += hitPushDirection * hitPushXForce;
+                xSpeed += knockBackDirection * knockBackXForce;
                 resetAttackBox();
             }
         }
@@ -325,7 +333,7 @@ public class Player extends Entity {
             kill();
         } else {
             takingHit = true;
-            hitPushDirection = hitterHitBox.x - hitBox.x < 0 ? FACING_RIGHT : FACING_LEFT;
+            knockBackDirection = hitterHitBox.x - hitBox.x < 0 ? FACING_RIGHT : FACING_LEFT;
         }
     }
 
@@ -368,7 +376,7 @@ public class Player extends Entity {
         if (currentHealth <= 0) {
             return;
         } else {
-            if(takingHit) {
+            if (takingHit) {
                 state = HIT;
             } else {
                 if (moving)
@@ -403,7 +411,6 @@ public class Player extends Entity {
             }
 
 
-
         }
 
 
@@ -421,7 +428,6 @@ public class Player extends Entity {
             changePower(-POWER_ATTACK_COST);
         }
     }
-
 
 
     public void loadLvlData(int[][] lvlData) {
@@ -533,5 +539,29 @@ public class Player extends Entity {
 
     public int getTileY() {
         return this.tileY;
+    }
+
+    public float getxDrawOffset() {
+        return xDrawOffset;
+    }
+
+    public float getyDrawOffset() {
+        return yDrawOffset;
+    }
+
+    public int getFlipX() {
+        return flipX;
+    }
+
+    public int getFlipW() {
+        return flipW;
+    }
+
+    public Weapon getCurrentWeapon() {
+        return currentWeapon;
+    }
+
+    public void setCurrentWeapon(Weapon currentWeapon) {
+        this.currentWeapon = currentWeapon;
     }
 }

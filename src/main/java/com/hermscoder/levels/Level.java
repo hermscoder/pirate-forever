@@ -3,10 +3,8 @@ package com.hermscoder.levels;
 import com.hermscoder.entities.Crabby;
 import com.hermscoder.entities.Shark;
 import com.hermscoder.main.Game;
-import com.hermscoder.objects.Cannon;
 import com.hermscoder.objects.Container;
-import com.hermscoder.objects.Potion;
-import com.hermscoder.objects.Spike;
+import com.hermscoder.objects.*;
 import com.hermscoder.utils.HelpMethods;
 
 import java.awt.*;
@@ -22,6 +20,7 @@ public class Level {
     private ArrayList<Shark> sharks;
     private ArrayList<Potion> potions;
     private ArrayList<Container> containers;
+    private ArrayList<Weapon> weapons;
     private ArrayList<Spike> spikes;
     private ArrayList<Cannon> cannons;
 
@@ -39,6 +38,7 @@ public class Level {
         createEnemies();
         createPotions();
         createContainers();
+        createWeapons();
         createSpikes();
         createCannons();
         calculateOffsets();
@@ -74,6 +74,10 @@ public class Level {
         containers = HelpMethods.getContainers(image);
     }
 
+    private void createWeapons() {
+        weapons = HelpMethods.getWeapons(image);
+    }
+
     private void calculateOffsets() {
         levelTilesWide = image.getWidth();
         maxTilesOffset = levelTilesWide - Game.TILES_IN_WIDTH;
@@ -103,6 +107,10 @@ public class Level {
 
     public ArrayList<Potion> getPotions() {
         return potions;
+    }
+
+    public ArrayList<Weapon> getWeapons() {
+        return weapons;
     }
 
     public ArrayList<Container> getContainers() {

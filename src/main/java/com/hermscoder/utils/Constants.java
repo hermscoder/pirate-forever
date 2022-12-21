@@ -1,7 +1,5 @@
 package com.hermscoder.utils;
 
-import com.hermscoder.main.Game;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,8 +85,8 @@ public class Constants {
                 .gravity(GRAVITY)
                 .animationSpeed(25)
                 .walkSpeed(1f * SCALE)
-                .hitBox((int)(20 * SCALE), (int)(27 * SCALE))
-                .attackBox((int)(30 * SCALE), (int)(20 * SCALE))
+                .hitBox((int) (20 * SCALE), (int) (27 * SCALE))
+                .attackBox((int) (30 * SCALE), (int) (20 * SCALE))
                 .build()
         );
         put(CrabbyConstants.CRABBY, EntityConstants.newBuilder()
@@ -103,8 +101,8 @@ public class Constants {
                 .gravity(GRAVITY)
                 .animationSpeed(25)
                 .walkSpeed(0.35f * SCALE)
-                .hitBox((int)(22 * SCALE), (int)(19 * SCALE))
-                .attackBox((int)(82 * SCALE), (int)(19 * SCALE))
+                .hitBox((int) (22 * SCALE), (int) (19 * SCALE))
+                .attackBox((int) (82 * SCALE), (int) (19 * SCALE))
                 .build()
         );
         put(SharkConstants.SHARK, EntityConstants.newBuilder()
@@ -120,8 +118,8 @@ public class Constants {
                 .gravity(GRAVITY)
                 .animationSpeed(25)
                 .walkSpeed(0.35f * SCALE)
-                .hitBox((int)(22 * SCALE), (int)(21 * SCALE))
-                .attackBox((int)(25 * SCALE), (int)(15 * SCALE))
+                .hitBox((int) (22 * SCALE), (int) (21 * SCALE))
+                .attackBox((int) (25 * SCALE), (int) (15 * SCALE))
                 .build()
         );
     }};
@@ -227,7 +225,30 @@ public class Constants {
                 .yDrawOffset((int) (5 * SCALE))
                 .build()
         );
+        put(ObjectConstants.SWORD, ObjectConstants.newBuilder()
+                .spriteAtlas(Sprite.SwordDroppedSpriteAtlas)
+                .animationSprite(ObjectConstants.SWORD, 8)
+                .gravity(GRAVITY)
+                .animationSpeed(25)
+                .startAnimated(true)
+                .hitboxWidth(7)
+                .hitboxHeight(14)
+                .build()
+        );
+        put(ObjectConstants.FIRE_SWORD, ObjectConstants.newBuilder()
+                .spriteAtlas(Sprite.FireSwordDroppedSpriteAtlas)
+                .animationSprite(ObjectConstants.FIRE_SWORD, 8)
+                .gravity(GRAVITY)
+                .animationSpeed(25)
+                .startAnimated(true)
+                .hitboxWidth(7)
+                .hitboxHeight(14)
+                .build()
+        );
     }};
+
+    //TODO Transfer sprite images to the Constant class, so we won't have
+    // to load them in the respective Manager
 
     public static EntityConstants getEntityConstants(int entityType) {
         EntityConstants entityConstants = entitiesConstants
