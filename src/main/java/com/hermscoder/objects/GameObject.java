@@ -55,7 +55,7 @@ public class GameObject {
     }
 
     protected void initHitBox(int width, int height) {
-        hitBox = new Rectangle2D.Float(x, y, (int) (width * SCALE), (int) (height * SCALE));
+        hitBox = new Rectangle2D.Float(x, y, width, height);
         hitBox.y += yDrawOffset + differenceBetweenSpriteAndTileSize();
         hitBox.x += xDrawOffset / 2;
     }

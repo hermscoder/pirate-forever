@@ -20,6 +20,7 @@ public class ObjectConstants {
     public static final int CANNON_RIGHT = 52;
 
     //Weapons
+    public static final int BARE_HANDS = 100;
     public static final int SWORD = 101;
     public static final int FIRE_SWORD = 102;
 
@@ -35,6 +36,8 @@ public class ObjectConstants {
     private final boolean startAnimated;
     private final int hitboxWidth;
     private final int hitboxHeight;
+    private final int attackBoxWidth;
+    private final int attackBoxHeight;
     private final int xDrawOffset;
     private final int yDrawOffset;
     private final Sprite spriteAtlas;
@@ -51,6 +54,8 @@ public class ObjectConstants {
         this.startAnimated = objectConstantsBuilder.startAnimated;
         this.hitboxWidth = objectConstantsBuilder.hitboxWidth;
         this.hitboxHeight = objectConstantsBuilder.hitboxHeight;
+        this.attackBoxWidth = objectConstantsBuilder.attackBoxWidth;
+        this.attackBoxHeight = objectConstantsBuilder.attackBoxHeight;
         this.xDrawOffset = objectConstantsBuilder.xDrawOffset;
         this.yDrawOffset = objectConstantsBuilder.yDrawOffset;
         this.spriteAtlas = objectConstantsBuilder.spriteAtlas;
@@ -101,6 +106,14 @@ public class ObjectConstants {
         return hitboxHeight;
     }
 
+    public int getAttackBoxWidth() {
+        return attackBoxWidth;
+    }
+
+    public int getAttackBoxHeight() {
+        return attackBoxHeight;
+    }
+
     public int getxDrawOffset() {
         return xDrawOffset;
     }
@@ -112,6 +125,7 @@ public class ObjectConstants {
     public Sprite getSpriteAtlas() {
         return spriteAtlas;
     }
+
 
     public BufferedImage getAnimationImage(int state, int animationIndex) {
         return animationImages[state][animationIndex];
@@ -128,6 +142,8 @@ public class ObjectConstants {
         public boolean startAnimated;
         private int hitboxWidth;
         private int hitboxHeight;
+        private int attackBoxWidth;
+        private int attackBoxHeight;
         private int xDrawOffset;
         private int yDrawOffset;
         private Sprite spriteAtlas;
@@ -183,6 +199,12 @@ public class ObjectConstants {
             return this;
         }
 
+        public ObjectConstantsBuilder attackBox(int width, int height) {
+            this.attackBoxWidth = width;
+            this.attackBoxHeight = height;
+            return this;
+        }
+
         public ObjectConstantsBuilder xDrawOffset(int xDrawOffset) {
             this.xDrawOffset = xDrawOffset;
             return this;
@@ -209,6 +231,7 @@ public class ObjectConstants {
             }
             return this;
         }
+
 
         public ObjectConstants build() {
             return new ObjectConstants(this);

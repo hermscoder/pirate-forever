@@ -40,7 +40,6 @@ public class ObjectManager {
         for (Spike s : spikes) {
             if (s.getHitBox().intersects(player.getHitBox())) {
                 player.hit(s.getHitBox(), s.objectConstants.getDamage());
-                ;
             }
         }
     }
@@ -57,14 +56,24 @@ public class ObjectManager {
 
 
     public void checkWeaponTouched(Player player) {
-        for (Weapon w : weapons) {
-            if (w.isActive())
+        for (int i = 0; i < weapons.size(); i++) {
+            Weapon w = weapons.get(i);
+            if (w.isActive() && w.isDropped())
                 if (player.getHitBox().intersects(w.getHitBox())) {
                     if (player.getCurrentWeapon() != null) {
                         player.getCurrentWeapon().setActive(false);
-                        player.getCurrentWeapon().setPlayer(null);
                     }
-                    player.setCurrentWeapon(w);
+                    player.changeCurrentWeapon(w);
+                    w.setPlayer(player);
+                }
+        }
+        for (Weapon w : weapons) {
+            if (w.isActive() && w.isDropped())
+                if (player.getHitBox().intersects(w.getHitBox())) {
+                    if (player.getCurrentWeapon() != null) {
+                        player.getCurrentWeapon().setActive(false);
+                    }
+                    player.changeCurrentWeapon(w);
                     w.setPlayer(player);
                 }
         }
@@ -298,7 +307,9 @@ public class ObjectManager {
 
     private void drawWeapons(Graphics g, int xLvlOffset) {
         for (Weapon weapon : weapons) {
-            weapon.draw(g, xLvlOffset);
+            if(weapon.isActive()) {
+                weapon.draw(g, xLvlOffset);
+            }
         }
     }
 

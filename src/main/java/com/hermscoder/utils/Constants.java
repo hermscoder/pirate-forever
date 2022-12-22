@@ -225,6 +225,19 @@ public class Constants {
                 .yDrawOffset((int) (5 * SCALE))
                 .build()
         );
+        put(ObjectConstants.BARE_HANDS, ObjectConstants.newBuilder()
+                .spriteAtlas(Sprite.BareHandsSpriteAtlas)
+                .animationSprite(ObjectConstants.BARE_HANDS, 8)
+                .gravity(GRAVITY)
+                .animationSpeed(25)
+                .startAnimated(true)
+                .xDrawOffset((int) (23 * SCALE))
+                .yDrawOffset((int) (15 * SCALE))
+                .hitboxWidth((int) (20 * SCALE))
+                .hitboxHeight((int) (10 * SCALE))
+                .attackBox((int) (30 * SCALE), (int) (20 * SCALE))
+                .build()
+        );
         put(ObjectConstants.SWORD, ObjectConstants.newBuilder()
                 .spriteAtlas(Sprite.SwordSpriteAtlas)
                 .animationSprite(ObjectConstants.SWORD, 8)
@@ -233,8 +246,9 @@ public class Constants {
                 .startAnimated(true)
                 .xDrawOffset((int) (23 * SCALE))
                 .yDrawOffset((int) (15 * SCALE))
-                .hitboxWidth(20)
-                .hitboxHeight(10)
+                .hitboxWidth((int) (20 * SCALE))
+                .hitboxHeight((int) (10 * SCALE))
+                .attackBox((int) (30 * SCALE), (int) (20 * SCALE))
                 .build()
         );
         put(ObjectConstants.FIRE_SWORD, ObjectConstants.newBuilder()
@@ -245,8 +259,9 @@ public class Constants {
                 .startAnimated(true)
                 .xDrawOffset((int) (23 * SCALE))
                 .yDrawOffset((int) (15 * SCALE))
-                .hitboxWidth(20)
-                .hitboxHeight(10)
+                .hitboxWidth((int) (20 * SCALE))
+                .hitboxHeight((int) (10 * SCALE))
+                .attackBox((int) (30 * SCALE), (int) (20 * SCALE))
                 .build()
         );
     }};

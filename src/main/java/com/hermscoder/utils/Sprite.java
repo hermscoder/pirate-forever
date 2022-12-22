@@ -14,6 +14,7 @@ public enum Sprite {
     SpikeTrapSpriteAtlas("sprites/trap_atlas.png", 1, 1, 32, 32),
     CannonSpriteAtlas("sprites/cannon_atlas.png", 1, 7, 40, 26),
     CannonBallSprite("sprites/ball.png", 1, 1, 15, 15),
+    BareHandsSpriteAtlas("sprites/weapons/bare_hands_sprites.png", 10, 9, 64, 40),
     SwordSpriteAtlas("sprites/weapons/sword_sprites.png", 11, 8, 64, 40),
     FireSwordSpriteAtlas("sprites/weapons/fire_sword_sprites.png", 11, 8, 64, 40),
 

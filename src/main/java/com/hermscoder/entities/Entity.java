@@ -48,7 +48,7 @@ public abstract class Entity {
     }
 
     protected void drawAttackBox(Graphics g, int xLevelOffset) {
-        g.setColor(Color.RED);
+        g.setColor(Color.BLUE);
         g.drawRect((int) attackBox.x - xLevelOffset, (int) attackBox.y, (int) attackBox.width, (int) attackBox.height);
     }
 

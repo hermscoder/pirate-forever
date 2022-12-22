@@ -2,9 +2,12 @@ package com.hermscoder.entities;
 
 import com.hermscoder.audio.SoundEffect;
 import com.hermscoder.gamestates.Playing;
+import com.hermscoder.objects.BareHands;
 import com.hermscoder.objects.Weapon;
+import com.hermscoder.utils.Constants;
 import com.hermscoder.utils.HelpMethods;
 import com.hermscoder.utils.LoadSave;
+import com.hermscoder.utils.ObjectConstants;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -76,7 +79,7 @@ public class Player extends Entity {
     private float knockBackXForce = 0.3f * SCALE;
     private float knockBackYForce = -0.9f * SCALE;
 
-    private Weapon currentWeapon;
+    private Weapon currentWeapon = new BareHands((int) x, (int) y, this);
 
 
     public Player(float x, float y, int width, int height, Playing playing) {
@@ -85,7 +88,8 @@ public class Player extends Entity {
         this.state = IDLE;
         loadAnimations();
         initHitBox(entityConstants.getHitBoxWidth(), entityConstants.getHitBoxHeight());
-        initAttackBox();
+
+        changeCurrentWeapon(new BareHands((int) x, (int) y, this));
         resetAttackBox();
     }
 
@@ -175,7 +179,6 @@ public class Player extends Entity {
         } else if (left || (powerAttackActive && flipW == FACING_LEFT)) {
             attackBox.x = hitBox.x - hitBox.width;
         }
-
         attackBox.y = hitBox.y + (10 * SCALE);
     }
 
@@ -194,8 +197,11 @@ public class Player extends Entity {
 
     public void render(Graphics g, int xLevelOffset) {
         g.drawImage(animations[state][animationIndex], (int) (hitBox.x - xDrawOffset) - xLevelOffset + flipX, (int) (hitBox.y - yDrawOffset), width * flipW, height, null);
-        drawHitBox(g, xLevelOffset);
-        drawAttackBox(g, xLevelOffset);
+        if(currentWeapon != null) {
+            currentWeapon.draw(g, xLevelOffset);
+        }
+//        drawHitBox(g, xLevelOffset);
+//        drawAttackBox(g, xLevelOffset);
         drawUi(g);
     }
 
@@ -480,6 +486,7 @@ public class Player extends Entity {
         hitBox.x = x;
         hitBox.y = y;
 
+        currentWeapon = new BareHands((int) x, (int) y, this);
         resetAttackBox();
 
         if (!HelpMethods.isEntityOnFloor(hitBox, lvlData)) {
@@ -493,9 +500,13 @@ public class Player extends Entity {
         } else {
             attackBox.x = hitBox.x - hitBox.width;
         }
-
     }
 
+    public void changeCurrentWeapon(Weapon currentWeapon) {
+        this.currentWeapon = currentWeapon;
+        attackBox = currentWeapon.getAttackBox();
+        resetAttackBox();
+    }
 
     public boolean isLeft() {
         return left;
@@ -561,7 +572,5 @@ public class Player extends Entity {
         return currentWeapon;
     }
 
-    public void setCurrentWeapon(Weapon currentWeapon) {
-        this.currentWeapon = currentWeapon;
-    }
+
 }

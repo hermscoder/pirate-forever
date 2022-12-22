@@ -4,18 +4,30 @@ import com.hermscoder.entities.Player;
 import com.hermscoder.main.Game;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
+
 
 public abstract class Weapon extends GameObject {
     private float hoverOffset;
     private int maxHoverOffset, hoverDirection = 1;
+    private static final int HOVER_DROPPED_EFFECT = 0;
 
-    private Player player;
+    protected Rectangle2D.Float attackBox;
+
+    protected Player player;
 
     public Weapon(int x, int y, int objectType) {
         super(x, y, objectType);
 
         maxHoverOffset = (int) (10 * Game.SCALE);
+        initAttackBox();
+
     }
+
+    protected void initAttackBox() {
+        attackBox = new Rectangle2D.Float(x, y, objectConstants.getAttackBoxWidth(), objectConstants.getAttackBoxHeight());
+    }
+
 
     public void update() {
         if (isDropped()) {
@@ -26,7 +38,7 @@ public abstract class Weapon extends GameObject {
 
     public void draw(Graphics g, int xLvlOffset) {
         if (isDropped()) {
-            g.drawImage(objectConstants.getAnimationImage(0, animationIndex),
+            g.drawImage(objectConstants.getAnimationImage(HOVER_DROPPED_EFFECT, animationIndex),
                     (int) (hitBox.x - xDrawOffset - xLvlOffset),
                     (int) (hitBox.y - yDrawOffset),
                     objectConstants.getSpriteAtlas().getTileWidth(Game.SCALE),
@@ -38,7 +50,8 @@ public abstract class Weapon extends GameObject {
                     objectConstants.getSpriteAtlas().getTileWidth(Game.SCALE) * player.getFlipW(),
                     objectConstants.getSpriteAtlas().getTileHeight(Game.SCALE), null);
         }
-        drawHitBox(g, xLvlOffset);
+//        drawHitBox(g, xLvlOffset);
+//        drawAttackBox(g, xLvlOffset);
     }
 
     protected void updateHover() {
@@ -51,10 +64,14 @@ public abstract class Weapon extends GameObject {
         hitBox.y = y + hoverOffset;
     }
 
+    protected void drawAttackBox(Graphics g, int xLevelOffset) {
+        g.setColor(Color.RED);
+        g.drawRect((int) attackBox.x - xLevelOffset, (int) attackBox.y, (int) attackBox.width, (int) attackBox.height);
+    }
+
     public int getDamageValue() {
         return objectConstants.getDamage();
     }
-
 
     public void setPlayer(Player player) {
         this.player = player;
@@ -62,6 +79,10 @@ public abstract class Weapon extends GameObject {
 
     public boolean isDropped() {
         return player == null;
+    }
+
+    public Rectangle2D.Float getAttackBox() {
+        return attackBox;
     }
 
     @Override
