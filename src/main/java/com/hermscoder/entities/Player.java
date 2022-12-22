@@ -4,10 +4,8 @@ import com.hermscoder.audio.SoundEffect;
 import com.hermscoder.gamestates.Playing;
 import com.hermscoder.objects.BareHands;
 import com.hermscoder.objects.Weapon;
-import com.hermscoder.utils.Constants;
 import com.hermscoder.utils.HelpMethods;
 import com.hermscoder.utils.LoadSave;
-import com.hermscoder.utils.ObjectConstants;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -197,7 +195,7 @@ public class Player extends Entity {
 
     public void render(Graphics g, int xLevelOffset) {
         g.drawImage(animations[state][animationIndex], (int) (hitBox.x - xDrawOffset) - xLevelOffset + flipX, (int) (hitBox.y - yDrawOffset), width * flipW, height, null);
-        if(currentWeapon != null) {
+        if (currentWeapon != null) {
             currentWeapon.draw(g, xLevelOffset);
         }
 //        drawHitBox(g, xLevelOffset);

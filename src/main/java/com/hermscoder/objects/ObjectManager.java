@@ -56,17 +56,6 @@ public class ObjectManager {
 
 
     public void checkWeaponTouched(Player player) {
-        for (int i = 0; i < weapons.size(); i++) {
-            Weapon w = weapons.get(i);
-            if (w.isActive() && w.isDropped())
-                if (player.getHitBox().intersects(w.getHitBox())) {
-                    if (player.getCurrentWeapon() != null) {
-                        player.getCurrentWeapon().setActive(false);
-                    }
-                    player.changeCurrentWeapon(w);
-                    w.setPlayer(player);
-                }
-        }
         for (Weapon w : weapons) {
             if (w.isActive() && w.isDropped())
                 if (player.getHitBox().intersects(w.getHitBox())) {
@@ -307,7 +296,7 @@ public class ObjectManager {
 
     private void drawWeapons(Graphics g, int xLvlOffset) {
         for (Weapon weapon : weapons) {
-            if(weapon.isActive()) {
+            if (weapon.isActive()) {
                 weapon.draw(g, xLvlOffset);
             }
         }
