@@ -12,5 +12,4 @@ public class Sword extends Weapon {
     public void update() {
         super.update();
     }
-
 }

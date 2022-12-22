@@ -3,6 +3,8 @@ package com.hermscoder.objects;
 import com.hermscoder.entities.Player;
 import com.hermscoder.main.Game;
 
+import java.awt.*;
+
 public abstract class Weapon extends GameObject {
     private float hoverOffset;
     private int maxHoverOffset, hoverDirection = 1;
@@ -20,6 +22,23 @@ public abstract class Weapon extends GameObject {
             updateAnimationTick();
             updateHover();
         }
+    }
+
+    public void draw(Graphics g, int xLvlOffset) {
+        if (isDropped()) {
+            g.drawImage(objectConstants.getAnimationImage(0, animationIndex),
+                    (int) (hitBox.x - xDrawOffset - xLvlOffset),
+                    (int) (hitBox.y - yDrawOffset),
+                    objectConstants.getSpriteAtlas().getTileWidth(Game.SCALE),
+                    objectConstants.getSpriteAtlas().getTileHeight(Game.SCALE), null);
+        } else {
+            g.drawImage(objectConstants.getAnimationImage(player.getState() + 1, player.getAnimationIndex()),
+                    (int) (player.getHitBox().x - player.getxDrawOffset() - xLvlOffset + player.getFlipX()),
+                    (int) (player.getHitBox().y - player.getyDrawOffset()),
+                    objectConstants.getSpriteAtlas().getTileWidth(Game.SCALE) * player.getFlipW(),
+                    objectConstants.getSpriteAtlas().getTileHeight(Game.SCALE), null);
+        }
+        drawHitBox(g, xLvlOffset);
     }
 
     protected void updateHover() {

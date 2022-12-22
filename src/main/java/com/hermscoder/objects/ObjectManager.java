@@ -13,7 +13,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import static com.hermscoder.main.Game.SCALE;
 import static com.hermscoder.utils.HelpMethods.isHitBoxHittingLevel;
 import static com.hermscoder.utils.ObjectConstants.*;
 import static com.hermscoder.utils.Sprite.*;
@@ -24,10 +23,6 @@ public class ObjectManager {
     private BufferedImage[][] potionImgs, containerImgs;
     private BufferedImage spikeImg, cannonBallImg;
     private BufferedImage[] cannonImgs;
-    private BufferedImage[] swordDroppedImgs;
-    private BufferedImage[] fireSwordDroppedImgs;
-    private BufferedImage[][] swordEquippedImgs;
-    private BufferedImage[][] fireSwordEquippedImgs;
 
     private ArrayList<Potion> potions;
     private ArrayList<Container> containers;
@@ -44,7 +39,8 @@ public class ObjectManager {
     public void checkSpikesTouched(Player player) {
         for (Spike s : spikes) {
             if (s.getHitBox().intersects(player.getHitBox())) {
-                player.hit(s.getHitBox(), s.objectConstants.getDamage());;
+                player.hit(s.getHitBox(), s.objectConstants.getDamage());
+                ;
             }
         }
     }
@@ -64,7 +60,7 @@ public class ObjectManager {
         for (Weapon w : weapons) {
             if (w.isActive())
                 if (player.getHitBox().intersects(w.getHitBox())) {
-                    if(player.getCurrentWeapon() != null) {
+                    if (player.getCurrentWeapon() != null) {
                         player.getCurrentWeapon().setActive(false);
                         player.getCurrentWeapon().setPlayer(null);
                     }
@@ -130,52 +126,6 @@ public class ObjectManager {
                         j * ContainersSpriteAtlas.getTileHeight(),
                         ContainersSpriteAtlas.getTileWidth(),
                         ContainersSpriteAtlas.getTileHeight());
-            }
-        }
-
-        //TODO externalise this to the constants
-        swordDroppedImgs = new BufferedImage[SwordDroppedSpriteAtlas.getWidthInSprites()];
-        BufferedImage temporary = LoadSave.getSpriteAtlas(SwordDroppedSpriteAtlas.getFilename());
-        for (int i = 0; i < swordDroppedImgs.length; i++) {
-            swordDroppedImgs[i] = temporary.getSubimage(
-                    i * SwordDroppedSpriteAtlas.getTileWidth(),
-                    0, SwordDroppedSpriteAtlas.getTileWidth(),
-                    SwordDroppedSpriteAtlas.getTileHeight());
-        }
-
-        //TODO externalise this to the constants
-        temporary = LoadSave.getSpriteAtlas(SwordEquippedSpriteAtlas.getFilename());
-        swordEquippedImgs = new BufferedImage[SwordEquippedSpriteAtlas.getHeightInSprites()][SwordEquippedSpriteAtlas.getWidthInSprites()];
-        for (int j = 0; j < swordEquippedImgs.length; j++) {
-            for (int i = 0; i < swordEquippedImgs[j].length; i++) {
-                swordEquippedImgs[j][i] = temporary.getSubimage(
-                        i * SwordEquippedSpriteAtlas.getTileWidth(),
-                        j * SwordEquippedSpriteAtlas.getTileHeight(),
-                        SwordEquippedSpriteAtlas.getTileWidth(),
-                        SwordEquippedSpriteAtlas.getTileHeight());
-            }
-        }
-
-
-
-        fireSwordDroppedImgs = new BufferedImage[FireSwordDroppedSpriteAtlas.getWidthInSprites()];
-        BufferedImage temporary2 = LoadSave.getSpriteAtlas(FireSwordDroppedSpriteAtlas.getFilename());
-        for (int i = 0; i < fireSwordDroppedImgs.length; i++) {
-            fireSwordDroppedImgs[i] = temporary2.getSubimage(
-                    i * FireSwordDroppedSpriteAtlas.getTileWidth(),
-                    0, FireSwordDroppedSpriteAtlas.getTileWidth(),
-                    FireSwordDroppedSpriteAtlas.getTileHeight());
-        }
-
-        temporary = LoadSave.getSpriteAtlas(FireSwordEquippedSpriteAtlas.getFilename());
-        fireSwordEquippedImgs = new BufferedImage[FireSwordEquippedSpriteAtlas.getHeightInSprites()][FireSwordEquippedSpriteAtlas.getWidthInSprites()];
-        for (int j = 0; j < fireSwordEquippedImgs.length; j++) {
-            for (int i = 0; i < fireSwordEquippedImgs[j].length; i++) {
-                fireSwordEquippedImgs[j][i] = temporary.getSubimage(
-                        i * FireSwordEquippedSpriteAtlas.getTileWidth(),
-                        j * FireSwordEquippedSpriteAtlas.getTileHeight(),
-                        FireSwordEquippedSpriteAtlas.getTileWidth(),
-                        FireSwordEquippedSpriteAtlas.getTileHeight());
             }
         }
 
@@ -348,42 +298,10 @@ public class ObjectManager {
 
     private void drawWeapons(Graphics g, int xLvlOffset) {
         for (Weapon weapon : weapons) {
-            //if it's dropped
-            if (weapon.isDropped()) {
-                if(weapon.getObjectType() == SWORD) {
-                    g.drawImage(swordEquippedImgs[0][weapon.getAnimationIndex()],
-                            (int) (weapon.getHitBox().x),
-                            (int) (weapon.getHitBox().y),
-                            SwordEquippedSpriteAtlas.getTileWidth(Game.SCALE),
-                            SwordEquippedSpriteAtlas.getTileHeight(Game.SCALE), null);
-                } else if(weapon.getObjectType() == FIRE_SWORD) {
-                    g.drawImage(fireSwordDroppedImgs[weapon.getAnimationIndex()],
-                            (int) (weapon.getHitBox().x - weapon.getxDrawOffset() - xLvlOffset),
-                            (int) (weapon.getHitBox().y - weapon.getyDrawOffset()),
-                            FireSwordDroppedSpriteAtlas.getTileWidth(Game.SCALE),
-                            FireSwordDroppedSpriteAtlas.getTileHeight(Game.SCALE), null);
-                }
-//                potion.drawHitBox(g, xLvlOffset);
-            } else {
-            //if it's equipped, then we should draw the sprite according to the player state
-                Player player = playing.getPlayer();
-                if(weapon.getObjectType() == SWORD) {
-                    g.drawImage(swordEquippedImgs[player.getState() + 1][player.getAnimationIndex()],
-                            (int) (player.getHitBox().x - player.getxDrawOffset() - xLvlOffset + player.getFlipX()),
-                            (int) (player.getHitBox().y - player.getyDrawOffset()),
-                            SwordEquippedSpriteAtlas.getTileWidth(Game.SCALE) * player.getFlipW(),
-                            SwordEquippedSpriteAtlas.getTileHeight(Game.SCALE), null);
-                } else if(weapon.getObjectType() == FIRE_SWORD) {
-                    g.drawImage(fireSwordEquippedImgs[player.getState() + 1][player.getAnimationIndex()],
-                            (int) (player.getHitBox().x - player.getxDrawOffset() - xLvlOffset + player.getFlipX()),
-                            (int) (player.getHitBox().y - player.getyDrawOffset()),
-                            FireSwordEquippedSpriteAtlas.getTileWidth(Game.SCALE) * player.getFlipW(),
-                            FireSwordEquippedSpriteAtlas.getTileHeight(Game.SCALE), null);
-                }
-
-            }
+            weapon.draw(g, xLvlOffset);
         }
     }
+
     public void resetAllObjects() {
         loadObjects(playing.getLevelManager().getCurrentLevel());
         for (Potion p : potions) {

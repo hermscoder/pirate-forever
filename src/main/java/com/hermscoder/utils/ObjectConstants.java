@@ -1,5 +1,6 @@
 package com.hermscoder.utils;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +38,7 @@ public class ObjectConstants {
     private final int xDrawOffset;
     private final int yDrawOffset;
     private final Sprite spriteAtlas;
+    private BufferedImage[][] animationImages;
 
     private ObjectConstants(ObjectConstantsBuilder objectConstantsBuilder) {
         this.objectAnimationsSpritesAmount = objectConstantsBuilder.entitiesAnimationSpritesAmount;
@@ -52,6 +54,7 @@ public class ObjectConstants {
         this.xDrawOffset = objectConstantsBuilder.xDrawOffset;
         this.yDrawOffset = objectConstantsBuilder.yDrawOffset;
         this.spriteAtlas = objectConstantsBuilder.spriteAtlas;
+        this.animationImages = objectConstantsBuilder.animationImages;
     }
 
     public static ObjectConstantsBuilder newBuilder() {
@@ -110,6 +113,10 @@ public class ObjectConstants {
         return spriteAtlas;
     }
 
+    public BufferedImage getAnimationImage(int state, int animationIndex) {
+        return animationImages[state][animationIndex];
+    }
+
     static class ObjectConstantsBuilder {
         private final Map<Integer, Integer> entitiesAnimationSpritesAmount = new HashMap<>();
         private int maxHealth;
@@ -124,6 +131,7 @@ public class ObjectConstants {
         private int xDrawOffset;
         private int yDrawOffset;
         private Sprite spriteAtlas;
+        private BufferedImage[][] animationImages;
 
         public ObjectConstantsBuilder animationSprite(int animation, int spritesQuantity) {
             entitiesAnimationSpritesAmount.put(animation, spritesQuantity);
@@ -187,6 +195,18 @@ public class ObjectConstants {
 
         public ObjectConstantsBuilder spriteAtlas(Sprite spriteAtlas) {
             this.spriteAtlas = spriteAtlas;
+
+            BufferedImage temporary = LoadSave.getSpriteAtlas(spriteAtlas.getFilename());
+            animationImages = new BufferedImage[spriteAtlas.getHeightInSprites()][spriteAtlas.getWidthInSprites()];
+            for (int j = 0; j < animationImages.length; j++) {
+                for (int i = 0; i < animationImages[j].length; i++) {
+                    animationImages[j][i] = temporary.getSubimage(
+                            i * spriteAtlas.getTileWidth(),
+                            j * spriteAtlas.getTileHeight(),
+                            spriteAtlas.getTileWidth(),
+                            spriteAtlas.getTileHeight());
+                }
+            }
             return this;
         }
 
