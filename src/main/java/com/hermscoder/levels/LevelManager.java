@@ -45,7 +45,7 @@ public class LevelManager {
     }
 
     private void buildAllLevels() {
-        BufferedImage[] allLevels = LoadSave.getAllLevels();
+        BufferedImage[] allLevels = LoadSave.getAllLevels2();
         int index = 0;
         for (BufferedImage levelImage : allLevels) {
             levels.add(new Level(index, levelImage));

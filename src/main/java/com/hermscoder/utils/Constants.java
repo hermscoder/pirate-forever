@@ -3,11 +3,11 @@ package com.hermscoder.utils;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.hermscoder.main.Game.*;
+import static com.hermscoder.main.Game.SCALE;
 
 public class Constants {
 
-    public static final String LEVELS_FOLDER = "/levels";
+    public static final String LEVELS_FOLDER = "levels";
     public static final String LEVEL_DESIGN_FOLDER = "/level_design";
     public static final String AUDIO_FOLDER = "/audio";
 
