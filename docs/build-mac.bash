@@ -1,0 +1,1 @@
+jpackage --input ../ --name PirateForever  --mac-sign --mac-bundle-identifier com.hermscoder.pirateforever --mac-package-name PirateForever --dest ../out/ --main-jar pirate-forever.jar --main-class com.hermscoder.main.MainClass  --java-options '--enable-preview'
