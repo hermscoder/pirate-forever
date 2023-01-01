@@ -484,8 +484,7 @@ public class Player extends Entity {
         hitBox.x = x;
         hitBox.y = y;
 
-        currentWeapon = new BareHands((int) x, (int) y, this);
-        resetAttackBox();
+        changeWeapon(new BareHands((int) x, (int) y, this));
 
         if (!HelpMethods.isEntityOnFloor(hitBox, lvlData)) {
             inAir = true;
