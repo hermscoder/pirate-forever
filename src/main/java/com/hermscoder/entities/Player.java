@@ -77,7 +77,7 @@ public class Player extends Entity {
     private float knockBackXForce = 0.3f * SCALE;
     private float knockBackYForce = -0.9f * SCALE;
 
-    private Weapon currentWeapon = new BareHands((int) x, (int) y, this);
+    private Weapon currentWeapon;
 
 
     public Player(float x, float y, int width, int height, Playing playing) {
@@ -87,8 +87,7 @@ public class Player extends Entity {
         loadAnimations();
         initHitBox(entityConstants.getHitBoxWidth(), entityConstants.getHitBoxHeight());
 
-        changeCurrentWeapon(new BareHands((int) x, (int) y, this));
-        resetAttackBox();
+        changeWeapon(new BareHands((int) x, (int) y, this));
     }
 
     public void setSpawn(Point spawn) {
@@ -96,6 +95,7 @@ public class Player extends Entity {
         this.y = spawn.y;
         hitBox.x = x;
         hitBox.y = y;
+        resetAttackBox();
     }
 
     public void update() {
@@ -199,7 +199,7 @@ public class Player extends Entity {
             currentWeapon.draw(g, xLevelOffset);
         }
 //        drawHitBox(g, xLevelOffset);
-//        drawAttackBox(g, xLevelOffset);
+//        currentWeapon.drawAttackBox(g, xLevelOffset);
         drawUi(g);
     }
 
@@ -500,7 +500,7 @@ public class Player extends Entity {
         }
     }
 
-    public void changeCurrentWeapon(Weapon currentWeapon) {
+    public void changeWeapon(Weapon currentWeapon) {
         this.currentWeapon = currentWeapon;
         attackBox = currentWeapon.getAttackBox();
         resetAttackBox();

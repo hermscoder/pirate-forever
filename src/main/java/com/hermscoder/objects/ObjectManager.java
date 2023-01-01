@@ -62,7 +62,7 @@ public class ObjectManager {
                     if (player.getCurrentWeapon() != null) {
                         player.getCurrentWeapon().setActive(false);
                     }
-                    player.changeCurrentWeapon(w);
+                    player.changeWeapon(w);
                     w.setPlayer(player);
                 }
         }

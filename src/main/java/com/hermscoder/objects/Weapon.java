@@ -51,7 +51,7 @@ public abstract class Weapon extends GameObject {
                     objectConstants.getSpriteAtlas().getTileHeight(Game.SCALE), null);
         }
 //        drawHitBox(g, xLvlOffset);
-//        drawAttackBox(g, xLvlOffset);
+        drawAttackBox(g, xLvlOffset);
     }
 
     protected void updateHover() {
@@ -64,8 +64,8 @@ public abstract class Weapon extends GameObject {
         hitBox.y = y + hoverOffset;
     }
 
-    protected void drawAttackBox(Graphics g, int xLevelOffset) {
-        g.setColor(Color.RED);
+    public void drawAttackBox(Graphics g, int xLevelOffset) {
+        g.setColor(Color.YELLOW);
         g.drawRect((int) attackBox.x - xLevelOffset, (int) attackBox.y, (int) attackBox.width, (int) attackBox.height);
     }
 

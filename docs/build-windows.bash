@@ -1,1 +1,1 @@
-jpackage --input ../ --name PirateForever  --type msi --win-menu --dest ../out/ --main-jar pirate-forever.jar --main-class com.hermscoder.main.MainClass  --java-options '--enable-preview'
+jpackage --input ../ --name PirateForever  --type msi --win-menu --dest ../out/distribution --icon ../icon.ico --main-jar out/artifacts/pirate_forever_jar/pirate-forever.jar --main-class com.hermscoder.main.MainClass  --java-options '--enable-preview'

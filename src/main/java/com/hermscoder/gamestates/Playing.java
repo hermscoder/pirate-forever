@@ -43,7 +43,7 @@ public class Playing extends State implements StateMethods {
         levelManager = new LevelManager(game);
         enemyManager = new EnemyManager(this, levelManager);
         objectManager = new ObjectManager(this);
-        player = new Player(230, 200,
+        player = new Player(231, 200,
                 (Sprite.PlayerSpriteAtlas.getTileWidth(SCALE)),
                 (Sprite.PlayerSpriteAtlas.getTileHeight(SCALE)),
                 this);
