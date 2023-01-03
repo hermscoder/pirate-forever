@@ -19,6 +19,7 @@ import static com.hermscoder.utils.Sprite.StatusBar;
 
 public class Player extends Entity {
 
+    private static final int DASH_TICKS = 35;
     private static final int POWER_ATTACK_TICKS = 35;
     private static final int POWER_ATTACK_COST = 60;
 
@@ -28,12 +29,16 @@ public class Player extends Entity {
     private BufferedImage[][] animations;
 
     private boolean left, up, right, down, jump;
+
+    private int lastKeyPressed;
+    private int keyPressed;
+    private long lastTimeKeyPressedInMillis;
+
     private boolean moving = false, attacking = false;
 
     //Jumping / Gravity
     private float jumpSpeed = -2.25f * SCALE;
     private float fallSpeedAfterCollision = 0.5f * SCALE;
-
 
     //Hitbox offset
     private float xDrawOffset = 21 * SCALE;
@@ -66,6 +71,9 @@ public class Player extends Entity {
     private int flipW = 1;
     private boolean attackChecked;
     private int tileY;
+
+    private boolean dashActive;
+    private int dashTick;
 
     private boolean powerAttackActive;
     private int powerAttackTick;
@@ -131,6 +139,12 @@ public class Player extends Entity {
                 if (powerAttackTick >= POWER_ATTACK_TICKS)
                     stopPowerAttack();
             }
+            if (dashActive) {
+                dashTick++;
+                if (dashTick >= DASH_TICKS) {
+                    stopDash();
+                }
+            }
         }
         if (attacking || powerAttackActive) {
             checkAttack();
@@ -172,9 +186,9 @@ public class Player extends Entity {
     private void updateAttackBox() {
         if (right && left) {
             attackBox.x = hitBox.x + (hitBox.width * flipW);
-        } else if (right || (powerAttackActive && flipW == FACING_RIGHT)) {
+        } else if (right || ((dashActive || powerAttackActive) && flipW == FACING_RIGHT)) {
             attackBox.x = hitBox.x + hitBox.width;
-        } else if (left || (powerAttackActive && flipW == FACING_LEFT)) {
+        } else if (left || ((dashActive || powerAttackActive) && flipW == FACING_LEFT)) {
             attackBox.x = hitBox.x - hitBox.width;
         }
         attackBox.y = hitBox.y + (10 * SCALE);
@@ -246,9 +260,10 @@ public class Player extends Entity {
                 jump();
             if (!inAir)
                 if (!powerAttackActive)
-                    if (!takingHit)
-                        if ((!left && !right) || (right && left))
-                            return;
+                    if (!dashActive)
+                        if (!takingHit)
+                            if ((!left && !right) || (right && left))
+                                return;
 
 
             if (left && !right) {
@@ -266,6 +281,13 @@ public class Player extends Entity {
                 if ((!left && !right) || (left && right))
                     xSpeed = walkSpeed * flipW;
                 xSpeed *= 3;
+            }
+
+            if (dashActive) {
+                if ((!left && !right) || (left && right))
+                    xSpeed = walkSpeed * flipW;
+
+                xSpeed *= 3 - (3 * (dashTick / DASH_TICKS));
             }
 
             if (takingHit) {
@@ -306,6 +328,7 @@ public class Player extends Entity {
     private void jump() {
         if (inAir)
             return;
+
         playing.getGame().getAudioPlayer().playEffect(SoundEffect.JUMP);
         inAir = true;
         airSpeed = jumpSpeed;
@@ -322,8 +345,17 @@ public class Player extends Entity {
         } else {
             if (powerAttackActive)
                 stopPowerAttack();
+            if(dashActive) {
+                stopDash();
+            }
             hitBox.x = HelpMethods.getEntityXPosNextToWall(hitBox, xSpeed);
         }
+    }
+
+    public void stopDash() {
+        dashActive = false;
+        dashTick = 0;
+        lastKeyPressed = -1;
     }
 
     private void stopPowerAttack() {
@@ -400,6 +432,22 @@ public class Player extends Entity {
                     state = ATTACK_JUMP_1;
                     animationIndex = 1;
                     animationTick = 0;
+                    return;
+                }
+
+                if(dashActive) {
+                    if(attacking) {
+                        if (inAir) {
+                            state = ATTACK_JUMP_1;
+                            animationIndex = 0;
+                        } else {
+                            state = ATTACK_JUMP_2;
+                            animationIndex = 1;
+                        }
+                    } else {
+                        state = ATTACK_JUMP_2;
+                        animationIndex = 0;
+                    }
                     return;
                 }
 
@@ -491,12 +539,13 @@ public class Player extends Entity {
         }
     }
 
-    private void resetAttackBox() {
-        if (flipW == FACING_RIGHT) {
-            attackBox.x = hitBox.x + hitBox.width;
-        } else {
-            attackBox.x = hitBox.x - hitBox.width;
-        }
+    public void dash() {
+        if (dashActive)
+            return;
+//        if (powerValue >= POWER_ATTACK_COST) {
+            dashActive = true;
+//            changePower(-POWER_ATTACK_COST);
+//        }
     }
 
     public void changeWeapon(Weapon currentWeapon) {
@@ -505,12 +554,54 @@ public class Player extends Entity {
         resetAttackBox();
     }
 
+
+    private void resetAttackBox() {
+        if (flipW == FACING_RIGHT) {
+            attackBox.x = hitBox.x + hitBox.width;
+        } else {
+            attackBox.x = hitBox.x - hitBox.width;
+        }
+    }
+
+    public boolean isDashActive() {
+        return dashActive;
+    }
+
+
+
     public boolean isLeft() {
         return left;
     }
 
     public void setLeft(boolean left) {
         this.left = left;
+    }
+
+    public boolean checkIfDoublePressed(int keyCode, long acceptableTimeWhenLastPressed) {
+        return lastKeyPressed == keyCode && System.currentTimeMillis() - lastTimeKeyPressedInMillis <= acceptableTimeWhenLastPressed;
+    }
+    //ELABORA A METHOD THAT WILL SET THE LAST KEY, AND IF TIME IS UP (didnt pressed twice in less than 200 ms), SET THE LAST KEY AS -1
+    public boolean setAndCheckDoubleKeyPressed(int key) {
+        if(keyPressed == key) {
+            boolean stillOnDashBufferTime = System.currentTimeMillis() - lastTimeKeyPressedInMillis <= 500;
+            if(stillOnDashBufferTime) {
+                System.out.println("MATCH!");
+                changeLastKeyPressedAndResetTimer(-1);
+//                changeLastKeyPressedAndResetTimer(key);
+                return true;
+            } else {
+                System.out.println("TIMES UP");
+//                changeLastKeyPressedAndResetTimer(key);
+            }
+        } else {
+//            changeLastKeyPressedAndResetTimer(key);
+        }
+        return false;
+    }
+
+    public void changeLastKeyPressedAndResetTimer(int lastKeyPressed) {
+        this.lastKeyPressed = lastKeyPressed;
+        lastTimeKeyPressedInMillis = System.currentTimeMillis();
     }
 
     public boolean isUp() {
@@ -568,6 +659,7 @@ public class Player extends Entity {
     public Weapon getCurrentWeapon() {
         return currentWeapon;
     }
+
 
 
 }

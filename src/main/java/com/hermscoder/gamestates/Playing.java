@@ -191,9 +191,18 @@ public class Playing extends State implements StateMethods {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
                 player.setLeft(true);
+                player.setRight(false);
+
+                if(player.checkIfDoublePressed(e.getKeyCode(), 200)) {
+                    player.dash();
+                }
                 break;
             case KeyEvent.VK_D:
                 player.setRight(true);
+                player.setLeft(false);
+                if(player.checkIfDoublePressed(e.getKeyCode(), 200)) {
+                    player.dash();
+                }
                 break;
             case KeyEvent.VK_SPACE:
                 player.setJump(true);
@@ -201,12 +210,23 @@ public class Playing extends State implements StateMethods {
             case KeyEvent.VK_ESCAPE:
                 paused = !paused;
                 break;
+            case KeyEvent.VK_L:
+                player.setAttacking(true);
+                break;
+            case KeyEvent.VK_P:
+                player.powerAttack();
+                break;
+            case KeyEvent.VK_K:
+                if (player.setAndCheckDoubleKeyPressed(e.getKeyCode())) {
+                    player.dash();
+                }
+                break;
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (!gameOver)
+        if (!gameOver) {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_A:
                     player.setLeft(false);
@@ -218,6 +238,8 @@ public class Playing extends State implements StateMethods {
                     player.setJump(false);
                     break;
             }
+            player.changeLastKeyPressedAndResetTimer(e.getKeyCode());
+        }
     }
 
     public void unpauseGame() {
