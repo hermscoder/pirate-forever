@@ -25,6 +25,7 @@ public class ObjectManager {
     private BufferedImage[] cannonImgs;
 
     private ArrayList<Potion> potions;
+    private ArrayList<Key> keys;
     private ArrayList<Container> containers;
     private ArrayList<Weapon> weapons;
     private ArrayList<Spike> spikes;
@@ -50,6 +51,16 @@ public class ObjectManager {
                 if (hitbox.intersects(p.getHitBox())) {
                     p.setActive(false);
                     applyEffectToPlayer(p);
+                }
+        }
+    }
+
+    public void checkKeysTouched(Rectangle2D.Float hitbox) {
+        for (Key key : keys) {
+            if (key.isActive())
+                if (hitbox.intersects(key.getHitBox())) {
+                    key.setActive(false);
+                    playing.getPlayer().addKeyToCollection(key);
                 }
         }
     }
@@ -94,6 +105,7 @@ public class ObjectManager {
 
     public void loadObjects(Level newLevel) {
         potions = new ArrayList<>(newLevel.getPotions());
+        keys = new ArrayList<>(newLevel.getKeys());
         containers = new ArrayList<>(newLevel.getContainers());
         spikes = newLevel.getSpikes();
         cannons = newLevel.getCannons();
@@ -146,6 +158,11 @@ public class ObjectManager {
         for (Potion potion : potions) {
             if (potion.isActive())
                 potion.update();
+        }
+
+        for (Key key : keys) {
+            if (key.isActive())
+                key.update();
         }
 
         for (Container container : containers) {
@@ -217,12 +234,14 @@ public class ObjectManager {
 
     public void draw(Graphics g, int xLvlOffset) {
         drawPotions(g, xLvlOffset);
+        drawKeys(g, xLvlOffset);
         drawContainers(g, xLvlOffset);
         drawWeapons(g, xLvlOffset);
         drawTraps(g, xLvlOffset);
         drawCannons(g, xLvlOffset);
         drawProjectiles(g, xLvlOffset);
     }
+
 
     private void drawProjectiles(Graphics g, int xLvlOffset) {
         for (Projectile projectile : projectiles) {
@@ -294,6 +313,16 @@ public class ObjectManager {
         }
     }
 
+    private void drawKeys(Graphics g, int xLvlOffset) {
+        for (Key key : keys) {
+            if (key.isActive()) {
+                key.draw(g, xLvlOffset);
+//                potion.drawHitBox(g, xLvlOffset);
+            }
+        }
+    }
+
+
     private void drawWeapons(Graphics g, int xLvlOffset) {
         for (Weapon weapon : weapons) {
             if (weapon.isActive()) {
@@ -306,6 +335,10 @@ public class ObjectManager {
         loadObjects(playing.getLevelManager().getCurrentLevel());
         for (Potion p : potions) {
             p.reset();
+        }
+
+        for (Key key : keys) {
+            key.reset();
         }
 
         for (Container c : containers) {

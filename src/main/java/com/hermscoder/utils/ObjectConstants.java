@@ -5,19 +5,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ObjectConstants {
-    public static final int RED_POTION = 2;
-    public static final int RED_POTION_ANIMATION = 1;
-
     public static final int BLUE_POTION = 1;
     public static final int BLUE_POTION_ANIMATION = 0;
 
-    public static final int BARREL = 4;
+    public static final int RED_POTION = 2;
+    public static final int RED_POTION_ANIMATION = 1;
 
     public static final int BOX = 3;
+    public static final int BARREL = 4;
+    public static final int KEY = 5;
+
 
     public static final int SPIKE_TRAP = 50;
     public static final int CANNON_LEFT = 51;
     public static final int CANNON_RIGHT = 52;
+
+
 
     //Weapons
     public static final int BARE_HANDS = 100;

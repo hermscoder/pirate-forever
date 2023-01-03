@@ -129,6 +129,9 @@ public class Playing extends State implements StateMethods {
         objectManager.checkObjectTouched(hitBox);
     }
 
+    public void checkKeysTouched(Rectangle2D.Float hitBox) {
+        objectManager.checkKeysTouched(hitBox);
+    }
     public void checkObjectHit(Rectangle2D.Float attackBox) {
         objectManager.checkObjectHit(attackBox);
     }

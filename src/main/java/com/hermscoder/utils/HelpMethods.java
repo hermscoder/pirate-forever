@@ -228,6 +228,19 @@ public class HelpMethods {
         return list;
     }
 
+    public static ArrayList<Key> getKeys(BufferedImage levelImage) {
+        ArrayList<Key> list = new ArrayList<>();
+        for (int j = 0; j < levelImage.getHeight(); j++) {
+            for (int i = 0; i < levelImage.getWidth(); i++) {
+                Color color = new Color(levelImage.getRGB(i, j));
+                int value = color.getBlue();
+                if (value == ObjectConstants.KEY)
+                    list.add(new Key(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
+            }
+        }
+        return list;
+    }
+
     public static ArrayList<Container> getContainers(BufferedImage levelImage) {
         ArrayList<Container> list = new ArrayList<>();
         for (int j = 0; j < levelImage.getHeight(); j++) {

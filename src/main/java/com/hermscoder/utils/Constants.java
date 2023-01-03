@@ -264,10 +264,19 @@ public class Constants {
                 .attackBox((int) (30 * SCALE), (int) (20 * SCALE))
                 .build()
         );
+        put(ObjectConstants.KEY, ObjectConstants.newBuilder()
+                .spriteAtlas(Sprite.KeySpriteAtlas)
+                .animationSprite(ObjectConstants.KEY, 8)
+                .gravity(GRAVITY)
+                .animationSpeed(25)
+                .startAnimated(true)
+                .hitboxWidth((int) (7 * SCALE))
+                .hitboxHeight((int) (14 * SCALE))
+                .xDrawOffset((int) (3 * SCALE))
+                .yDrawOffset((int) (2 * SCALE))
+                .build()
+        );
     }};
-
-    //TODO Transfer sprite images to the Constant class, so we won't have
-    // to load them in the respective Manager
 
     public static EntityConstants getEntityConstants(int entityType) {
         EntityConstants entityConstants = entitiesConstants

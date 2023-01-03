@@ -19,6 +19,7 @@ public class Level {
     private ArrayList<Crabby> crabs;
     private ArrayList<Shark> sharks;
     private ArrayList<Potion> potions;
+    private ArrayList<Key> keys;
     private ArrayList<Container> containers;
     private ArrayList<Weapon> weapons;
     private ArrayList<Spike> spikes;
@@ -37,6 +38,7 @@ public class Level {
         createEnemies();
         createEnemies();
         createPotions();
+        createKeys();
         createContainers();
         createWeapons();
         createSpikes();
@@ -68,6 +70,10 @@ public class Level {
 
     private void createPotions() {
         potions = HelpMethods.getPotions(image);
+    }
+
+    private void createKeys() {
+        keys = HelpMethods.getKeys(image);
     }
 
     private void createContainers() {
@@ -131,5 +137,9 @@ public class Level {
 
     public int getIndex() {
         return index;
+    }
+
+    public ArrayList<Key> getKeys() {
+        return keys;
     }
 }

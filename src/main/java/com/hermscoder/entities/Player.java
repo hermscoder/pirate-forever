@@ -3,6 +3,7 @@ package com.hermscoder.entities;
 import com.hermscoder.audio.SoundEffect;
 import com.hermscoder.gamestates.Playing;
 import com.hermscoder.objects.BareHands;
+import com.hermscoder.objects.Key;
 import com.hermscoder.objects.Weapon;
 import com.hermscoder.utils.HelpMethods;
 import com.hermscoder.utils.LoadSave;
@@ -10,6 +11,8 @@ import com.hermscoder.utils.LoadSave;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.hermscoder.main.Game.SCALE;
 import static com.hermscoder.main.Game.TILES_SIZE;
@@ -88,6 +91,7 @@ public class Player extends Entity {
 
     private Weapon currentWeapon;
 
+    private List<Key> keysCollected = new ArrayList<>();
 
     public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height, PLAYER);
@@ -132,6 +136,7 @@ public class Player extends Entity {
         updatePosition();
         if (moving) {
             checkPotionTouched();
+            checkKeysTouched();
             checkSpikesTouched();
             checkWeaponTouched();
             tileY = (int) (hitBox.y / TILES_SIZE);
@@ -162,6 +167,10 @@ public class Player extends Entity {
 
     private void checkPotionTouched() {
         playing.checkPotionTouched(hitBox);
+    }
+
+    private void checkKeysTouched() {
+        playing.checkKeysTouched(hitBox);
     }
 
     private void checkWeaponTouched() {
@@ -557,6 +566,10 @@ public class Player extends Entity {
         resetAttackBox();
     }
 
+
+    public void addKeyToCollection(Key key) {
+        keysCollected.add(key);
+    }
 
     private void resetAttackBox() {
         if (flipW == FACING_RIGHT) {
