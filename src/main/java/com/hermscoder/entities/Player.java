@@ -32,8 +32,8 @@ public class Player extends Entity {
     private boolean left, up, right, down, jump;
 
     private int lastKeyPressed;
-    private int keyPressed;
-    private long lastTimeKeyPressedInMillis;
+    private int lastKeyReleased;
+    private long lastTimeKeyReleasedInMillis;
 
     private boolean moving = false, attacking = false;
 
@@ -356,6 +356,7 @@ public class Player extends Entity {
     public void stopDash() {
         dashActive = false;
         dashTick = 0;
+        lastKeyReleased = -1;
         lastKeyPressed = -1;
     }
 
@@ -580,16 +581,17 @@ public class Player extends Entity {
     }
 
     public boolean checkIfDoublePressed(int keyCode, long acceptableTimeWhenLastPressed) {
-        return lastKeyPressed == keyCode && System.currentTimeMillis() - lastTimeKeyPressedInMillis <= acceptableTimeWhenLastPressed;
+        return lastKeyPressed == keyCode && lastKeyReleased == keyCode
+                && System.currentTimeMillis() - lastTimeKeyReleasedInMillis <= acceptableTimeWhenLastPressed;
     }
 
-    public void changeLastKeyPressedAndResetTimer(int lastKeyPressed) {
+    public void changeLastKeyPressed(int lastKeyPressed) {
         this.lastKeyPressed = lastKeyPressed;
-        lastTimeKeyPressedInMillis = System.currentTimeMillis();
     }
 
-    public boolean isUp() {
-        return up;
+    public void changeLastKeyReleasedAndResetTimer(int lastKeyReleased) {
+        this.lastKeyReleased = lastKeyReleased;
+        lastTimeKeyReleasedInMillis = System.currentTimeMillis();
     }
 
     public void setUp(boolean up) {
@@ -602,14 +604,6 @@ public class Player extends Entity {
 
     public void setRight(boolean right) {
         this.right = right;
-    }
-
-    public boolean isDown() {
-        return down;
-    }
-
-    public void setDown(boolean down) {
-        this.down = down;
     }
 
     public void setAttacking(boolean attacking) {

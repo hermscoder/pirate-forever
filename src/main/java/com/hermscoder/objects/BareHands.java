@@ -25,6 +25,7 @@ public class BareHands extends Weapon {
                 (int) (player.getHitBox().y - player.getyDrawOffset()),
                 objectConstants.getSpriteAtlas().getTileWidth(Game.SCALE) * player.getFlipW(),
                 objectConstants.getSpriteAtlas().getTileHeight(Game.SCALE), null);
+//        drawAttackBox(g, xLvlOffset);
 
     }
 }

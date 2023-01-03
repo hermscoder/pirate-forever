@@ -217,6 +217,7 @@ public class Playing extends State implements StateMethods {
                 player.powerAttack();
                 break;
         }
+        player.changeLastKeyPressed(e.getKeyCode());
     }
 
     @Override
@@ -233,7 +234,7 @@ public class Playing extends State implements StateMethods {
                     player.setJump(false);
                     break;
             }
-            player.changeLastKeyPressedAndResetTimer(e.getKeyCode());
+            player.changeLastKeyReleasedAndResetTimer(e.getKeyCode());
         }
     }
 
