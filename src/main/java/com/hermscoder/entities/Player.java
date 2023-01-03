@@ -20,6 +20,7 @@ import static com.hermscoder.utils.Sprite.StatusBar;
 public class Player extends Entity {
 
     private static final int DASH_TICKS = 35;
+    private static final int POWER_DASH_COST = 10;
     private static final int POWER_ATTACK_TICKS = 35;
     private static final int POWER_ATTACK_COST = 60;
 
@@ -481,6 +482,15 @@ public class Player extends Entity {
         }
     }
 
+    public void dash() {
+        if (dashActive)
+            return;
+
+        if (powerValue >= POWER_DASH_COST) {
+            dashActive = true;
+            changePower(-POWER_DASH_COST);
+        }
+    }
 
     public void loadLvlData(int[][] lvlData) {
         this.lvlData = lvlData;
@@ -539,14 +549,6 @@ public class Player extends Entity {
         }
     }
 
-    public void dash() {
-        if (dashActive)
-            return;
-//        if (powerValue >= POWER_ATTACK_COST) {
-            dashActive = true;
-//            changePower(-POWER_ATTACK_COST);
-//        }
-    }
 
     public void changeWeapon(Weapon currentWeapon) {
         this.currentWeapon = currentWeapon;
@@ -579,24 +581,6 @@ public class Player extends Entity {
 
     public boolean checkIfDoublePressed(int keyCode, long acceptableTimeWhenLastPressed) {
         return lastKeyPressed == keyCode && System.currentTimeMillis() - lastTimeKeyPressedInMillis <= acceptableTimeWhenLastPressed;
-    }
-    //ELABORA A METHOD THAT WILL SET THE LAST KEY, AND IF TIME IS UP (didnt pressed twice in less than 200 ms), SET THE LAST KEY AS -1
-    public boolean setAndCheckDoubleKeyPressed(int key) {
-        if(keyPressed == key) {
-            boolean stillOnDashBufferTime = System.currentTimeMillis() - lastTimeKeyPressedInMillis <= 500;
-            if(stillOnDashBufferTime) {
-                System.out.println("MATCH!");
-                changeLastKeyPressedAndResetTimer(-1);
-//                changeLastKeyPressedAndResetTimer(key);
-                return true;
-            } else {
-                System.out.println("TIMES UP");
-//                changeLastKeyPressedAndResetTimer(key);
-            }
-        } else {
-//            changeLastKeyPressedAndResetTimer(key);
-        }
-        return false;
     }
 
     public void changeLastKeyPressedAndResetTimer(int lastKeyPressed) {

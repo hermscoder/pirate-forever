@@ -216,11 +216,6 @@ public class Playing extends State implements StateMethods {
             case KeyEvent.VK_P:
                 player.powerAttack();
                 break;
-            case KeyEvent.VK_K:
-                if (player.setAndCheckDoubleKeyPressed(e.getKeyCode())) {
-                    player.dash();
-                }
-                break;
         }
     }
 
