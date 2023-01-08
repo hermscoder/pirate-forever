@@ -36,9 +36,9 @@ public class Shark extends Enemy {
     @Override
     void draw(Graphics g, int xLvlOffset) {
         g.drawImage(entityConstants.getAnimationImage(state, animationIndex),
-                (int) (hitBox.x - xLvlOffset - xDrawOffset + flipW()),
+                (int) (hitBox.x - xLvlOffset - xDrawOffset + flipX()),
                 (int) (hitBox.y - yDrawOffset),
-                entityConstants.getSpriteAtlas().getTileWidth(Game.SCALE),
+                entityConstants.getSpriteAtlas().getTileWidth(Game.SCALE) * flipW(),
                 entityConstants.getSpriteAtlas().getTileHeight(Game.SCALE), null);
 //        drawHitBox(g, xLevelOffset);
 //        drawAttackBox(g, xLevelOffset);
