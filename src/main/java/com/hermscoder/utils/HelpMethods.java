@@ -1,11 +1,8 @@
 package com.hermscoder.utils;
 
-import com.hermscoder.entities.Crabby;
-import com.hermscoder.entities.Shark;
 import com.hermscoder.levels.LoadedData;
 import com.hermscoder.main.Game;
 import com.hermscoder.objects.Cannon;
-import com.hermscoder.objects.Container;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -79,7 +76,7 @@ public class HelpMethods {
         }
         int value = lvlData[yTile][xTile];
 
-        if (value >= 48 || value < 0 || value != 11)
+        if (value >= Constants.LAST_SOLID_TILE_ID || value < 0 || value != 11)
             return true;
 
         return false;
@@ -172,25 +169,12 @@ public class HelpMethods {
                 }
 
                 int value = color.getRed();
-                if (value >= 48)
+                if (value >= Constants.LAST_SOLID_TILE_ID)
                     value = 0;
                 loadedData.addTileToLevelData(j, i, value);
             }
         }
         return loadedData;
-    }
-
-    public static ArrayList<Cannon> getCannons(BufferedImage levelImage) {
-        ArrayList<Cannon> list = new ArrayList<>();
-        for (int j = 0; j < levelImage.getHeight(); j++) {
-            for (int i = 0; i < levelImage.getWidth(); i++) {
-                Color color = new Color(levelImage.getRGB(i, j));
-                int value = color.getBlue();
-                if (value == ObjectConstants.CANNON_LEFT || value == ObjectConstants.CANNON_RIGHT)
-                    list.add(new Cannon(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
-            }
-        }
-        return list;
     }
 
     public static boolean isHitBoxHittingLevel(Rectangle2D.Float hitBox, int[][] lvlData) {

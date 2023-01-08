@@ -12,6 +12,7 @@ public class Constants {
     public static final String AUDIO_FOLDER = "/audio";
 
     public static final float GRAVITY = 0.04f * SCALE;
+    public static final int LAST_SOLID_TILE_ID = 49;
 
     public static class Directions {
         public static final int LEFT = 0;
@@ -200,7 +201,7 @@ public class Constants {
                 .animationSpeed(25)
                 .hitboxWidth(40)
                 .hitboxHeight(26)
-                .xDrawOffset(-4)
+                .xDrawOffset((int) (-4 * SCALE))
                 .yDrawOffset((int) (1 * SCALE))
                 .build()
         );
@@ -213,7 +214,7 @@ public class Constants {
                 .startAnimated(false)
                 .hitboxWidth(40)
                 .hitboxHeight(26)
-                .xDrawOffset(-4)
+                .xDrawOffset((int) (-4 * SCALE))
                 .yDrawOffset((int) (1 * SCALE))
                 .build()
         );

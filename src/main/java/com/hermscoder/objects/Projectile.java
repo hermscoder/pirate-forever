@@ -1,5 +1,6 @@
 package com.hermscoder.objects;
 
+import com.hermscoder.entities.Player;
 import com.hermscoder.main.Game;
 import com.hermscoder.utils.Constants;
 import com.hermscoder.utils.ObjectConstants;
@@ -7,6 +8,8 @@ import com.hermscoder.utils.Sprite;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+
+import static com.hermscoder.utils.HelpMethods.isHitBoxHittingLevel;
 
 public class Projectile {
     public static final int LEFT = -1;
@@ -62,5 +65,27 @@ public class Projectile {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public void draw(Graphics g, int xLvlOffset) {
+        if (isActive()) {
+            g.drawImage(objectConstants.getAnimationImage(0, 0),
+                    (int) (hitBox.x - xLvlOffset),
+                    (int) (hitBox.y),
+                    objectConstants.getSpriteAtlas().getTileWidth(Game.SCALE),
+                    objectConstants.getSpriteAtlas().getTileHeight(Game.SCALE), null);
+//                drawHitBox(g, xLvlOffset);
+        }
+
+    }
+
+    public void update(int[][] lvlData, Player player) {
+        updatePos();
+        if (hitBox.intersects(player.getHitBox())) {
+            player.hit(hitBox, getDamage());
+            setActive(false);
+        } else if (isHitBoxHittingLevel(hitBox, lvlData)) {
+            setActive(false);
+        }
     }
 }

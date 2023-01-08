@@ -38,13 +38,8 @@ public class Level {
         this.image = image;
 
         loadLevelFromImage();
-        createCannons();
         calculateOffsets();
         calculatePlayerSpawn();
-    }
-
-    private void createCannons() {
-        cannons = HelpMethods.getCannons(image);
     }
 
     private void calculatePlayerSpawn() {
@@ -71,11 +66,14 @@ public class Level {
     private void processGameObjects(List<GameObject> gameObjects) {
         touchables = new ArrayList<>();
         destroyables = new ArrayList<>();
+        cannons = new ArrayList<>();
         for (GameObject gameObject : gameObjects) {
             if (gameObject instanceof Touchable) {
                 touchables.add((Touchable) gameObject);
             } else if (gameObject instanceof Destroyable) {
                 destroyables.add((Destroyable) gameObject);
+            } else if (gameObject instanceof Cannon) {
+                cannons.add((Cannon) gameObject);
             }
         }
     }

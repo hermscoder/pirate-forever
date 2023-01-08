@@ -63,7 +63,7 @@ public abstract class Weapon extends Touchable {
                     objectConstants.getSpriteAtlas().getTileHeight(Game.SCALE), null);
         }
 //        drawHitBox(g, xLvlOffset);
-        drawAttackBox(g, xLvlOffset);
+//        drawAttackBox(g, xLvlOffset);
     }
 
     protected void updateHover() {
