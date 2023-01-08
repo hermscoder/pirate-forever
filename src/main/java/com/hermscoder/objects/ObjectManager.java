@@ -19,12 +19,11 @@ import static com.hermscoder.utils.Sprite.*;
 public class ObjectManager {
     private final Playing playing;
     private BufferedImage[][] containerImgs;
-    private BufferedImage spikeImg, cannonBallImg;
+    private BufferedImage cannonBallImg;
     private BufferedImage[] cannonImgs;
 
     private ArrayList<Touchable> touchableObjects;
     private ArrayList<Container> containers;
-    private ArrayList<Spike> spikes = new ArrayList<>();
     private ArrayList<Cannon> cannons;
     private ArrayList<Projectile> projectiles = new ArrayList<>();
 
@@ -70,7 +69,6 @@ public class ObjectManager {
     public void loadObjects(Level newLevel) {
         touchableObjects = new ArrayList<>(newLevel.getTouchables());
         containers = new ArrayList<>(newLevel.getContainers());
-//        spikes = new ArrayList<>(newLevel.getSpikes());
         cannons = new ArrayList<>(newLevel.getCannons());
         projectiles.clear();
     }
@@ -87,9 +85,6 @@ public class ObjectManager {
                         ContainersSpriteAtlas.getTileHeight());
             }
         }
-
-
-        spikeImg = LoadSave.getSpriteAtlas(SpikeTrapSpriteAtlas.getFilename());
 
         cannonImgs = new BufferedImage[CannonSpriteAtlas.getWidthInSprites()];
         BufferedImage temp = LoadSave.getSpriteAtlas(CannonSpriteAtlas.getFilename());
@@ -174,7 +169,6 @@ public class ObjectManager {
     public void draw(Graphics g, int xLvlOffset) {
         drawTouchables(g, xLvlOffset);
         drawContainers(g, xLvlOffset);
-        drawTraps(g, xLvlOffset);
         drawCannons(g, xLvlOffset);
         drawProjectiles(g, xLvlOffset);
     }
@@ -206,17 +200,6 @@ public class ObjectManager {
                     (int) cannon.getHitBox().y, width,
                     CannonSpriteAtlas.getTileHeight(Game.SCALE), null);
 //            cannon.drawHitBox(g, xLvlOffset);
-        }
-    }
-
-    private void drawTraps(Graphics g, int xLvlOffset) {
-        for (Spike s : spikes) {
-            g.drawImage(spikeImg,
-                    (int) (s.getHitBox().x - s.getxDrawOffset() - xLvlOffset),
-                    (int) (s.getHitBox().y - s.getyDrawOffset()),
-                    SpikeTrapSpriteAtlas.getTileWidth(Game.SCALE),
-                    SpikeTrapSpriteAtlas.getTileHeight(Game.SCALE), null);
-//            s.drawHitBox(g, xLvlOffset);
         }
     }
 
