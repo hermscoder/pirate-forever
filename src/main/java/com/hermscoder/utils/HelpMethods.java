@@ -2,9 +2,10 @@ package com.hermscoder.utils;
 
 import com.hermscoder.entities.Crabby;
 import com.hermscoder.entities.Shark;
+import com.hermscoder.levels.LoadedData;
 import com.hermscoder.main.Game;
+import com.hermscoder.objects.Cannon;
 import com.hermscoder.objects.Container;
-import com.hermscoder.objects.*;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -196,17 +197,30 @@ public class HelpMethods {
     }
 
 
-    public static ArrayList<GameObject> getGameObjects(BufferedImage levelImage) {
-        ArrayList<GameObject> list = new ArrayList<>();
+    public static LoadedData loadLevelFromImage(BufferedImage levelImage) {
+        LoadedData loadedData = new LoadedData(levelImage);
         for (int j = 0; j < levelImage.getHeight(); j++) {
             for (int i = 0; i < levelImage.getWidth(); i++) {
                 Color color = new Color(levelImage.getRGB(i, j));
-                int value = color.getBlue();
-                if (value > 0)
-                    list.add(ObjectFactory.newGameObject(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
+                int objectType = color.getBlue();
+                if (objectType > 0)
+                    loadedData.addGameObject(ObjectFactory.newGameObject(i * Game.TILES_SIZE, j * Game.TILES_SIZE, objectType));
+
+                int entityType = color.getGreen();
+                if (entityType > 0) {
+                    if (entityType != 100)
+                        loadedData.addEntity(EntityFactory.newEntity(i * Game.TILES_SIZE, j * Game.TILES_SIZE, entityType));
+                    else
+                        loadedData.setPlayerSpawn(new Point(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
+                }
+
+                int value = color.getRed();
+                if (value >= 48)
+                    value = 0;
+                loadedData.addTileToLevelData(j, i, value);
             }
         }
-        return list;
+        return loadedData;
     }
 
     public static ArrayList<Container> getContainers(BufferedImage levelImage) {

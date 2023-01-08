@@ -1,15 +1,20 @@
 package com.hermscoder.levels;
 
 import com.hermscoder.entities.Crabby;
+import com.hermscoder.entities.Enemy;
+import com.hermscoder.entities.Entity;
 import com.hermscoder.entities.Shark;
 import com.hermscoder.main.Game;
+import com.hermscoder.objects.Cannon;
 import com.hermscoder.objects.Container;
-import com.hermscoder.objects.*;
+import com.hermscoder.objects.GameObject;
+import com.hermscoder.objects.Touchable;
 import com.hermscoder.utils.HelpMethods;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Level {
 
@@ -17,6 +22,7 @@ public class Level {
     private BufferedImage image;
     private int[][] lvlData;
     //Entities
+    private ArrayList<Enemy> enemies;
     private ArrayList<Crabby> crabs;
     private ArrayList<Shark> sharks;
     //Objects
@@ -35,8 +41,7 @@ public class Level {
 
         createLevelData();
         createEnemies();
-        createEnemies();
-        createGameObjects();
+        loadLevelFromImage();
         createContainers();
         createCannons();
         calculateOffsets();
@@ -60,9 +65,25 @@ public class Level {
         sharks = HelpMethods.getShark(image);
     }
 
-    private void createGameObjects() {
+    private void loadLevelFromImage() {
+        LoadedData loadedData = HelpMethods.loadLevelFromImage(image);
+        lvlData = loadedData.getLvlData();
+
+        processGameObjects(loadedData.getGameObjects());
+        processEntities(loadedData.getEntities());
+    }
+
+    private void processEntities(ArrayList<Entity> entities) {
+        enemies = new ArrayList<>();
+        for (Entity entity : entities) {
+            if (entity instanceof Enemy) {
+                enemies.add((Enemy) entity);
+            }
+        }
+    }
+
+    private void processGameObjects(List<GameObject> gameObjects) {
         touchables = new ArrayList<>();
-        ArrayList<GameObject> gameObjects = HelpMethods.getGameObjects(image);
         for (GameObject gameObject : gameObjects) {
             if (gameObject instanceof Touchable) {
                 touchables.add((Touchable) gameObject);
