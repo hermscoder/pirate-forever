@@ -3,7 +3,6 @@ package com.hermscoder.objects;
 import com.hermscoder.entities.Player;
 import com.hermscoder.gamestates.Playing;
 import com.hermscoder.levels.Level;
-import com.hermscoder.levels.LevelManager;
 import com.hermscoder.main.Game;
 import com.hermscoder.utils.HelpMethods;
 import com.hermscoder.utils.LoadSave;
@@ -19,8 +18,7 @@ import static com.hermscoder.utils.Sprite.*;
 
 public class ObjectManager {
     private final Playing playing;
-    private LevelManager levelManager;
-    private BufferedImage[][] potionImgs, containerImgs;
+    private BufferedImage[][] containerImgs;
     private BufferedImage spikeImg, cannonBallImg;
     private BufferedImage[] cannonImgs;
 
@@ -30,7 +28,6 @@ public class ObjectManager {
     private ArrayList<Spike> spikes = new ArrayList<>();
     private ArrayList<Cannon> cannons;
     private ArrayList<Projectile> projectiles = new ArrayList<>();
-
 
 
     public ObjectManager(Playing playing) {
