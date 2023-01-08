@@ -130,9 +130,8 @@ public class ObjectConstants {
     }
 
 
-    public BufferedImage getAnimationImage(int state, int animationIndex) {
-        return animationImages[state][animationIndex];
-    }
+
+
 
     static class ObjectConstantsBuilder {
         private final Map<Integer, Integer> entitiesAnimationSpritesAmount = new HashMap<>();

@@ -1,6 +1,8 @@
 package com.hermscoder.entities;
 
 
+import com.hermscoder.main.Game;
+
 import java.awt.*;
 
 import static com.hermscoder.main.Game.SCALE;
@@ -33,7 +35,13 @@ public class Shark extends Enemy {
 
     @Override
     void draw(Graphics g, int xLvlOffset) {
-
+        g.drawImage(entityConstants.getAnimationImage(state, animationIndex),
+                (int) (hitBox.x - xLvlOffset - xDrawOffset + flipW()),
+                (int) (hitBox.y - yDrawOffset),
+                entityConstants.getSpriteAtlas().getTileWidth(Game.SCALE),
+                entityConstants.getSpriteAtlas().getTileHeight(Game.SCALE), null);
+//        drawHitBox(g, xLevelOffset);
+//        drawAttackBox(g, xLevelOffset);
     }
 
     private void updateAttackBox() {

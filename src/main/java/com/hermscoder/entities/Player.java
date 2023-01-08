@@ -171,7 +171,7 @@ public class Player extends Entity {
         if (powerAttackActive)
             attackChecked = false;
 
-        playing.checkEnemyHit(attackBox);
+        playing.checkEnemyHit(attackBox, currentWeapon.getDamageValue());
         playing.checkObjectHit(attackBox);
         playing.getGame().getAudioPlayer().playAttackSound();
     }
