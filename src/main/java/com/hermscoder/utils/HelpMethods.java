@@ -195,18 +195,6 @@ public class HelpMethods {
         return new Point(1, 1);
     }
 
-    public static ArrayList<Potion> getPotions(BufferedImage levelImage) {
-        ArrayList<Potion> list = new ArrayList<>();
-        for (int j = 0; j < levelImage.getHeight(); j++) {
-            for (int i = 0; i < levelImage.getWidth(); i++) {
-                Color color = new Color(levelImage.getRGB(i, j));
-                int value = color.getBlue();
-                if (value == ObjectConstants.RED_POTION || value == ObjectConstants.BLUE_POTION)
-                    list.add(new Potion(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
-            }
-        }
-        return list;
-    }
 
     public static ArrayList<GameObject> getGameObjects(BufferedImage levelImage) {
         ArrayList<GameObject> list = new ArrayList<>();
@@ -229,32 +217,6 @@ public class HelpMethods {
                 int value = color.getBlue();
                 if (value == ObjectConstants.BOX || value == ObjectConstants.BARREL)
                     list.add(new Container(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
-            }
-        }
-        return list;
-    }
-
-    public static ArrayList<Weapon> getWeapons(BufferedImage levelImage) {
-        ArrayList<Weapon> list = new ArrayList<>();
-        for (int j = 0; j < levelImage.getHeight(); j++) {
-            for (int i = 0; i < levelImage.getWidth(); i++) {
-                Color color = new Color(levelImage.getRGB(i, j));
-                int value = color.getBlue();
-                if (value > 100)
-                    list.add(new Sword(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
-            }
-        }
-        return list;
-    }
-
-    public static ArrayList<Spike> getSpikes(BufferedImage levelImage) {
-        ArrayList<Spike> list = new ArrayList<>();
-        for (int j = 0; j < levelImage.getHeight(); j++) {
-            for (int i = 0; i < levelImage.getWidth(); i++) {
-                Color color = new Color(levelImage.getRGB(i, j));
-                int value = color.getBlue();
-                if (value == ObjectConstants.SPIKE_TRAP)
-                    list.add(new Spike(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
             }
         }
         return list;
