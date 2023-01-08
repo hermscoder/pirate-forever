@@ -2,6 +2,7 @@ package com.hermscoder.objects;
 
 import com.hermscoder.entities.Player;
 import com.hermscoder.main.Game;
+import com.hermscoder.objects.type.Touchable;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -30,7 +31,7 @@ public abstract class Weapon extends Touchable {
 
 
     @Override
-    void onTouch(Player player) {
+    public void onTouch(Player player) {
         if (player.getCurrentWeapon() != null) {
             player.getCurrentWeapon().setActive(false);
         }
@@ -38,6 +39,7 @@ public abstract class Weapon extends Touchable {
         setPlayer(player);
     }
 
+    @Override
     public void update() {
         if (isDropped()) {
             updateAnimationTick();
@@ -45,6 +47,7 @@ public abstract class Weapon extends Touchable {
         }
     }
 
+    @Override
     public void draw(Graphics g, int xLvlOffset) {
         if (isDropped()) {
             g.drawImage(objectConstants.getAnimationImage(HOVER_DROPPED_EFFECT, animationIndex),

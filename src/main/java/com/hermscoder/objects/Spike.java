@@ -2,6 +2,7 @@ package com.hermscoder.objects;
 
 import com.hermscoder.entities.Player;
 import com.hermscoder.main.Game;
+import com.hermscoder.objects.type.Touchable;
 
 import java.awt.*;
 
@@ -11,17 +12,17 @@ public class Spike extends Touchable {
     }
 
     @Override
-    void onTouch(Player player) {
+    public void onTouch(Player player) {
         player.hit(hitBox, objectConstants.getDamage());
     }
 
     @Override
-    void update() {
+    public void update() {
 
     }
 
     @Override
-    void draw(Graphics g, int xLvlOffset) {
+    public void draw(Graphics g, int xLvlOffset) {
         g.drawImage(objectConstants.getAnimationImage(0, 0),
                 (int) (hitBox.x - xDrawOffset - xLvlOffset),
                 (int) (hitBox.y - yDrawOffset),

@@ -1,14 +1,13 @@
 package com.hermscoder.levels;
 
-import com.hermscoder.entities.Crabby;
 import com.hermscoder.entities.Enemy;
 import com.hermscoder.entities.Entity;
-import com.hermscoder.entities.Shark;
 import com.hermscoder.main.Game;
 import com.hermscoder.objects.Cannon;
 import com.hermscoder.objects.Container;
 import com.hermscoder.objects.GameObject;
-import com.hermscoder.objects.Touchable;
+import com.hermscoder.objects.type.Destroyable;
+import com.hermscoder.objects.type.Touchable;
 import com.hermscoder.utils.HelpMethods;
 
 import java.awt.*;
@@ -26,7 +25,7 @@ public class Level {
 
     //Objects
     private ArrayList<Touchable> touchables;
-    private ArrayList<Container> containers;
+    private ArrayList<Destroyable> destroyables;
     private ArrayList<Cannon> cannons;
 
     private int levelTilesWide;
@@ -38,9 +37,7 @@ public class Level {
         this.index = index;
         this.image = image;
 
-        createLevelData();
         loadLevelFromImage();
-        createContainers();
         createCannons();
         calculateOffsets();
         calculatePlayerSpawn();
@@ -52,10 +49,6 @@ public class Level {
 
     private void calculatePlayerSpawn() {
         playerSpawn = HelpMethods.getPlayerSpawn(image);
-    }
-
-    private void createLevelData() {
-        lvlData = HelpMethods.getLevelData(image);
     }
 
     private void loadLevelFromImage() {
@@ -77,15 +70,14 @@ public class Level {
 
     private void processGameObjects(List<GameObject> gameObjects) {
         touchables = new ArrayList<>();
+        destroyables = new ArrayList<>();
         for (GameObject gameObject : gameObjects) {
             if (gameObject instanceof Touchable) {
                 touchables.add((Touchable) gameObject);
+            } else if (gameObject instanceof Destroyable) {
+                destroyables.add((Destroyable) gameObject);
             }
         }
-    }
-
-    private void createContainers() {
-        containers = HelpMethods.getContainers(image);
     }
 
     private void calculateOffsets() {
@@ -107,8 +99,8 @@ public class Level {
         return maxLevelOffsetX;
     }
 
-    public ArrayList<Container> getContainers() {
-        return containers;
+    public ArrayList<Destroyable> getDestroyables() {
+        return destroyables;
     }
 
     public Point getPlayerSpawn() {

@@ -21,7 +21,6 @@ public class ObjectConstants {
     public static final int CANNON_RIGHT = 52;
 
 
-
     //Weapons
     public static final int BARE_HANDS = 100;
     public static final int SWORD = 101;
@@ -129,9 +128,9 @@ public class ObjectConstants {
         return spriteAtlas;
     }
 
-
-
-
+    public BufferedImage getAnimationImage(int state, int animationIndex) {
+        return animationImages[state][animationIndex];
+    }
 
     static class ObjectConstantsBuilder {
         private final Map<Integer, Integer> entitiesAnimationSpritesAmount = new HashMap<>();

@@ -141,49 +141,6 @@ public class HelpMethods {
             return isSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, lvlData);
     }
 
-    public static int[][] getLevelData(BufferedImage levelImg) {
-        int[][] lvlData = new int[levelImg.getHeight()][levelImg.getWidth()];
-
-        for (int j = 0; j < levelImg.getHeight(); j++) {
-            for (int i = 0; i < levelImg.getWidth(); i++) {
-                Color color = new Color(levelImg.getRGB(i, j));
-                int value = color.getRed();
-                if (value >= 48)
-                    value = 0;
-                lvlData[j][i] = value;
-            }
-        }
-        return lvlData;
-    }
-
-    public static ArrayList<Crabby> getCrabs(BufferedImage levelImage) {
-        ArrayList<Crabby> list = new ArrayList<>();
-        for (int j = 0; j < levelImage.getHeight(); j++) {
-            for (int i = 0; i < levelImage.getWidth(); i++) {
-                Color color = new Color(levelImage.getRGB(i, j));
-                int value = color.getGreen();
-                if (value == Constants.CrabbyConstants.CRABBY)
-                    list.add(new Crabby(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
-            }
-        }
-
-        return list;
-    }
-
-    public static ArrayList<Shark> getShark(BufferedImage levelImage) {
-        ArrayList<Shark> list = new ArrayList<>();
-        for (int j = 0; j < levelImage.getHeight(); j++) {
-            for (int i = 0; i < levelImage.getWidth(); i++) {
-                Color color = new Color(levelImage.getRGB(i, j));
-                int value = color.getGreen();
-                if (value == Constants.SharkConstants.SHARK)
-                    list.add(new Shark(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
-            }
-        }
-
-        return list;
-    }
-
     public static Point getPlayerSpawn(BufferedImage levelImage) {
         for (int j = 0; j < levelImage.getHeight(); j++) {
             for (int i = 0; i < levelImage.getWidth(); i++) {
@@ -221,19 +178,6 @@ public class HelpMethods {
             }
         }
         return loadedData;
-    }
-
-    public static ArrayList<Container> getContainers(BufferedImage levelImage) {
-        ArrayList<Container> list = new ArrayList<>();
-        for (int j = 0; j < levelImage.getHeight(); j++) {
-            for (int i = 0; i < levelImage.getWidth(); i++) {
-                Color color = new Color(levelImage.getRGB(i, j));
-                int value = color.getBlue();
-                if (value == ObjectConstants.BOX || value == ObjectConstants.BARREL)
-                    list.add(new Container(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
-            }
-        }
-        return list;
     }
 
     public static ArrayList<Cannon> getCannons(BufferedImage levelImage) {

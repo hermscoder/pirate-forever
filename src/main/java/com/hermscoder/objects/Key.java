@@ -2,6 +2,7 @@ package com.hermscoder.objects;
 
 import com.hermscoder.entities.Player;
 import com.hermscoder.main.Game;
+import com.hermscoder.objects.type.Touchable;
 
 import java.awt.*;
 

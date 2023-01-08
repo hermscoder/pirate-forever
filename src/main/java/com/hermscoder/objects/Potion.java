@@ -2,6 +2,7 @@ package com.hermscoder.objects;
 
 import com.hermscoder.entities.Player;
 import com.hermscoder.main.Game;
+import com.hermscoder.objects.type.Touchable;
 
 import java.awt.*;
 
@@ -18,14 +19,14 @@ public class Potion extends Touchable {
     }
 
     @Override
-    void onTouch(Player player) {
+    public void onTouch(Player player) {
         active = false;
         player.heal(getCureValue());
         player.changePower(getPowerValue());
     }
 
     @Override
-    void draw(Graphics g, int xLvlOffset) {
+    public void draw(Graphics g, int xLvlOffset) {
         int objIndex = objectType == BLUE_POTION ? 0 : 1;
         g.drawImage(objectConstants.getAnimationImage(objIndex, animationIndex),
                 (int) (hitBox.x - xDrawOffset - xLvlOffset),

@@ -4,6 +4,8 @@ import com.hermscoder.entities.Player;
 import com.hermscoder.gamestates.Playing;
 import com.hermscoder.levels.Level;
 import com.hermscoder.main.Game;
+import com.hermscoder.objects.type.Destroyable;
+import com.hermscoder.objects.type.Touchable;
 import com.hermscoder.utils.HelpMethods;
 import com.hermscoder.utils.LoadSave;
 
@@ -11,19 +13,21 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.hermscoder.utils.HelpMethods.isHitBoxHittingLevel;
-import static com.hermscoder.utils.ObjectConstants.*;
-import static com.hermscoder.utils.Sprite.*;
+import static com.hermscoder.utils.ObjectConstants.CANNON_LEFT;
+import static com.hermscoder.utils.ObjectConstants.CANNON_RIGHT;
+import static com.hermscoder.utils.Sprite.CannonBallSprite;
+import static com.hermscoder.utils.Sprite.CannonSpriteAtlas;
 
 public class ObjectManager {
     private final Playing playing;
-    private BufferedImage[][] containerImgs;
     private BufferedImage cannonBallImg;
     private BufferedImage[] cannonImgs;
 
     private ArrayList<Touchable> touchableObjects;
-    private ArrayList<Container> containers;
+    private ArrayList<Destroyable> destroyableObjects;
     private ArrayList<Cannon> cannons;
     private ArrayList<Projectile> projectiles = new ArrayList<>();
 
@@ -43,19 +47,13 @@ public class ObjectManager {
     }
 
     public void checkObjectHit(Rectangle2D.Float hitbox) {
-        for (Container c : containers) {
-            if (c.isActive() && !c.doAnimation)
-                if (hitbox.intersects(c.getHitBox())) {
-                    c.setAnimation(true);
-
-                    int type = BLUE_POTION;
-                    if (c.objectType == BARREL)
-                        type = RED_POTION;
-
-                    touchableObjects.add(new Potion(
-                            (int) (c.getHitBox().x + c.getHitBox().width / 2),
-                            (int) (c.getHitBox().y - c.getHitBox().height / 2), type));
-
+        for (Destroyable d : destroyableObjects) {
+            if (d.isActive() && !d.doAnimation)
+                if (hitbox.intersects(d.getHitBox())) {
+                    List<Touchable> drops = d.onHit(this);
+                    if (drops != null) {
+                        touchableObjects.addAll(drops);
+                    }
                     return;
                 }
         }
@@ -63,24 +61,12 @@ public class ObjectManager {
 
     public void loadObjects(Level newLevel) {
         touchableObjects = new ArrayList<>(newLevel.getTouchables());
-        containers = new ArrayList<>(newLevel.getContainers());
+        destroyableObjects = new ArrayList<>(newLevel.getDestroyables());
         cannons = new ArrayList<>(newLevel.getCannons());
         projectiles.clear();
     }
 
     private void loadImages() {
-        BufferedImage containerSpriteAtlas = LoadSave.getSpriteAtlas(ContainersSpriteAtlas.getFilename());
-        containerImgs = new BufferedImage[ContainersSpriteAtlas.getHeightInSprites()][ContainersSpriteAtlas.getWidthInSprites()];
-        for (int j = 0; j < containerImgs.length; j++) {
-            for (int i = 0; i < containerImgs[j].length; i++) {
-                containerImgs[j][i] = containerSpriteAtlas.getSubimage(
-                        i * ContainersSpriteAtlas.getTileWidth(),
-                        j * ContainersSpriteAtlas.getTileHeight(),
-                        ContainersSpriteAtlas.getTileWidth(),
-                        ContainersSpriteAtlas.getTileHeight());
-            }
-        }
-
         cannonImgs = new BufferedImage[CannonSpriteAtlas.getWidthInSprites()];
         BufferedImage temp = LoadSave.getSpriteAtlas(CannonSpriteAtlas.getFilename());
         for (int i = 0; i < cannonImgs.length; i++) {
@@ -99,9 +85,9 @@ public class ObjectManager {
                 touchable.update();
         }
 
-        for (Container container : containers) {
-            if (container.isActive())
-                container.update();
+        for (Destroyable destroyable : destroyableObjects) {
+            if (destroyable.isActive())
+                destroyable.update();
         }
 
         updateCannons(lvlData, player);
@@ -163,7 +149,7 @@ public class ObjectManager {
 
     public void draw(Graphics g, int xLvlOffset) {
         drawTouchables(g, xLvlOffset);
-        drawContainers(g, xLvlOffset);
+        drawDestroyables(g, xLvlOffset);
         drawCannons(g, xLvlOffset);
         drawProjectiles(g, xLvlOffset);
     }
@@ -198,17 +184,10 @@ public class ObjectManager {
         }
     }
 
-    private void drawContainers(Graphics g, int xLvlOffset) {
-        for (Container container : containers) {
-            if (container.isActive()) {
-                int type = container.getObjectType() == BOX ? 0 : 1;
-
-                g.drawImage(containerImgs[type][container.getAnimationIndex()],
-                        (int) (container.getHitBox().x - container.getxDrawOffset() - xLvlOffset),
-                        (int) (container.getHitBox().y - container.getyDrawOffset()),
-                        ContainersSpriteAtlas.getTileWidth(Game.SCALE),
-                        ContainersSpriteAtlas.getTileHeight(Game.SCALE), null);
-//                container.drawHitBox(g, xLvlOffset);
+    private void drawDestroyables(Graphics g, int xLvlOffset) {
+        for (Destroyable destroyable : destroyableObjects) {
+            if (destroyable.isActive()) {
+                destroyable.draw(g, xLvlOffset);
             }
         }
     }
@@ -229,8 +208,8 @@ public class ObjectManager {
             touchable.reset();
         }
 
-        for (Container c : containers) {
-            c.reset();
+        for (Destroyable d : destroyableObjects) {
+            d.reset();
         }
 
         for (Cannon c : cannons) {
