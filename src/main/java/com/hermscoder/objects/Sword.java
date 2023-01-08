@@ -1,6 +1,7 @@
 package com.hermscoder.objects;
 
 
+
 public class Sword extends Weapon {
 
 

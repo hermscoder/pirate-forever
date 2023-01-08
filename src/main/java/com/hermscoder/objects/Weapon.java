@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 
-public abstract class Weapon extends GameObject {
+public abstract class Weapon extends Touchable {
     private float hoverOffset;
     private int maxHoverOffset, hoverDirection = 1;
     private static final int HOVER_DROPPED_EFFECT = 0;
@@ -28,6 +28,15 @@ public abstract class Weapon extends GameObject {
         attackBox = new Rectangle2D.Float(x, y, objectConstants.getAttackBoxWidth(), objectConstants.getAttackBoxHeight());
     }
 
+
+    @Override
+    void onTouch(Player player) {
+        if (player.getCurrentWeapon() != null) {
+            player.getCurrentWeapon().setActive(false);
+        }
+        player.changeWeapon(this);
+        setPlayer(player);
+    }
 
     public void update() {
         if (isDropped()) {

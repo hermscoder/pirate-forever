@@ -125,23 +125,11 @@ public class Playing extends State implements StateMethods {
         enemyManager.checkEnemyHit(attackBox);
     }
 
-    public void checkPotionTouched(Rectangle2D.Float hitBox) {
-        objectManager.checkObjectTouched(hitBox);
-    }
-
-    public void checkKeysTouched(Rectangle2D.Float hitBox) {
-        objectManager.checkKeysTouched(hitBox);
+    public void checkObjectsTouched(Player hitBox) {
+        objectManager.checkObjectsTouched(hitBox);
     }
     public void checkObjectHit(Rectangle2D.Float attackBox) {
         objectManager.checkObjectHit(attackBox);
-    }
-
-    public void checkSpikesTouched(Player player) {
-        objectManager.checkSpikesTouched(player);
-    }
-
-    public void checkWeaponTouched(Player player) {
-        objectManager.checkWeaponTouched(player);
     }
 
     @Override

@@ -1,12 +1,11 @@
 package com.hermscoder.objects;
 
+import com.hermscoder.entities.Player;
 import com.hermscoder.main.Game;
 
 import java.awt.*;
 
-import static com.hermscoder.utils.Sprite.PotionSpriteAtlas;
-
-public class Key extends GameObject {
+public class Key extends Touchable {
     private float hoverOffset;
     private int maxHoverOffset, hoverDirection = 1;
 
@@ -16,9 +15,26 @@ public class Key extends GameObject {
         maxHoverOffset = (int) (10 * Game.SCALE);
     }
 
+
+    @Override
     public void update() {
         updateAnimationTick();
         updateHover();
+    }
+    @Override
+    public void draw(Graphics g, int xLvlOffset) {
+        g.drawImage(objectConstants.getAnimationImage(0, animationIndex),
+                (int) (hitBox.x - xDrawOffset - xLvlOffset),
+                (int) (hitBox.y - yDrawOffset),
+                objectConstants.getSpriteAtlas().getTileWidth(Game.SCALE),
+                objectConstants.getSpriteAtlas().getTileHeight(Game.SCALE), null);
+    }
+
+
+    @Override
+    public void onTouch(Player player) {
+        active = false;
+        player.addKeyToCollection(this);
     }
 
     private void updateHover() {
@@ -31,13 +47,6 @@ public class Key extends GameObject {
         hitBox.y = y + hoverOffset;
     }
 
-    public void draw(Graphics g, int xLvlOffset) {
-        g.drawImage(objectConstants.getAnimationImage(0, animationIndex),
-                (int) (hitBox.x - xDrawOffset - xLvlOffset),
-                (int) (hitBox.y - yDrawOffset),
-                objectConstants.getSpriteAtlas().getTileWidth(Game.SCALE),
-                objectConstants.getSpriteAtlas().getTileHeight(Game.SCALE), null);
-    }
     public int getCureValue() {
         return objectConstants.getHeal();
     }

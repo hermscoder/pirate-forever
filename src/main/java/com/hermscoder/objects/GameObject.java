@@ -9,7 +9,7 @@ import java.awt.geom.Rectangle2D;
 import static com.hermscoder.main.Game.*;
 import static com.hermscoder.utils.ObjectConstants.*;
 
-public class GameObject {
+public abstract class GameObject {
     protected final int x, y, objectType;
     protected Rectangle2D.Float hitBox;
     protected boolean doAnimation, active = true;
@@ -18,7 +18,7 @@ public class GameObject {
     protected int yDrawOffset;
     protected final ObjectConstants objectConstants;
 
-    public GameObject(int x, int y, int objectType) {
+    protected GameObject(int x, int y, int objectType) {
         this.x = x;
         this.y = y;
         this.objectType = objectType;

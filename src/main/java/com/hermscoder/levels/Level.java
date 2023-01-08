@@ -16,10 +16,12 @@ public class Level {
     private int index;
     private BufferedImage image;
     private int[][] lvlData;
+    //Entities
     private ArrayList<Crabby> crabs;
     private ArrayList<Shark> sharks;
+    //Objects
     private ArrayList<Potion> potions;
-    private ArrayList<Key> keys;
+    private ArrayList<Touchable> touchables;
     private ArrayList<Container> containers;
     private ArrayList<Weapon> weapons;
     private ArrayList<Spike> spikes;
@@ -38,7 +40,7 @@ public class Level {
         createEnemies();
         createEnemies();
         createPotions();
-        createKeys();
+        createGameObjects();
         createContainers();
         createWeapons();
         createSpikes();
@@ -72,8 +74,14 @@ public class Level {
         potions = HelpMethods.getPotions(image);
     }
 
-    private void createKeys() {
-        keys = HelpMethods.getKeys(image);
+    private void createGameObjects() {
+        touchables = new ArrayList<>();
+        ArrayList<GameObject> gameObjects = HelpMethods.getGameObjects(image);
+        for (GameObject gameObject : gameObjects) {
+            if (gameObject instanceof Touchable) {
+                touchables.add((Touchable) gameObject);
+            }
+        }
     }
 
     private void createContainers() {
@@ -139,7 +147,7 @@ public class Level {
         return index;
     }
 
-    public ArrayList<Key> getKeys() {
-        return keys;
+    public ArrayList<Touchable> getTouchables() {
+        return touchables;
     }
 }

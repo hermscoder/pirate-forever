@@ -24,57 +24,25 @@ public class ObjectManager {
     private BufferedImage spikeImg, cannonBallImg;
     private BufferedImage[] cannonImgs;
 
-    private ArrayList<Potion> potions;
-    private ArrayList<Key> keys;
+    private ArrayList<Touchable> touchableObjects;
     private ArrayList<Container> containers;
-    private ArrayList<Weapon> weapons;
-    private ArrayList<Spike> spikes;
+    private ArrayList<Weapon> weapons = new ArrayList<>();
+    private ArrayList<Spike> spikes = new ArrayList<>();
     private ArrayList<Cannon> cannons;
     private ArrayList<Projectile> projectiles = new ArrayList<>();
+
+
 
     public ObjectManager(Playing playing) {
         this.playing = playing;
         loadImages();
     }
 
-    public void checkSpikesTouched(Player player) {
-        for (Spike s : spikes) {
-            if (s.getHitBox().intersects(player.getHitBox())) {
-                player.hit(s.getHitBox(), s.objectConstants.getDamage());
-            }
-        }
-    }
-
-    public void checkObjectTouched(Rectangle2D.Float hitbox) {
-        for (Potion p : potions) {
-            if (p.isActive())
-                if (hitbox.intersects(p.getHitBox())) {
-                    p.setActive(false);
-                    applyEffectToPlayer(p);
-                }
-        }
-    }
-
-    public void checkKeysTouched(Rectangle2D.Float hitbox) {
-        for (Key key : keys) {
-            if (key.isActive())
-                if (hitbox.intersects(key.getHitBox())) {
-                    key.setActive(false);
-                    playing.getPlayer().addKeyToCollection(key);
-                }
-        }
-    }
-
-
-    public void checkWeaponTouched(Player player) {
-        for (Weapon w : weapons) {
-            if (w.isActive() && w.isDropped())
-                if (player.getHitBox().intersects(w.getHitBox())) {
-                    if (player.getCurrentWeapon() != null) {
-                        player.getCurrentWeapon().setActive(false);
-                    }
-                    player.changeWeapon(w);
-                    w.setPlayer(player);
+    public void checkObjectsTouched(Player player) {
+        for (Touchable touchable : touchableObjects) {
+            if (touchable.isActive())
+                if (player.getHitBox().intersects(touchable.getHitBox())) {
+                    touchable.onTouch(player);
                 }
         }
     }
@@ -89,7 +57,7 @@ public class ObjectManager {
                     if (c.objectType == BARREL)
                         type = RED_POTION;
 
-                    potions.add(new Potion(
+                    touchableObjects.add(new Potion(
                             (int) (c.getHitBox().x + c.getHitBox().width / 2),
                             (int) (c.getHitBox().y - c.getHitBox().height / 2), type));
 
@@ -104,29 +72,15 @@ public class ObjectManager {
     }
 
     public void loadObjects(Level newLevel) {
-        potions = new ArrayList<>(newLevel.getPotions());
-        keys = new ArrayList<>(newLevel.getKeys());
+        touchableObjects = new ArrayList<>(newLevel.getTouchables());
         containers = new ArrayList<>(newLevel.getContainers());
-        spikes = newLevel.getSpikes();
-        cannons = newLevel.getCannons();
-        weapons = new ArrayList<>(newLevel.getWeapons());
+//        spikes = new ArrayList<>(newLevel.getSpikes());
+        cannons = new ArrayList<>(newLevel.getCannons());
+//        weapons = new ArrayList<>(newLevel.getWeapons());
         projectiles.clear();
     }
 
     private void loadImages() {
-        BufferedImage potionSpriteAtlas = LoadSave.getSpriteAtlas(PotionSpriteAtlas.getFilename());
-        potionImgs = new BufferedImage[PotionSpriteAtlas.getHeightInSprites()][PotionSpriteAtlas.getWidthInSprites()];
-
-        for (int j = 0; j < potionImgs.length; j++) {
-            for (int i = 0; i < potionImgs[j].length; i++) {
-                potionImgs[j][i] = potionSpriteAtlas.getSubimage(
-                        i * PotionSpriteAtlas.getTileWidth(),
-                        j * PotionSpriteAtlas.getTileHeight(),
-                        PotionSpriteAtlas.getTileWidth(),
-                        PotionSpriteAtlas.getTileHeight());
-            }
-        }
-
         BufferedImage containerSpriteAtlas = LoadSave.getSpriteAtlas(ContainersSpriteAtlas.getFilename());
         containerImgs = new BufferedImage[ContainersSpriteAtlas.getHeightInSprites()][ContainersSpriteAtlas.getWidthInSprites()];
         for (int j = 0; j < containerImgs.length; j++) {
@@ -155,14 +109,9 @@ public class ObjectManager {
     }
 
     public void update(int[][] lvlData, Player player) {
-        for (Potion potion : potions) {
-            if (potion.isActive())
-                potion.update();
-        }
-
-        for (Key key : keys) {
-            if (key.isActive())
-                key.update();
+        for (Touchable touchable : touchableObjects) {
+            if (touchable.isActive())
+                touchable.update();
         }
 
         for (Container container : containers) {
@@ -233,8 +182,7 @@ public class ObjectManager {
     }
 
     public void draw(Graphics g, int xLvlOffset) {
-        drawPotions(g, xLvlOffset);
-        drawKeys(g, xLvlOffset);
+        drawTouchables(g, xLvlOffset);
         drawContainers(g, xLvlOffset);
         drawWeapons(g, xLvlOffset);
         drawTraps(g, xLvlOffset);
@@ -298,25 +246,11 @@ public class ObjectManager {
         }
     }
 
-    private void drawPotions(Graphics g, int xLvlOffset) {
-        for (Potion potion : potions) {
-            if (potion.isActive()) {
-                int objIndex = potion.getObjectType() == BLUE_POTION ? 0 : 1;
-                g.drawImage(potionImgs[objIndex][potion.getAnimationIndex()],
-                        (int) (potion.getHitBox().x - potion.getxDrawOffset() - xLvlOffset),
-                        (int) (potion.getHitBox().y - potion.getyDrawOffset()),
-                        PotionSpriteAtlas.getTileWidth(Game.SCALE),
-                        PotionSpriteAtlas.getTileHeight(Game.SCALE), null);
 
-//                potion.drawHitBox(g, xLvlOffset);
-            }
-        }
-    }
-
-    private void drawKeys(Graphics g, int xLvlOffset) {
-        for (Key key : keys) {
-            if (key.isActive()) {
-                key.draw(g, xLvlOffset);
+    private void drawTouchables(Graphics g, int xLvlOffset) {
+        for (Touchable touchable : touchableObjects) {
+            if (touchable.isActive()) {
+                touchable.draw(g, xLvlOffset);
 //                potion.drawHitBox(g, xLvlOffset);
             }
         }
@@ -333,12 +267,8 @@ public class ObjectManager {
 
     public void resetAllObjects() {
         loadObjects(playing.getLevelManager().getCurrentLevel());
-        for (Potion p : potions) {
-            p.reset();
-        }
-
-        for (Key key : keys) {
-            key.reset();
+        for (Touchable touchable : touchableObjects) {
+            touchable.reset();
         }
 
         for (Container c : containers) {

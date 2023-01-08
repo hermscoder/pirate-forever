@@ -73,7 +73,7 @@ public class HelpMethods {
     }
 
     public static boolean isTileSolid(int xTile, int yTile, int[][] lvlData) {
-        if(yTile >= lvlData.length) {
+        if (yTile >= lvlData.length) {
             return true;
         }
         int value = lvlData[yTile][xTile];
@@ -183,26 +183,6 @@ public class HelpMethods {
         return list;
     }
 
-    public static ArrayList<GameObject> getObjects(BufferedImage levelImage) {
-        ArrayList<GameObject> list = new ArrayList<>();
-        for (int j = 0; j < levelImage.getHeight(); j++) {
-            for (int i = 0; i < levelImage.getWidth(); i++) {
-                Color color = new Color(levelImage.getRGB(i, j));
-                int value = color.getBlue();
-                if (value == ObjectConstants.RED_POTION)
-                    list.add(new Potion(i * Game.TILES_SIZE, j * Game.TILES_SIZE, ObjectConstants.RED_POTION));
-                else if (value == ObjectConstants.BLUE_POTION)
-                    list.add(new Potion(i * Game.TILES_SIZE, j * Game.TILES_SIZE, ObjectConstants.BLUE_POTION));
-                else if (value == ObjectConstants.BARREL)
-                    list.add(new Container(i * Game.TILES_SIZE, j * Game.TILES_SIZE, ObjectConstants.BARREL));
-                else if (value == ObjectConstants.BOX)
-                    list.add(new Container(i * Game.TILES_SIZE, j * Game.TILES_SIZE, ObjectConstants.BOX));
-            }
-        }
-
-        return list;
-    }
-
     public static Point getPlayerSpawn(BufferedImage levelImage) {
         for (int j = 0; j < levelImage.getHeight(); j++) {
             for (int i = 0; i < levelImage.getWidth(); i++) {
@@ -228,14 +208,14 @@ public class HelpMethods {
         return list;
     }
 
-    public static ArrayList<Key> getKeys(BufferedImage levelImage) {
-        ArrayList<Key> list = new ArrayList<>();
+    public static ArrayList<GameObject> getGameObjects(BufferedImage levelImage) {
+        ArrayList<GameObject> list = new ArrayList<>();
         for (int j = 0; j < levelImage.getHeight(); j++) {
             for (int i = 0; i < levelImage.getWidth(); i++) {
                 Color color = new Color(levelImage.getRGB(i, j));
                 int value = color.getBlue();
-                if (value == ObjectConstants.KEY)
-                    list.add(new Key(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
+                if (value > 0)
+                    list.add(ObjectFactory.newGameObject(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
             }
         }
         return list;
