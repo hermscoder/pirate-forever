@@ -41,7 +41,7 @@ public class Playing extends State implements StateMethods {
 
     private void initClasses() {
         levelManager = new LevelManager(game);
-        enemyManager = new EnemyManager(this, levelManager);
+        enemyManager = new EnemyManager(this);
         objectManager = new ObjectManager(this);
         player = new Player(231, 200,
                 (Sprite.PlayerSpriteAtlas.getTileWidth(SCALE)),
@@ -92,7 +92,7 @@ public class Playing extends State implements StateMethods {
     @Override
     public void draw(Graphics g) {
         levelRender.draw(g);
-        player.render(g, levelRender.getxLevelOffset());
+        player.draw(g, levelRender.getxLevelOffset());
         enemyManager.draw(g, levelRender.getxLevelOffset());
         objectManager.draw(g, levelRender.getxLevelOffset());
 

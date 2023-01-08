@@ -1,6 +1,8 @@
 package com.hermscoder.entities;
 
 
+import java.awt.*;
+
 import static com.hermscoder.main.Game.SCALE;
 import static com.hermscoder.utils.Constants.Directions.LEFT;
 import static com.hermscoder.utils.Constants.Directions.RIGHT;
@@ -27,6 +29,11 @@ public class Shark extends Enemy {
         updateBehavior(levelData, player);
         updateAnimationTick();
         updateAttackBox();
+    }
+
+    @Override
+    void draw(Graphics g, int xLvlOffset) {
+
     }
 
     private void updateAttackBox() {
@@ -106,17 +113,4 @@ public class Shark extends Enemy {
         airSpeed = jumpSpeed;
     }
 
-    public int flipX() {
-        if (walkingDirection == RIGHT)
-            return width;
-        else
-            return 0;
-    }
-
-    public int flipW() {
-        if (walkingDirection == RIGHT)
-            return -1;
-        else
-            return 1;
-    }
 }

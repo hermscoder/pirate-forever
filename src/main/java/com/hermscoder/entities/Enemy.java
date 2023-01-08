@@ -24,6 +24,7 @@ public abstract class Enemy extends Entity {
     }
 
     public abstract void hurt(int amount);
+    abstract void update(int[][] levelData, Player player);
 
     protected void firstUpdateCheck(int[][] levelData) {
         if (!isEntityOnFloor(hitBox, levelData))
@@ -122,6 +123,20 @@ public abstract class Enemy extends Entity {
                 afterAnimationFinishedAction(state);
             }
         }
+    }
+
+    protected int flipX() {
+        if (walkingDirection == RIGHT)
+            return width;
+        else
+            return 0;
+    }
+
+    protected int flipW() {
+        if (walkingDirection == RIGHT)
+            return -1;
+        else
+            return 1;
     }
 
     public boolean isActive() {

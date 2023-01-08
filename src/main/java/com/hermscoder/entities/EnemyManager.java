@@ -2,7 +2,6 @@ package com.hermscoder.entities;
 
 import com.hermscoder.gamestates.Playing;
 import com.hermscoder.levels.Level;
-import com.hermscoder.levels.LevelManager;
 import com.hermscoder.main.Game;
 import com.hermscoder.utils.LoadSave;
 
@@ -11,8 +10,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import static com.hermscoder.utils.Constants.CrabbyConstants.CRABBY_DRAWOFFSET_X;
-import static com.hermscoder.utils.Constants.CrabbyConstants.CRABBY_DRAWOFFSET_Y;
 import static com.hermscoder.utils.Constants.SharkConstants.SHARK_DRAWOFFSET_X;
 import static com.hermscoder.utils.Constants.SharkConstants.SHARK_DRAWOFFSET_Y;
 import static com.hermscoder.utils.Sprite.CrabbySpriteAtlas;
@@ -20,28 +17,26 @@ import static com.hermscoder.utils.Sprite.SharkSpriteAtlas;
 
 public class EnemyManager {
     private Playing playing;
-    private LevelManager levelManager;
     private BufferedImage[][] crabbyImagesArray;
     private BufferedImage[][] sharkImagesArray;
-    private ArrayList<Crabby> crabbies = new ArrayList<>();
+    private ArrayList<Enemy> enemies = new ArrayList<>();
     private ArrayList<Shark> sharks = new ArrayList<>();
 
-    public EnemyManager(Playing playing, LevelManager levelManager) {
+    public EnemyManager(Playing playing) {
         this.playing = playing;
-        this.levelManager = levelManager;
         loadEnemyImages();
     }
 
     public void loadEnemies(Level level) {
-        crabbies = level.getCrabs();
+        enemies = level.getEnemies();
         sharks = level.getSharks();
     }
 
     public void update(int[][] levelData, Player player) {
         boolean isAnyActive = false;
-        for (Crabby c : crabbies) {
-            if (c.isActive()) {
-                c.update(levelData, player);
+        for (Enemy e : enemies) {
+            if (e.isActive()) {
+                e.update(levelData, player);
                 isAnyActive = true;
             }
         }
@@ -57,18 +52,13 @@ public class EnemyManager {
     }
 
     public void draw(Graphics g, int xLevelOffset) {
-        drawCrabs(g, xLevelOffset);
+        drawEnemies(g, xLevelOffset);
     }
 
-    private void drawCrabs(Graphics g, int xLevelOffset) {
-        for (Crabby c : crabbies)
-            if (c.isActive()) {
-                g.drawImage(
-                        crabbyImagesArray[c.getState()][c.getAnimationIndex()],
-                        (int) c.getHitBox().x - xLevelOffset - CRABBY_DRAWOFFSET_X + c.flipX(),
-                        (int) c.getHitBox().y - CRABBY_DRAWOFFSET_Y,
-                        CrabbySpriteAtlas.getTileWidth(Game.SCALE) * c.flipW(),
-                        CrabbySpriteAtlas.getTileHeight(Game.SCALE), null);
+    private void drawEnemies(Graphics g, int xLevelOffset) {
+        for (Enemy e : enemies)
+            if (e.isActive()) {
+                e.draw(g, xLevelOffset);
 //            c.drawHitBox(g, xLevelOffset);
 //            c.drawAttackBox(g, xLevelOffset);
             }
@@ -87,10 +77,10 @@ public class EnemyManager {
     }
 
     public void checkEnemyHit(Rectangle2D.Float attackBox) {
-        for (Crabby c : crabbies) {
-            if (c.isActive() && c.getCurrentHealth() > 0) {
-                if (attackBox.intersects(c.getHitBox())) {
-                    c.hurt(10);
+        for (Enemy e : enemies) {
+            if (e.isActive() && e.getCurrentHealth() > 0) {
+                if (attackBox.intersects(e.getHitBox())) {
+                    e.hurt(10);
                     return;
                 }
             }
@@ -133,8 +123,8 @@ public class EnemyManager {
     }
 
     public void resetAllEnemies() {
-        for (Crabby c : crabbies) {
-            c.resetEnemy();
+        for (Enemy e : enemies) {
+            e.resetEnemy();
         }
 
         for (Shark s : sharks) {

@@ -12,6 +12,8 @@ public abstract class Entity {
 
     protected float x, y;
     protected int width, height;
+    protected int xDrawOffset;
+    protected int yDrawOffset;
     protected int entityType;
     protected Rectangle2D.Float hitBox;
     protected int animationTick, animationIndex;
@@ -37,8 +39,11 @@ public abstract class Entity {
         this.maxHealth = entityConstants.getMaxHealth();
         this.currentHealth = maxHealth;
         this.walkSpeed = entityConstants.getWalkSpeed();
+        this.xDrawOffset = entityConstants.getxDrawOffset();
+        this.yDrawOffset = entityConstants.getyDrawOffset();
     }
 
+    abstract void draw(Graphics g, int xLvlOffset);
     public abstract void afterAnimationFinishedAction(int state);
 
     protected void drawHitBox(Graphics g, int xLevelOffset) {

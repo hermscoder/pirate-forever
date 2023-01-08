@@ -1,5 +1,6 @@
 package com.hermscoder.utils;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +16,10 @@ public class EntityConstants {
     private final int hitBoxHeight;
     private final int attackBoxWidth;
     private final int attackBoxHeight;
+    private final int xDrawOffset;
+    private final int yDrawOffset;
+    private final Sprite spriteAtlas;
+    private BufferedImage[][] animationImages;
 
     private EntityConstants(EntityConstantsBuilder entityConstantsBuilder) {
         this.spritesAmount = entityConstantsBuilder.entitiesSpritesAmount;
@@ -28,6 +33,10 @@ public class EntityConstants {
         this.hitBoxHeight = entityConstantsBuilder.hitBoxHeight;
         this.attackBoxWidth = entityConstantsBuilder.attackBoxWidth;
         this.attackBoxHeight = entityConstantsBuilder.attackBoxHeight;
+        this.xDrawOffset = entityConstantsBuilder.xDrawOffset;
+        this.yDrawOffset = entityConstantsBuilder.yDrawOffset;
+        this.spriteAtlas = entityConstantsBuilder.spriteAtlas;
+        this.animationImages = entityConstantsBuilder.animationImages;
     }
 
     public static EntityConstantsBuilder newBuilder() {
@@ -78,6 +87,22 @@ public class EntityConstants {
         return this.viewRangeInTiles;
     }
 
+    public int getxDrawOffset() {
+        return xDrawOffset;
+    }
+
+    public int getyDrawOffset() {
+        return yDrawOffset;
+    }
+
+    public Sprite getSpriteAtlas() {
+        return spriteAtlas;
+    }
+
+    public BufferedImage getAnimationImage(int state, int animationIndex) {
+        return animationImages[state][animationIndex];
+    }
+
     static class EntityConstantsBuilder {
         private final Map<Integer, Integer> entitiesSpritesAmount = new HashMap<>();
         private int maxHealth;
@@ -90,9 +115,13 @@ public class EntityConstants {
         private int hitBoxHeight;
         private int attackBoxWidth;
         private int attackBoxHeight;
+        private int xDrawOffset;
+        private int yDrawOffset;
+        private Sprite spriteAtlas;
+        private BufferedImage[][] animationImages;
 
-        public EntityConstantsBuilder animation(int animationIndex, int spritesQuantity) {
-            entitiesSpritesAmount.put(animationIndex, spritesQuantity);
+        public EntityConstantsBuilder animationSprite(int animation, int spritesQuantity) {
+            entitiesSpritesAmount.put(animation, spritesQuantity);
             return this;
         }
 
@@ -133,13 +162,42 @@ public class EntityConstants {
             return this;
         }
 
-        public EntityConstants build() {
-            return new EntityConstants(this);
-        }
-
         public EntityConstantsBuilder walkSpeed(float walkSpeed) {
             this.walkSpeed = walkSpeed;
             return this;
         }
+
+        public EntityConstantsBuilder xDrawOffset(int xDrawOffset) {
+            this.xDrawOffset = xDrawOffset;
+            return this;
+        }
+
+        public EntityConstantsBuilder yDrawOffset(int yDrawOffset) {
+            this.yDrawOffset = yDrawOffset;
+            return this;
+        }
+
+        public EntityConstantsBuilder spriteAtlas(Sprite spriteAtlas) {
+            this.spriteAtlas = spriteAtlas;
+
+            BufferedImage temporary = LoadSave.getSpriteAtlas(spriteAtlas.getFilename());
+            animationImages = new BufferedImage[spriteAtlas.getHeightInSprites()][spriteAtlas.getWidthInSprites()];
+            for (int j = 0; j < animationImages.length; j++) {
+                for (int i = 0; i < animationImages[j].length; i++) {
+                    animationImages[j][i] = temporary.getSubimage(
+                            i * spriteAtlas.getTileWidth(),
+                            j * spriteAtlas.getTileHeight(),
+                            spriteAtlas.getTileWidth(),
+                            spriteAtlas.getTileHeight());
+                }
+            }
+            return this;
+        }
+
+        public EntityConstants build() {
+            return new EntityConstants(this);
+        }
+
+
     }
 }

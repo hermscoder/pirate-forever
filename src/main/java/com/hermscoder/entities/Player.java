@@ -200,7 +200,8 @@ public class Player extends Entity {
         }
     }
 
-    public void render(Graphics g, int xLevelOffset) {
+    @Override
+    public void draw(Graphics g, int xLevelOffset) {
         g.drawImage(animations[state][animationIndex], (int) (hitBox.x - xDrawOffset) - xLevelOffset + flipX, (int) (hitBox.y - yDrawOffset), width * flipW, height, null);
         if (currentWeapon != null) {
             currentWeapon.draw(g, xLevelOffset);

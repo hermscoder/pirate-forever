@@ -44,10 +44,6 @@ public class Constants {
         public static final int ATTACK = 2;
         public static final int HIT = 3;
         public static final int DEAD = 4;
-
-        public static final int CRABBY_DRAWOFFSET_X = (int) (26 * SCALE);
-        public static final int CRABBY_DRAWOFFSET_Y = (int) (9 * SCALE);
-
     }
 
     public static class PlayerConstants {
@@ -70,16 +66,16 @@ public class Constants {
 
     private static final Map<Integer, EntityConstants> entitiesConstants = new HashMap<>() {{
         put(PlayerConstants.PLAYER, EntityConstants.newBuilder()
-                .animation(PlayerConstants.DEAD, 8)
-                .animation(PlayerConstants.RUNNING, 6)
-                .animation(PlayerConstants.IDLE, 5)
-                .animation(PlayerConstants.HIT, 4)
-                .animation(PlayerConstants.JUMP, 3)
-                .animation(PlayerConstants.ATTACK_1, 3)
-                .animation(PlayerConstants.ATTACK_JUMP_1, 3)
-                .animation(PlayerConstants.ATTACK_JUMP_2, 3)
-                .animation(PlayerConstants.GROUND, 2)
-                .animation(PlayerConstants.FALLING, 1)
+                .animationSprite(PlayerConstants.DEAD, 8)
+                .animationSprite(PlayerConstants.RUNNING, 6)
+                .animationSprite(PlayerConstants.IDLE, 5)
+                .animationSprite(PlayerConstants.HIT, 4)
+                .animationSprite(PlayerConstants.JUMP, 3)
+                .animationSprite(PlayerConstants.ATTACK_1, 3)
+                .animationSprite(PlayerConstants.ATTACK_JUMP_1, 3)
+                .animationSprite(PlayerConstants.ATTACK_JUMP_2, 3)
+                .animationSprite(PlayerConstants.GROUND, 2)
+                .animationSprite(PlayerConstants.FALLING, 1)
                 .maxHealth(100)
                 .damage(10)
                 .gravity(GRAVITY)
@@ -90,11 +86,12 @@ public class Constants {
                 .build()
         );
         put(CrabbyConstants.CRABBY, EntityConstants.newBuilder()
-                .animation(CrabbyConstants.IDLE, 9)
-                .animation(CrabbyConstants.RUNNING, 6)
-                .animation(CrabbyConstants.ATTACK, 7)
-                .animation(CrabbyConstants.HIT, 4)
-                .animation(CrabbyConstants.DEAD, 5)
+                .spriteAtlas(Sprite.CrabbySpriteAtlas)
+                .animationSprite(CrabbyConstants.IDLE, 9)
+                .animationSprite(CrabbyConstants.RUNNING, 6)
+                .animationSprite(CrabbyConstants.ATTACK, 7)
+                .animationSprite(CrabbyConstants.HIT, 4)
+                .animationSprite(CrabbyConstants.DEAD, 5)
                 .maxHealth(10)
                 .damage(10)
                 .viewRangeInTiles(5)
@@ -103,15 +100,18 @@ public class Constants {
                 .walkSpeed(0.35f * SCALE)
                 .hitBox((int) (22 * SCALE), (int) (19 * SCALE))
                 .attackBox((int) (82 * SCALE), (int) (19 * SCALE))
+                .xDrawOffset((int) (26 * SCALE))
+                .yDrawOffset((int) (9 * SCALE))
                 .build()
         );
         put(SharkConstants.SHARK, EntityConstants.newBuilder()
-                .animation(SharkConstants.IDLE, 8)
-                .animation(SharkConstants.RUNNING, 6)
-                .animation(SharkConstants.ATTACK_ANTICIPATION, 3)
-                .animation(SharkConstants.ATTACK, 5)
-                .animation(SharkConstants.HIT, 4)
-                .animation(SharkConstants.DEAD, 4)
+                .spriteAtlas(Sprite.SharkSpriteAtlas)
+                .animationSprite(SharkConstants.IDLE, 8)
+                .animationSprite(SharkConstants.RUNNING, 6)
+                .animationSprite(SharkConstants.ATTACK_ANTICIPATION, 3)
+                .animationSprite(SharkConstants.ATTACK, 5)
+                .animationSprite(SharkConstants.HIT, 4)
+                .animationSprite(SharkConstants.DEAD, 4)
                 .maxHealth(10)
                 .damage(10)
                 .viewRangeInTiles(5)
@@ -120,6 +120,8 @@ public class Constants {
                 .walkSpeed(0.35f * SCALE)
                 .hitBox((int) (22 * SCALE), (int) (21 * SCALE))
                 .attackBox((int) (25 * SCALE), (int) (15 * SCALE))
+                .xDrawOffset((int) (5 * SCALE))
+                .yDrawOffset((int) (5 * SCALE))
                 .build()
         );
     }};

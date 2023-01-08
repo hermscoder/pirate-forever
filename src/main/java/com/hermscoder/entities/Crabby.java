@@ -1,10 +1,14 @@
 package com.hermscoder.entities;
 
+import com.hermscoder.main.Game;
 import com.hermscoder.utils.Constants;
+
+import java.awt.*;
 
 import static com.hermscoder.main.Game.SCALE;
 import static com.hermscoder.utils.Constants.CrabbyConstants.*;
 import static com.hermscoder.utils.Constants.Directions.RIGHT;
+import static com.hermscoder.utils.ObjectConstants.BLUE_POTION;
 import static com.hermscoder.utils.Sprite.CrabbySpriteAtlas;
 
 public class Crabby extends Enemy {
@@ -21,11 +25,22 @@ public class Crabby extends Enemy {
         attackBoxOffsetX = (int) (30 * SCALE);
     }
 
-
-    public void update(int[][] levelData, Player player) {
+    @Override
+    void update(int[][] levelData, Player player) {
         updateBehavior(levelData, player);
         updateAnimationTick();
         updateAttackBox();
+    }
+
+    @Override
+    void draw(Graphics g, int xLvlOffset) {
+        g.drawImage(entityConstants.getAnimationImage(state, animationIndex),
+                (int) (hitBox.x - xLvlOffset - xDrawOffset + flipW()),
+                (int) (hitBox.y - yDrawOffset),
+                entityConstants.getSpriteAtlas().getTileWidth(Game.SCALE),
+                entityConstants.getSpriteAtlas().getTileHeight(Game.SCALE), null);
+//        drawHitBox(g, xLevelOffset);
+//        drawAttackBox(g, xLevelOffset);
     }
 
     private void updateAttackBox() {
@@ -53,20 +68,6 @@ public class Crabby extends Enemy {
                 setActive(false);
                 break;
         }
-    }
-
-    public int flipX() {
-        if (walkingDirection == RIGHT)
-            return width;
-        else
-            return 0;
-    }
-
-    public int flipW() {
-        if (walkingDirection == RIGHT)
-            return -1;
-        else
-            return 1;
     }
 
     private void updateBehavior(int[][] levelData, Player player) {

@@ -23,7 +23,6 @@ public class Level {
     private int[][] lvlData;
     //Entities
     private ArrayList<Enemy> enemies;
-    private ArrayList<Crabby> crabs;
     private ArrayList<Shark> sharks;
     //Objects
     private ArrayList<Touchable> touchables;
@@ -61,7 +60,6 @@ public class Level {
     }
 
     private void createEnemies() {
-        crabs = HelpMethods.getCrabs(image);
         sharks = HelpMethods.getShark(image);
     }
 
@@ -114,10 +112,6 @@ public class Level {
         return maxLevelOffsetX;
     }
 
-    public ArrayList<Crabby> getCrabs() {
-        return crabs;
-    }
-
     public ArrayList<Shark> getSharks() {
         return sharks;
     }
@@ -141,5 +135,9 @@ public class Level {
 
     public ArrayList<Touchable> getTouchables() {
         return touchables;
+    }
+
+    public ArrayList<Enemy> getEnemies() {
+        return enemies;
     }
 }
