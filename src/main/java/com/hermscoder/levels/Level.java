@@ -20,11 +20,8 @@ public class Level {
     private ArrayList<Crabby> crabs;
     private ArrayList<Shark> sharks;
     //Objects
-    private ArrayList<Potion> potions;
     private ArrayList<Touchable> touchables;
     private ArrayList<Container> containers;
-    private ArrayList<Weapon> weapons;
-    private ArrayList<Spike> spikes;
     private ArrayList<Cannon> cannons;
 
     private int levelTilesWide;
@@ -39,11 +36,8 @@ public class Level {
         createLevelData();
         createEnemies();
         createEnemies();
-        createPotions();
         createGameObjects();
         createContainers();
-        createWeapons();
-        createSpikes();
         createCannons();
         calculateOffsets();
         calculatePlayerSpawn();
@@ -51,10 +45,6 @@ public class Level {
 
     private void createCannons() {
         cannons = HelpMethods.getCannons(image);
-    }
-
-    private void createSpikes() {
-        spikes = HelpMethods.getSpikes(image);
     }
 
     private void calculatePlayerSpawn() {
@@ -70,10 +60,6 @@ public class Level {
         sharks = HelpMethods.getShark(image);
     }
 
-    private void createPotions() {
-        potions = HelpMethods.getPotions(image);
-    }
-
     private void createGameObjects() {
         touchables = new ArrayList<>();
         ArrayList<GameObject> gameObjects = HelpMethods.getGameObjects(image);
@@ -86,10 +72,6 @@ public class Level {
 
     private void createContainers() {
         containers = HelpMethods.getContainers(image);
-    }
-
-    private void createWeapons() {
-        weapons = HelpMethods.getWeapons(image);
     }
 
     private void calculateOffsets() {
@@ -119,14 +101,6 @@ public class Level {
         return sharks;
     }
 
-    public ArrayList<Potion> getPotions() {
-        return potions;
-    }
-
-    public ArrayList<Weapon> getWeapons() {
-        return weapons;
-    }
-
     public ArrayList<Container> getContainers() {
         return containers;
     }
@@ -135,9 +109,6 @@ public class Level {
         return playerSpawn;
     }
 
-    public ArrayList<Spike> getSpikes() {
-        return spikes;
-    }
 
     public ArrayList<Cannon> getCannons() {
         return cannons;

@@ -61,11 +61,6 @@ public class ObjectManager {
         }
     }
 
-    private void applyEffectToPlayer(Potion p) {
-        playing.getPlayer().heal(p.getCureValue());
-        playing.getPlayer().changePower(p.getPowerValue());
-    }
-
     public void loadObjects(Level newLevel) {
         touchableObjects = new ArrayList<>(newLevel.getTouchables());
         containers = new ArrayList<>(newLevel.getContainers());
