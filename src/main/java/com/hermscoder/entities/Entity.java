@@ -80,4 +80,8 @@ public abstract class Entity {
     public int getCurrentHealth() {
         return currentHealth;
     }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
 }

@@ -5,6 +5,7 @@ import com.hermscoder.gamestates.Playing;
 import com.hermscoder.objects.BareHands;
 import com.hermscoder.objects.Key;
 import com.hermscoder.objects.Weapon;
+import com.hermscoder.ui.PlayerUI;
 import com.hermscoder.utils.HelpMethods;
 import com.hermscoder.utils.LoadSave;
 
@@ -51,6 +52,7 @@ public class Player extends Entity {
     private int[][] lvlData;
 
     //StatusBar UI
+    private PlayerUI playerUI;
     private BufferedImage statusBarImg;
 
     private int statusBarX = (int) (10 * SCALE);
@@ -99,7 +101,7 @@ public class Player extends Entity {
         this.state = IDLE;
         loadAnimations();
         initHitBox(entityConstants.getHitBoxWidth(), entityConstants.getHitBoxHeight());
-
+        playerUI = new PlayerUI(200);
         changeWeapon(new BareHands((int) x, (int) y, this));
     }
 
@@ -112,8 +114,8 @@ public class Player extends Entity {
     }
 
     public void update() {
-        updateHealthBar();
-        updatePowerBar();
+        playerUI.update(this);
+        updatePowerValue();
         if (currentHealth <= 0) {
             if (state != DEAD) {
                 state = DEAD;
@@ -191,7 +193,7 @@ public class Player extends Entity {
         healthWidth = (int) ((currentHealth / (float) maxHealth) * healthBarWidth);
     }
 
-    private void updatePowerBar() {
+    private void updatePowerValue() {
         powerWidth = (int) ((powerValue / (float) powerMaxValue) * powerBarWidth);
         powerGrowTick++;
         if (powerGrowTick >= POWER_GROW_SPEED) {
@@ -208,7 +210,7 @@ public class Player extends Entity {
         }
 //        drawHitBox(g, xLevelOffset);
 //        currentWeapon.drawAttackBox(g, xLevelOffset);
-        drawUi(g);
+        playerUI.draw(g);
     }
 
     private void drawUi(Graphics g) {
@@ -635,6 +637,7 @@ public class Player extends Entity {
         return currentWeapon;
     }
 
-
-
+    public int getPowerValue() {
+        return powerValue;
+    }
 }
