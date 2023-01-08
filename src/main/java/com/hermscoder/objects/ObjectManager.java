@@ -24,7 +24,6 @@ public class ObjectManager {
 
     private ArrayList<Touchable> touchableObjects;
     private ArrayList<Container> containers;
-    private ArrayList<Weapon> weapons = new ArrayList<>();
     private ArrayList<Spike> spikes = new ArrayList<>();
     private ArrayList<Cannon> cannons;
     private ArrayList<Projectile> projectiles = new ArrayList<>();
@@ -73,7 +72,6 @@ public class ObjectManager {
         containers = new ArrayList<>(newLevel.getContainers());
 //        spikes = new ArrayList<>(newLevel.getSpikes());
         cannons = new ArrayList<>(newLevel.getCannons());
-//        weapons = new ArrayList<>(newLevel.getWeapons());
         projectiles.clear();
     }
 
@@ -114,11 +112,6 @@ public class ObjectManager {
         for (Container container : containers) {
             if (container.isActive())
                 container.update();
-        }
-
-        for (Weapon weapon : weapons) {
-            if (weapon.isActive())
-                weapon.update();
         }
 
         updateCannons(lvlData, player);
@@ -181,7 +174,6 @@ public class ObjectManager {
     public void draw(Graphics g, int xLvlOffset) {
         drawTouchables(g, xLvlOffset);
         drawContainers(g, xLvlOffset);
-        drawWeapons(g, xLvlOffset);
         drawTraps(g, xLvlOffset);
         drawCannons(g, xLvlOffset);
         drawProjectiles(g, xLvlOffset);
@@ -253,15 +245,6 @@ public class ObjectManager {
         }
     }
 
-
-    private void drawWeapons(Graphics g, int xLvlOffset) {
-        for (Weapon weapon : weapons) {
-            if (weapon.isActive()) {
-                weapon.draw(g, xLvlOffset);
-            }
-        }
-    }
-
     public void resetAllObjects() {
         loadObjects(playing.getLevelManager().getCurrentLevel());
         for (Touchable touchable : touchableObjects) {
@@ -270,10 +253,6 @@ public class ObjectManager {
 
         for (Container c : containers) {
             c.reset();
-        }
-
-        for (Weapon w : weapons) {
-            w.reset();
         }
 
         for (Cannon c : cannons) {
