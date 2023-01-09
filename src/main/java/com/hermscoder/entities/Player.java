@@ -4,8 +4,8 @@ import com.hermscoder.audio.SoundEffect;
 import com.hermscoder.gamestates.Playing;
 import com.hermscoder.objects.BareHands;
 import com.hermscoder.objects.Key;
+import com.hermscoder.objects.MapFragment;
 import com.hermscoder.objects.Weapon;
-import com.hermscoder.ui.PlayerUI;
 import com.hermscoder.utils.HelpMethods;
 import com.hermscoder.utils.LoadSave;
 
@@ -19,7 +19,6 @@ import static com.hermscoder.main.Game.SCALE;
 import static com.hermscoder.main.Game.TILES_SIZE;
 import static com.hermscoder.utils.Constants.PlayerConstants.*;
 import static com.hermscoder.utils.Sprite.PlayerSpriteAtlas;
-import static com.hermscoder.utils.Sprite.StatusBar;
 
 public class Player extends Entity {
 
@@ -51,27 +50,8 @@ public class Player extends Entity {
 
     private int[][] lvlData;
 
-    //StatusBar UI
-    private PlayerUI playerUI;
-    private BufferedImage statusBarImg;
-
-    private int statusBarX = (int) (10 * SCALE);
-    private int statusBarY = (int) (10 * SCALE);
-
-    private int healthBarWidth = (int) (150 * SCALE);
-    private int healthBarHeight = (int) (4 * SCALE);
-    private int healthBarXStart = (int) (34 * SCALE);
-    private int healthBarYStart = (int) (14 * SCALE);
-    private int healthWidth = healthBarWidth;
-
-    private int powerBarWidth = (int) (104 * SCALE);
-    private int powerBarHeight = (int) (2 * SCALE);
-    private int powerBarXStart = (int) (44 * SCALE);
-    private int powerBarYStart = (int) (34 * SCALE);
-    private int powerWidth = healthBarWidth;
     private int powerMaxValue = 200;
     private int powerValue = powerMaxValue;
-
 
     private int flipX = 0;
     private int flipW = 1;
@@ -94,6 +74,7 @@ public class Player extends Entity {
     private Weapon currentWeapon;
 
     private List<Key> keysCollected = new ArrayList<>();
+    private List<MapFragment> mapFragmentCollected = new ArrayList<>();
 
     public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height, PLAYER);
@@ -101,7 +82,6 @@ public class Player extends Entity {
         this.state = IDLE;
         loadAnimations();
         initHitBox(entityConstants.getHitBoxWidth(), entityConstants.getHitBoxHeight());
-        playerUI = new PlayerUI(200);
         changeWeapon(new BareHands((int) x, (int) y, this));
     }
 
@@ -114,7 +94,6 @@ public class Player extends Entity {
     }
 
     public void update() {
-        playerUI.update(this);
         updatePowerValue();
         if (currentHealth <= 0) {
             if (state != DEAD) {
@@ -189,12 +168,7 @@ public class Player extends Entity {
         attackBox.y = hitBox.y + (10 * SCALE);
     }
 
-    private void updateHealthBar() {
-        healthWidth = (int) ((currentHealth / (float) maxHealth) * healthBarWidth);
-    }
-
     private void updatePowerValue() {
-        powerWidth = (int) ((powerValue / (float) powerMaxValue) * powerBarWidth);
         powerGrowTick++;
         if (powerGrowTick >= POWER_GROW_SPEED) {
             powerGrowTick = 0;
@@ -208,25 +182,6 @@ public class Player extends Entity {
         if (currentWeapon != null) {
             currentWeapon.draw(g, xLevelOffset);
         }
-//        drawHitBox(g, xLevelOffset);
-//        currentWeapon.drawAttackBox(g, xLevelOffset);
-        playerUI.draw(g);
-    }
-
-    private void drawUi(Graphics g) {
-        g.drawImage(statusBarImg,
-                statusBarX,
-                statusBarY,
-                StatusBar.getTileWidth(SCALE),
-                StatusBar.getTileHeight(SCALE),
-                null);
-        //filling health rectangle
-        g.setColor(Color.RED);
-        g.fillRect(healthBarXStart + statusBarX, healthBarYStart + statusBarY, healthWidth, healthBarHeight);
-
-        //filling power rectangle
-        g.setColor(Color.YELLOW);
-        g.fillRect(powerBarXStart + statusBarX, powerBarYStart + statusBarY, powerWidth, powerBarHeight);
     }
 
     private void loadAnimations() {
@@ -242,9 +197,6 @@ public class Player extends Entity {
                         PlayerSpriteAtlas.getTileHeight());
             }
         }
-
-        statusBarImg = LoadSave.getSpriteAtlas(StatusBar.getFilename());
-
     }
 
     private void updatePosition() {
@@ -341,7 +293,7 @@ public class Player extends Entity {
         } else {
             if (powerAttackActive)
                 stopPowerAttack();
-            if(dashActive) {
+            if (dashActive) {
                 stopDash();
             }
             hitBox.x = HelpMethods.getEntityXPosNextToWall(hitBox, xSpeed);
@@ -432,8 +384,8 @@ public class Player extends Entity {
                     return;
                 }
 
-                if(dashActive) {
-                    if(attacking) {
+                if (dashActive) {
+                    if (attacking) {
                         if (inAir) {
                             state = ATTACK_JUMP_1;
                             animationIndex = 0;
@@ -538,6 +490,9 @@ public class Player extends Entity {
         hitBox.x = x;
         hitBox.y = y;
 
+        keysCollected.clear();
+        mapFragmentCollected.clear();
+
         changeWeapon(new BareHands((int) x, (int) y, this));
 
         if (!HelpMethods.isEntityOnFloor(hitBox, lvlData)) {
@@ -557,6 +512,11 @@ public class Player extends Entity {
         keysCollected.add(key);
     }
 
+    public void addMapFragmentToCollection(MapFragment mapFragment) {
+        mapFragmentCollected.add(mapFragment);
+    }
+
+
     private void resetAttackBox() {
         if (flipW == FACING_RIGHT) {
             attackBox.x = hitBox.x + hitBox.width;
@@ -568,7 +528,6 @@ public class Player extends Entity {
     public boolean isDashActive() {
         return dashActive;
     }
-
 
 
     public boolean isLeft() {
@@ -639,5 +598,17 @@ public class Player extends Entity {
 
     public int getPowerValue() {
         return powerValue;
+    }
+
+    public List<Key> getKeysCollected() {
+        return keysCollected;
+    }
+
+    public List<MapFragment> getMapFragmentCollected() {
+        return mapFragmentCollected;
+    }
+
+    public int getPowerMaxValue() {
+        return powerMaxValue;
     }
 }

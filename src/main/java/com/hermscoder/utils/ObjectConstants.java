@@ -14,7 +14,10 @@ public class ObjectConstants {
     public static final int BOX = 3;
     public static final int BARREL = 4;
     public static final int KEY = 5;
-
+    public static final int MAP_PIECE_1 = 6;
+    public static final int MAP_PIECE_2 = 7;
+    public static final int MAP_PIECE_3 = 8;
+    public static final int MAP_PIECE_4 = 9;
 
     public static final int SPIKE_TRAP = 50;
     public static final int CANNON_LEFT = 51;

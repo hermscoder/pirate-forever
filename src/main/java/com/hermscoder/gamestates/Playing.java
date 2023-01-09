@@ -9,6 +9,7 @@ import com.hermscoder.objects.ObjectManager;
 import com.hermscoder.ui.GameOverOverlay;
 import com.hermscoder.ui.LevelCompletedOverlay;
 import com.hermscoder.ui.PauseOverlay;
+import com.hermscoder.ui.PlayerUI;
 import com.hermscoder.utils.Sprite;
 
 import java.awt.*;
@@ -33,6 +34,9 @@ public class Playing extends State implements StateMethods {
     private boolean levelCompleted;
     private boolean playerDying;
 
+    //StatusBar UI
+    private PlayerUI playerUI;
+
     public Playing(Game game) {
         super(game);
         initClasses();
@@ -49,6 +53,7 @@ public class Playing extends State implements StateMethods {
                 this);
         player.loadLvlData(levelManager.getCurrentLevel().getLvlData());
         player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
+        playerUI = new PlayerUI(player);
         pauseOverlay = new PauseOverlay(this);
         gameOverOverlay = new GameOverOverlay(this);
         levelCompletedOverlay = new LevelCompletedOverlay(this);
@@ -84,6 +89,7 @@ public class Playing extends State implements StateMethods {
             levelRender.update();
             objectManager.update(levelManager.getCurrentLevel().getLvlData(), player);
             player.update();
+            playerUI.update(player);
             enemyManager.update(levelManager.getCurrentLevel().getLvlData(), player);
         }
     }
@@ -95,6 +101,7 @@ public class Playing extends State implements StateMethods {
         player.draw(g, levelRender.getxLevelOffset());
         enemyManager.draw(g, levelRender.getxLevelOffset());
         objectManager.draw(g, levelRender.getxLevelOffset());
+        playerUI.draw(g);
 
         if (paused) {
             g.setColor(new Color(0, 0, 0, 150));

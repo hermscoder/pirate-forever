@@ -17,6 +17,9 @@ public class ObjectFactory {
                 return new Spike(x, y, objectType);
             case ObjectConstants.CANNON_LEFT, ObjectConstants.CANNON_RIGHT:
                 return new Cannon(x, y, objectType);
+            case ObjectConstants.MAP_PIECE_1, ObjectConstants.MAP_PIECE_2,
+                    ObjectConstants.MAP_PIECE_3, ObjectConstants.MAP_PIECE_4:
+                return new MapFragment(x, y, objectType, objectType - 5);
             default:
                 throw new RuntimeException("Object of type: " + objectType + " not configured in object factory.");
         }
