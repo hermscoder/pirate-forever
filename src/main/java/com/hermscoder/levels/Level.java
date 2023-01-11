@@ -7,6 +7,7 @@ import com.hermscoder.objects.Cannon;
 import com.hermscoder.objects.Container;
 import com.hermscoder.objects.GameObject;
 import com.hermscoder.objects.type.Destroyable;
+import com.hermscoder.objects.type.Interactable;
 import com.hermscoder.objects.type.Touchable;
 import com.hermscoder.utils.HelpMethods;
 
@@ -26,6 +27,7 @@ public class Level {
     //Objects
     private ArrayList<Touchable> touchables;
     private ArrayList<Destroyable> destroyables;
+    private ArrayList<Interactable> interactables;
     private ArrayList<Cannon> cannons;
 
     private int levelTilesWide;
@@ -66,12 +68,15 @@ public class Level {
     private void processGameObjects(List<GameObject> gameObjects) {
         touchables = new ArrayList<>();
         destroyables = new ArrayList<>();
+        interactables = new ArrayList<>();
         cannons = new ArrayList<>();
         for (GameObject gameObject : gameObjects) {
             if (gameObject instanceof Touchable) {
                 touchables.add((Touchable) gameObject);
             } else if (gameObject instanceof Destroyable) {
                 destroyables.add((Destroyable) gameObject);
+            } else if(gameObject instanceof Interactable) {
+                interactables.add((Interactable) gameObject);
             } else if (gameObject instanceof Cannon) {
                 cannons.add((Cannon) gameObject);
             }
@@ -116,6 +121,10 @@ public class Level {
 
     public ArrayList<Touchable> getTouchables() {
         return touchables;
+    }
+
+    public ArrayList<Interactable> getInteractables() {
+        return interactables;
     }
 
     public ArrayList<Enemy> getEnemies() {

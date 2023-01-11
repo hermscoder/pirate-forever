@@ -60,7 +60,7 @@ public abstract class GameObject {
         hitBox.x += xDrawOffset / 2;
     }
 
-    private int differenceBetweenSpriteAndTileSize() {
+    protected int differenceBetweenSpriteAndTileSize() {
         return (int) (SCALE * (TILES_DEFAULT_SIZE - objectConstants.getSpriteAtlas().getTileHeight()));
     }
 

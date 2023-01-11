@@ -20,6 +20,8 @@ public class ObjectFactory {
             case ObjectConstants.MAP_PIECE_1, ObjectConstants.MAP_PIECE_2,
                     ObjectConstants.MAP_PIECE_3, ObjectConstants.MAP_PIECE_4:
                 return new MapFragment(x, y, objectType, objectType - 5);
+            case ObjectConstants.CHEST:
+                return new Chest(x, y, objectType);
             default:
                 throw new RuntimeException("Object of type: " + objectType + " not configured in object factory.");
         }

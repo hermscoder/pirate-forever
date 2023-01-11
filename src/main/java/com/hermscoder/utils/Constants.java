@@ -326,6 +326,17 @@ public class Constants {
                         .yDrawOffset((int) (15 * SCALE))
                         .build()
         );
+        put(ObjectConstants.CHEST, ObjectConstants.newBuilder()
+                        .spriteAtlas(Sprite.ChestSpriteAtlas)
+                        .animationSprite(ObjectConstants.CHEST, 11)
+                        .gravity(GRAVITY)
+                        .animationSpeed(25)
+                        .startAnimated(false)
+                        .hitboxWidth((int) (28 * SCALE))
+                        .hitboxHeight((int) (30 * SCALE))
+                        .yDrawOffset((int) (4 * SCALE))
+                        .build()
+        );
     }};
 
     public static EntityConstants getEntityConstants(int entityType) {

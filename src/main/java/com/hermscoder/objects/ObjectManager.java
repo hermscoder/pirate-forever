@@ -4,6 +4,7 @@ import com.hermscoder.entities.Player;
 import com.hermscoder.gamestates.Playing;
 import com.hermscoder.levels.Level;
 import com.hermscoder.objects.type.Destroyable;
+import com.hermscoder.objects.type.Interactable;
 import com.hermscoder.objects.type.Touchable;
 
 import java.awt.*;
@@ -16,6 +17,7 @@ public class ObjectManager {
 
     private ArrayList<Touchable> touchableObjects;
     private ArrayList<Destroyable> destroyableObjects;
+    private ArrayList<Interactable> interactableObjects;
     private ArrayList<Cannon> cannons;
 
 
@@ -48,6 +50,7 @@ public class ObjectManager {
     public void loadObjects(Level newLevel) {
         touchableObjects = new ArrayList<>(newLevel.getTouchables());
         destroyableObjects = new ArrayList<>(newLevel.getDestroyables());
+        interactableObjects = new ArrayList<>(newLevel.getInteractables());
         cannons = new ArrayList<>(newLevel.getCannons());
     }
 
@@ -60,6 +63,11 @@ public class ObjectManager {
         for (Destroyable destroyable : destroyableObjects) {
             if (destroyable.isActive())
                 destroyable.update();
+        }
+
+        for (Interactable interactable : interactableObjects) {
+            if (interactable.isActive())
+                interactable.update();
         }
 
         updateCannons(lvlData, player);
@@ -76,6 +84,7 @@ public class ObjectManager {
     public void draw(Graphics g, int xLvlOffset) {
         drawTouchables(g, xLvlOffset);
         drawDestroyables(g, xLvlOffset);
+        drawInteractables(g, xLvlOffset);
         drawCannons(g, xLvlOffset);
     }
 
@@ -98,7 +107,14 @@ public class ObjectManager {
         for (Touchable touchable : touchableObjects) {
             if (touchable.isActive()) {
                 touchable.draw(g, xLvlOffset);
-//                potion.drawHitBox(g, xLvlOffset);
+            }
+        }
+    }
+
+    private void drawInteractables(Graphics g, int xLvlOffset) {
+        for (Interactable interactable : interactableObjects) {
+            if (interactable.isActive()) {
+                interactable.draw(g, xLvlOffset);
             }
         }
     }
@@ -111,6 +127,10 @@ public class ObjectManager {
 
         for (Destroyable d : destroyableObjects) {
             d.reset();
+        }
+
+        for (Interactable i : interactableObjects) {
+            i.reset();
         }
 
         for (Cannon c : cannons) {
