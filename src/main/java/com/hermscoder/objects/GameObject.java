@@ -25,6 +25,7 @@ public abstract class GameObject {
         this.objectConstants = Constants.getObjectConstants(objectType);
         this.xDrawOffset = objectConstants.getxDrawOffset();
         this.yDrawOffset = objectConstants.getyDrawOffset();
+        this.doAnimation = objectConstants.isStartAnimated();
         initHitBox(objectConstants.getHitboxWidth(), objectConstants.getHitboxHeight());
     }
 
@@ -39,8 +40,12 @@ public abstract class GameObject {
                 if (objectType == BARREL || objectType == BOX) {
                     doAnimation = false;
                     active = false;
-                } else if (objectType == CANNON_LEFT || objectType == CANNON_RIGHT)
+                } else if (objectType == CANNON_LEFT || objectType == CANNON_RIGHT){
                     doAnimation = false;
+                } else if(objectType == CHEST) {
+                    doAnimation = false;
+                    animationIndex = objectConstants.getAnimationSpriteAmount(objectType) - 1;
+                }
             }
         }
     }

@@ -47,6 +47,19 @@ public class ObjectManager {
         }
     }
 
+    public void checkObjectsInteracted(Player player) {
+        for (Interactable interactable : interactableObjects) {
+            if (interactable.isActive())
+                if (player.getHitBox().intersects(interactable.getHitBox())) {
+                    List<Touchable> drops = interactable.onInteract(this, player);
+                    if (drops != null) {
+                        touchableObjects.addAll(drops);
+                    }
+                    return;
+                }
+        }
+    }
+
     public void loadObjects(Level newLevel) {
         touchableObjects = new ArrayList<>(newLevel.getTouchables());
         destroyableObjects = new ArrayList<>(newLevel.getDestroyables());

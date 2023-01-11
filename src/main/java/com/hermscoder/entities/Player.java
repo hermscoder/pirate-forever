@@ -71,6 +71,8 @@ public class Player extends Entity {
     private float knockBackXForce = 0.3f * SCALE;
     private float knockBackYForce = -0.9f * SCALE;
 
+    private boolean interacting;
+
     private Weapon currentWeapon;
 
     private List<Key> keysCollected = new ArrayList<>();
@@ -134,6 +136,11 @@ public class Player extends Entity {
             checkAttack();
         }
 
+        if(interacting) {
+            checkInteractableObjects();
+            interacting = false;
+        }
+
         updateAnimationTick();
         setAnimation();
     }
@@ -157,6 +164,9 @@ public class Player extends Entity {
         playing.getGame().getAudioPlayer().playAttackSound();
     }
 
+    private void checkInteractableObjects() {
+        playing.checkObjectsInteracted(this);
+    }
     private void updateAttackBox() {
         if (right && left) {
             attackBox.x = hitBox.x + (hitBox.width * flipW);
@@ -421,6 +431,12 @@ public class Player extends Entity {
         }
     }
 
+    public void interact() {
+        if(interacting)
+            return;
+        interacting = true;
+    }
+
     public void powerAttack() {
         if (powerAttackActive)
             return;
@@ -483,6 +499,7 @@ public class Player extends Entity {
         attacking = false;
         moving = false;
         jump = false;
+        interacting = false;
         airSpeed = 0f;
         state = IDLE;
         currentHealth = maxHealth;

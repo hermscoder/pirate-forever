@@ -139,6 +139,10 @@ public class Playing extends State implements StateMethods {
         objectManager.checkObjectHit(attackBox);
     }
 
+    public void checkObjectsInteracted(Player player) {
+        objectManager.checkObjectsInteracted(player);
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         if (!gameOver)
@@ -213,6 +217,9 @@ public class Playing extends State implements StateMethods {
                 break;
             case KeyEvent.VK_P:
                 player.powerAttack();
+                break;
+            case KeyEvent.VK_E:
+                player.interact();
                 break;
         }
         player.changeLastKeyPressed(e.getKeyCode());
