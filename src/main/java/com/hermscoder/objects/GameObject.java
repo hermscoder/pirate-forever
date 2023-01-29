@@ -6,8 +6,8 @@ import com.hermscoder.utils.ObjectConstants;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-import static com.hermscoder.main.Game.*;
-import static com.hermscoder.utils.ObjectConstants.*;
+import static com.hermscoder.main.Game.SCALE;
+import static com.hermscoder.main.Game.TILES_DEFAULT_SIZE;
 
 public abstract class GameObject {
     protected final int x, y, objectType;
@@ -18,9 +18,6 @@ public abstract class GameObject {
     protected int yDrawOffset;
     protected final ObjectConstants objectConstants;
 
-    public void afterAnimationFinishedAction() {
-
-    }
 
     protected GameObject(int x, int y, int objectType) {
         this.x = x;
@@ -31,6 +28,10 @@ public abstract class GameObject {
         this.yDrawOffset = objectConstants.getyDrawOffset();
         this.doAnimation = objectConstants.isStartAnimated();
         initHitBox(objectConstants.getHitboxWidth(), objectConstants.getHitboxHeight());
+    }
+
+    public void afterAnimationFinishedAction() {
+
     }
 
     protected void updateAnimationTick() {

@@ -6,6 +6,7 @@ import com.hermscoder.objects.ObjectManager;
 
 import java.awt.*;
 import java.util.List;
+import java.util.function.Consumer;
 
 public abstract class Interactable extends GameObject {
 
@@ -13,7 +14,7 @@ public abstract class Interactable extends GameObject {
         super(x, y, objectType);
     }
 
-    public abstract List<Touchable> onInteract(ObjectManager player, Player player1);
+    public abstract List<Touchable> onInteract(ObjectManager player, Player player1, Consumer<List<Touchable>> callback);
 
     public abstract void update();
 
