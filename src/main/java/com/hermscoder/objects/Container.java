@@ -46,4 +46,10 @@ public class Container extends Destroyable {
                 objectConstants.getSpriteAtlas().getTileHeight(Game.SCALE), null);
 //        drawHitBox(g, xLvlOffset);
     }
+
+    @Override
+    public void afterAnimationFinishedAction() {
+        doAnimation = false;
+        active = false;
+    }
 }

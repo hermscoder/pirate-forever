@@ -83,13 +83,18 @@ public class Cannon extends GameObject {
         projectiles.add(new Projectile((int) hitBox.x, (int) hitBox.y, direction, objectType));
     }
 
-    public int getTileY() {
-        return tileY;
+
+    @Override
+    public void afterAnimationFinishedAction() {
+        doAnimation = false;
     }
 
     @Override
     public void reset() {
         super.reset();
         projectiles.clear();
+    }
+    public int getTileY() {
+        return tileY;
     }
 }

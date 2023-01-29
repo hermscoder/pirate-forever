@@ -18,6 +18,10 @@ public abstract class GameObject {
     protected int yDrawOffset;
     protected final ObjectConstants objectConstants;
 
+    public void afterAnimationFinishedAction() {
+
+    }
+
     protected GameObject(int x, int y, int objectType) {
         this.x = x;
         this.y = y;
@@ -37,15 +41,7 @@ public abstract class GameObject {
 
             if (animationIndex >= objectConstants.getAnimationSpriteAmount(objectType)) {
                 animationIndex = 0;
-                if (objectType == BARREL || objectType == BOX) {
-                    doAnimation = false;
-                    active = false;
-                } else if (objectType == CANNON_LEFT || objectType == CANNON_RIGHT){
-                    doAnimation = false;
-                } else if(objectType == CHEST) {
-                    doAnimation = false;
-                    animationIndex = objectConstants.getAnimationSpriteAmount(objectType) - 1;
-                }
+                afterAnimationFinishedAction();
             }
         }
     }

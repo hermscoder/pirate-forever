@@ -65,4 +65,11 @@ public class Chest extends Interactable {
         super.reset();
         opened = false;
     }
+
+    @Override
+    public void afterAnimationFinishedAction() {
+        doAnimation = false;
+        animationIndex = objectConstants.getAnimationSpriteAmount(objectType) - 1;
+    }
+
 }
