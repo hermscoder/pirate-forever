@@ -4,50 +4,69 @@ import com.hermscoder.entities.Player;
 import com.hermscoder.main.Game;
 import com.hermscoder.objects.type.Interactable;
 import com.hermscoder.objects.type.Touchable;
+import com.hermscoder.utils.ObjectConstants;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import static com.hermscoder.utils.ObjectConstants.*;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class Chest extends Interactable {
     private boolean opened;
+    private Random rand = new Random();
+    private Consumer<List<Touchable>> callBack;
+    private List<Touchable> drops = new ArrayList<>();
 
     public Chest(int x, int y, int objectType) {
         super(x, y, objectType);
     }
 
     @Override
-    public List<Touchable> onInteract(ObjectManager objectManager, Player player) {
-        if(opened)
+    public List<Touchable> onInteract(ObjectManager objectManager, Player player, Consumer<List<Touchable>> callback) {
+        if (opened)
             return Collections.emptyList();
-        if(player.getKeysCollected().isEmpty())
+        if (player.getKeysCollected().isEmpty())
             //TODO add animation to show that user needs a key to open it
             return Collections.emptyList();
 
-
         player.getKeysCollected().remove(0);
+
+        for (int i = 0; i < 2; i++) {
+            drops.add(new Potion(
+                    (int) (getHitBox().x + getHitBox().width / 2 - (i * getHitBox().width / 2)),
+                    (int) (getHitBox().y - getHitBox().height / 2), i + 1));
+        }
+        int missingFragment = calculateMapFragmentMissing(player);
+        if (missingFragment > 0) {
+            drops.add(new MapFragment((int) (getHitBox().x + getHitBox().width / 2),
+                    (int) (getHitBox().y - getHitBox().height / 2), ObjectConstants.MAP_PIECE_1 - 1 + missingFragment, missingFragment));
+        }
+
+        this.callBack = callback;
+
         doAnimation = true;
-        List<Touchable> drops = new ArrayList<>();
-        int type = BLUE_POTION;
-        if (objectType == BARREL)
-            type = RED_POTION;
-
-
-        drops.add(new Potion(
-                (int) (getHitBox().x + getHitBox().width / 2),
-                (int) (getHitBox().y - getHitBox().height / 2), type));
-
         opened = true;
         return drops;
     }
 
+    private int calculateMapFragmentMissing(Player player) {
+        List<Integer> collectedMapFragmentNumbers = player.getMapFragmentCollected().stream().map(map -> map.getFragmentNumber()).collect(Collectors.toList());
+        List<Integer> missingFragments = Arrays.asList(1, 2, 3, 4).stream()
+                .filter(missingMapFragmentNumber -> !collectedMapFragmentNumbers.contains(missingMapFragmentNumber))
+                .collect(Collectors.toList());
+
+        if (missingFragments.isEmpty())
+            return 0;
+
+        return missingFragments.get(0);
+
+    }
+
     public void update() {
-        if (doAnimation)
+        if (doAnimation) {
             updateAnimationTick();
+        }
     }
 
     @Override
@@ -70,6 +89,7 @@ public class Chest extends Interactable {
     public void afterAnimationFinishedAction() {
         doAnimation = false;
         animationIndex = objectConstants.getAnimationSpriteAmount(objectType) - 1;
+        callBack.accept(drops);
     }
 
 }

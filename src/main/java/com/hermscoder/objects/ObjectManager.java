@@ -51,10 +51,7 @@ public class ObjectManager {
         for (Interactable interactable : interactableObjects) {
             if (interactable.isActive())
                 if (player.getHitBox().intersects(interactable.getHitBox())) {
-                    List<Touchable> drops = interactable.onInteract(this, player);
-                    if (drops != null) {
-                        touchableObjects.addAll(drops);
-                    }
+                    interactable.onInteract(this, player, drops -> touchableObjects.addAll(drops));
                     return;
                 }
         }

@@ -6,7 +6,7 @@ import com.hermscoder.objects.type.Touchable;
 
 import java.awt.*;
 
-import static com.hermscoder.utils.ObjectConstants.BLUE_POTION;
+import static com.hermscoder.utils.ObjectConstants.*;
 
 public class Potion extends Touchable {
     private float hoverOffset;
@@ -27,7 +27,7 @@ public class Potion extends Touchable {
 
     @Override
     public void draw(Graphics g, int xLvlOffset) {
-        int objIndex = objectType == BLUE_POTION ? 0 : 1;
+        int objIndex = objectType == BLUE_POTION ? BLUE_POTION_ANIMATION : RED_POTION_ANIMATION;
         g.drawImage(objectConstants.getAnimationImage(objIndex, animationIndex),
                 (int) (hitBox.x - xDrawOffset - xLvlOffset),
                 (int) (hitBox.y - yDrawOffset),
