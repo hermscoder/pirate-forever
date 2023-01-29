@@ -98,9 +98,9 @@ public class Playing extends State implements StateMethods {
     @Override
     public void draw(Graphics g) {
         levelRender.draw(g);
-        player.draw(g, levelRender.getxLevelOffset());
         enemyManager.draw(g, levelRender.getxLevelOffset());
         objectManager.draw(g, levelRender.getxLevelOffset());
+        player.draw(g, levelRender.getxLevelOffset());
         playerUI.draw(g);
 
         if (paused) {
