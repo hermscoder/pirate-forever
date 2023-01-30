@@ -14,7 +14,7 @@ public abstract class Interactable extends GameObject {
         super(x, y, objectType);
     }
 
-    public abstract List<Touchable> onInteract(ObjectManager player, Player player1, Consumer<List<Touchable>> callback);
+    public abstract void onInteract(ObjectManager player, Player player1, Consumer<List<Touchable>> callback);
 
     public abstract void update();
 

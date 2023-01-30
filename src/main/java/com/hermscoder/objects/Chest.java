@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 public class Chest extends Interactable {
     private boolean opened;
-    private Random rand = new Random();
     private Consumer<List<Touchable>> callBack;
     private List<Touchable> drops = new ArrayList<>();
 
@@ -23,31 +22,32 @@ public class Chest extends Interactable {
     }
 
     @Override
-    public List<Touchable> onInteract(ObjectManager objectManager, Player player, Consumer<List<Touchable>> callback) {
+    public void onInteract(ObjectManager objectManager, Player player, Consumer<List<Touchable>> callback) {
         if (opened)
-            return Collections.emptyList();
-        if (player.getKeysCollected().isEmpty())
+            return;
+        if (player.getKeysCollected().isEmpty()) {
             //TODO add animation to show that user needs a key to open it
-            return Collections.emptyList();
+            return;
+        }
 
         player.getKeysCollected().remove(0);
 
+        drops.clear();
         for (int i = 0; i < 2; i++) {
             drops.add(new Potion(
                     (int) (getHitBox().x + getHitBox().width / 2 - (i * getHitBox().width / 2)),
                     (int) (getHitBox().y - getHitBox().height / 2), i + 1));
         }
-        int missingFragment = calculateMapFragmentMissing(player);
-        if (missingFragment > 0) {
+        int missingFragmentNumber = calculateMapFragmentMissing(player);
+        if (missingFragmentNumber > 0) {
             drops.add(new MapFragment((int) (getHitBox().x + getHitBox().width / 2),
-                    (int) (getHitBox().y - getHitBox().height / 2), ObjectConstants.MAP_PIECE_1 - 1 + missingFragment, missingFragment));
+                    (int) (getHitBox().y - getHitBox().height / 2), ObjectConstants.MAP_PIECE_1 - 1 + missingFragmentNumber, missingFragmentNumber));
         }
 
         this.callBack = callback;
 
         doAnimation = true;
         opened = true;
-        return drops;
     }
 
     private int calculateMapFragmentMissing(Player player) {
