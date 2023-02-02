@@ -26,7 +26,9 @@ public enum Sprite {
     //UI
     StartMenuBackground("sprites/start_menu_bg.gif", 1, 1, TILES_DEFAULT_SIZE * TILES_IN_WIDTH, TILES_DEFAULT_SIZE * TILES_IN_HEIGHT),
     MenuButtonsSpriteAtlas("sprites/button_atlas.png", 3, 3, 140, 56),
-    MenuBackgroundSprite("sprites/menu_background.png", 3, 3, 282, 336),
+    MenuBackgroundSprite("sprites/menu_background.png", 1, 1, 282, 336),
+    MapViewBackgroundSprite("sprites/mapview_menu_background.png", 1, 1, 264, 380),
+    MapLevelsSpriteAtlas("sprites/big-map-levels-sprite.png", 1, 19, 216, 214),
     PauseMenuBackgroundSprite("sprites/pause_menu.png", 1, 1, 258, 389),
     SoundButtonsSpriteAtlas("sprites/sound_button.png", 2, 3, 42, 42),
     UrmButtonsSpriteAtlas("sprites/urm_buttons.png", 3, 3, 56, 56),

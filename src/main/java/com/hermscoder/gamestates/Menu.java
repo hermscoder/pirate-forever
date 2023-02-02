@@ -15,7 +15,7 @@ import static com.hermscoder.utils.Sprite.*;
 public class Menu extends State implements StateMethods {
 
     private final static int NUMBER_OF_MENU_BUTTONS = 3;
-    private final static GameState[] BUTTON_STATES = new GameState[]{GameState.PLAYING, GameState.OPTIONS, GameState.QUIT};
+    private final static GameState[] BUTTON_STATES = new GameState[]{GameState.MAP_VIEW, GameState.OPTIONS, GameState.QUIT};
     private final static int VERTICAL_SPACE_BETWEEN_BUTTONS = (int) (14 * SCALE);
     private final static int FIRST_MENU_ITEM_MARGIN_TOP = (int) (150 * SCALE);
     private final static int MENU_MARGIN_TOP = 45;
@@ -44,9 +44,10 @@ public class Menu extends State implements StateMethods {
         for (int i = 0; i < buttons.length; i++) {
             buttons[i] = new MenuButton(
                     Game.GAME_WIDTH / 2,
-                    (int) (FIRST_MENU_ITEM_MARGIN_TOP + ((MenuButtonsSpriteAtlas.getTileHeight(SCALE) + VERTICAL_SPACE_BETWEEN_BUTTONS) * i)),
+                    FIRST_MENU_ITEM_MARGIN_TOP + ((MenuButtonsSpriteAtlas.getTileHeight(SCALE) + VERTICAL_SPACE_BETWEEN_BUTTONS) * i),
                     i,
-                    BUTTON_STATES[i]);
+                    BUTTON_STATES[i],
+                    MenuButtonsSpriteAtlas);
         }
     }
 

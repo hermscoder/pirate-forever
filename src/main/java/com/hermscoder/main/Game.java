@@ -1,10 +1,8 @@
 package com.hermscoder.main;
 
 import com.hermscoder.audio.AudioPlayer;
-import com.hermscoder.gamestates.GameOptions;
-import com.hermscoder.gamestates.GameState;
+import com.hermscoder.gamestates.*;
 import com.hermscoder.gamestates.Menu;
-import com.hermscoder.gamestates.Playing;
 import com.hermscoder.ui.AudioOptions;
 
 import java.awt.*;
@@ -20,6 +18,7 @@ public class Game implements Runnable {
     private Playing playing;
     private Menu menu;
     private GameOptions gameOptions;
+    private MapView mapView;
     private AudioOptions audioOptions;
     private AudioPlayer audioPlayer;
 
@@ -45,6 +44,7 @@ public class Game implements Runnable {
         menu = new Menu(this);
         playing = new Playing(this);
         gameOptions = new GameOptions(this);
+        mapView = new MapView(this);
         audioPlayer = new AudioPlayer();
     }
 
@@ -57,6 +57,9 @@ public class Game implements Runnable {
         switch (GameState.state) {
             case MENU:
                 menu.update();
+                break;
+            case MAP_VIEW:
+                mapView.update();
                 break;
             case PLAYING:
                 playing.update();
@@ -76,6 +79,9 @@ public class Game implements Runnable {
         switch (GameState.state) {
             case MENU:
                 menu.draw(g);
+                break;
+            case MAP_VIEW:
+                mapView.draw(g);
                 break;
             case PLAYING:
                 playing.draw(g);
@@ -143,6 +149,10 @@ public class Game implements Runnable {
 
     public Menu getMenu() {
         return menu;
+    }
+
+    public MapView getMapView() {
+        return mapView;
     }
 
     public AudioOptions getAudioOptions() {
