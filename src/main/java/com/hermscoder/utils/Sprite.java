@@ -24,11 +24,15 @@ public enum Sprite {
 
 
     //UI
+    BigTextLettersSpriteAtlas("sprites/ui/bigtext-letters-atlas.png", 1, 26, 10, 11),
+    BigTextNumbersSpriteAtlas("sprites/ui/bigtext-numbers-atlas.png", 1, 10, 10, 11),
     StartMenuBackground("sprites/start_menu_bg.gif", 1, 1, TILES_DEFAULT_SIZE * TILES_IN_WIDTH, TILES_DEFAULT_SIZE * TILES_IN_HEIGHT),
     MenuButtonsSpriteAtlas("sprites/button_atlas.png", 3, 3, 140, 56),
     MenuBackgroundSprite("sprites/menu_background.png", 1, 1, 282, 336),
     MapViewBackgroundSprite("sprites/mapview_menu_background.png", 1, 1, 264, 380),
     MapLevelsSpriteAtlas("sprites/big-map-levels-sprite.png", 1, 19, 216, 214),
+    LevelButtonSpriteAtlas("sprites/ui/level-button-sprite-atlas.png", 3, 3, 20, 20),
+    PadLockSprite("sprites/ui/padlock-sprite.png", 1, 9, 20, 20),
     PauseMenuBackgroundSprite("sprites/pause_menu.png", 1, 1, 258, 389),
     SoundButtonsSpriteAtlas("sprites/sound_button.png", 2, 3, 42, 42),
     UrmButtonsSpriteAtlas("sprites/urm_buttons.png", 3, 3, 56, 56),
