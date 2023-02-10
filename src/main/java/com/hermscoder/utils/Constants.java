@@ -7,6 +7,8 @@ import static com.hermscoder.main.Game.SCALE;
 
 public class Constants {
 
+    public static final int NUMBER_OF_LEVELS = 3;
+
     public static final String LEVELS_FOLDER = "levels";
     public static final String LEVEL_DESIGN_FOLDER = "/level_design";
     public static final String AUDIO_FOLDER = "/audio";
@@ -77,6 +79,8 @@ public class Constants {
                 .animationSprite(PlayerConstants.ATTACK_JUMP_2, 3)
                 .animationSprite(PlayerConstants.GROUND, 2)
                 .animationSprite(PlayerConstants.FALLING, 1)
+                .xDrawOffset((int) (21 * SCALE))
+                .yDrawOffset((int) (4 * SCALE))
                 .maxHealth(100)
                 .damage(10)
                 .gravity(GRAVITY)
