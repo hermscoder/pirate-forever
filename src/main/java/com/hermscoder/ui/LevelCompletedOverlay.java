@@ -16,9 +16,10 @@ import static com.hermscoder.utils.Sprite.UrmButtonsSpriteAtlas;
 public class LevelCompletedOverlay {
     private final Playing playing;
     private BufferedImage img;
-    private int bgX, bgY;
+    private int bgX;
+    private int bgY;
 
-    private UrmButton urmButtons[];
+    private UrmButton[] urmButtons;
 
     public LevelCompletedOverlay(Playing playing) {
         this.playing = playing;
@@ -37,9 +38,22 @@ public class LevelCompletedOverlay {
                         UrmButtonsSpriteAtlas.getTileWidth(SCALE),
                         UrmButtonsSpriteAtlas.getTileHeight(SCALE), 0,
                         () -> {
-                            playing.loadNextLevel();
-                            playing.getGame().getAudioPlayer()
-                                    .setLevelSong(playing.getLevelManager().getCurrentLevel().getIndex());
+                            playing.getLevelManager().getCurrentLevel().setCompleted(true);
+                            playing.getGame()
+                                    .getPlayerStats()
+                                    .setLevelAsCompleted(playing.getLevelManager().getCurrentLevel().getIndex());
+                            playing.getGame()
+                                    .getPlayerStats()
+                                    .addMapFragmentsToCollection(playing.getPlayer().getMapFragmentsCollected());
+
+                            //TODO record the time to complete the level and add it here
+                            playing.getGame()
+                                    .getPlayerStats()
+                                    .addLevelTime(playing.getLevelManager().getCurrentLevel().getIndex(), 0L);
+
+                            playing.resetAll();
+                            playing.setGameState(GameState.MAP_VIEW);
+
                         }),
                 new UrmButton(menuX, y,
                         UrmButtonsSpriteAtlas.getTileWidth(SCALE),

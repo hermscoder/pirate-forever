@@ -17,8 +17,6 @@ import static com.hermscoder.utils.Sprite.*;
 
 public class PlayerUI {
 
-    private static final int POWER_GROW_SPEED = 20;
-
     //StatusBar UI
     private BufferedImage statusBarImg;
 
@@ -84,7 +82,7 @@ public class PlayerUI {
     }
 
     private void drawMapFragments(Graphics g) {
-        List<Integer> mapFragmentsCollected = player.getMapFragmentCollected().stream().map(MapFragment::getFragmentNumber).collect(Collectors.toList());
+        List<Integer> mapFragmentsCollected = player.getMapFragmentsCollected().stream().map(MapFragment::getFragmentNumber).collect(Collectors.toList());
         for (int i = 0; i < 4; i++) {
             int objectType = ObjectConstants.MAP_PIECE_1 + i;
             ObjectConstants objectConstants = Constants.getObjectConstants(objectType);

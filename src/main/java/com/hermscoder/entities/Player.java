@@ -27,26 +27,23 @@ public class Player extends Entity {
     private static final int POWER_ATTACK_TICKS = 35;
     private static final int POWER_ATTACK_COST = 60;
 
-//    private final EntityConstants entityConstants;
-
     private final Playing playing;
     private BufferedImage[][] animations;
 
-    private boolean left, up, right, down, jump;
+    private boolean left;
+    private boolean right;
+    private boolean jump;
 
     private int lastKeyPressed;
     private int lastKeyReleased;
     private long lastTimeKeyReleasedInMillis;
 
-    private boolean moving = false, attacking = false;
+    private boolean moving = false;
+    private boolean attacking = false;
 
     //Jumping / Gravity
-    private float jumpSpeed = -2.25f * SCALE;
-    private float fallSpeedAfterCollision = 0.5f * SCALE;
-
-    //Hitbox offset
-    private float xDrawOffset = 21 * SCALE;
-    private float yDrawOffset = 4 * SCALE;
+    private final float jumpSpeed = -2.25f * SCALE;
+    private final float fallSpeedAfterCollision = 0.5f * SCALE;
 
     private int[][] lvlData;
 
@@ -76,7 +73,7 @@ public class Player extends Entity {
     private Weapon currentWeapon;
 
     private List<Key> keysCollected = new ArrayList<>();
-    private List<MapFragment> mapFragmentCollected = new ArrayList<>();
+    private List<MapFragment> mapFragmentsCollected = new ArrayList<>();
 
     public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height, PLAYER);
@@ -136,7 +133,7 @@ public class Player extends Entity {
             checkAttack();
         }
 
-        if(interacting) {
+        if (interacting) {
             checkInteractableObjects();
             interacting = false;
         }
@@ -167,6 +164,7 @@ public class Player extends Entity {
     private void checkInteractableObjects() {
         playing.checkObjectsInteracted(this);
     }
+
     private void updateAttackBox() {
         if (right && left) {
             attackBox.x = hitBox.x + (hitBox.width * flipW);
@@ -432,7 +430,7 @@ public class Player extends Entity {
     }
 
     public void interact() {
-        if(interacting)
+        if (interacting)
             return;
         interacting = true;
     }
@@ -490,7 +488,7 @@ public class Player extends Entity {
     }
 
     public void resetDirBoolean() {
-        left = right = up = down = false;
+        left = right = false;
     }
 
     public void resetAll() {
@@ -508,7 +506,7 @@ public class Player extends Entity {
         hitBox.y = y;
 
         keysCollected.clear();
-        mapFragmentCollected.clear();
+        mapFragmentsCollected.clear();
 
         changeWeapon(new BareHands((int) x, (int) y, this));
 
@@ -530,7 +528,7 @@ public class Player extends Entity {
     }
 
     public void addMapFragmentToCollection(MapFragment mapFragment) {
-        mapFragmentCollected.add(mapFragment);
+        mapFragmentsCollected.add(mapFragment);
     }
 
 
@@ -569,9 +567,6 @@ public class Player extends Entity {
         lastTimeKeyReleasedInMillis = System.currentTimeMillis();
     }
 
-    public void setUp(boolean up) {
-        this.up = up;
-    }
 
     public boolean isRight() {
         return right;
@@ -621,8 +616,8 @@ public class Player extends Entity {
         return keysCollected;
     }
 
-    public List<MapFragment> getMapFragmentCollected() {
-        return mapFragmentCollected;
+    public List<MapFragment> getMapFragmentsCollected() {
+        return mapFragmentsCollected;
     }
 
     public int getPowerMaxValue() {
