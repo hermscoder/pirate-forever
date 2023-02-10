@@ -51,7 +51,7 @@ public class Chest extends Interactable {
     }
 
     private int calculateMapFragmentMissing(Player player) {
-        List<Integer> collectedMapFragmentNumbers = player.getMapFragmentCollected().stream().map(map -> map.getFragmentNumber()).collect(Collectors.toList());
+        List<Integer> collectedMapFragmentNumbers = player.getMapFragmentsCollected().stream().map(map -> map.getFragmentNumber()).collect(Collectors.toList());
         List<Integer> missingFragments = Arrays.asList(1, 2, 3, 4).stream()
                 .filter(missingMapFragmentNumber -> !collectedMapFragmentNumbers.contains(missingMapFragmentNumber))
                 .collect(Collectors.toList());
